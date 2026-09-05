@@ -523,10 +523,9 @@
       
         
         <a
-          href="https://github.com"
+          href="https://github.com/Entropyqwe"
           class="profile-social-link"
-          target="_blank"
-          rel="noopener noreferrer"
+          target="_blank" rel="noopener noreferrer"
           aria-label="GitHub"
         >
           
@@ -538,10 +537,9 @@
       
         
         <a
-          href="mailto:example@email.com"
+          href="mailto:2383282254@qq.com"
           class="profile-social-link"
-          target="_blank"
-          rel="noopener noreferrer"
+          
           aria-label="Email"
         >
           
@@ -553,30 +551,14 @@
       
         
         <a
-          href="/donate/"
+          href="https://music.163.com"
           class="profile-social-link"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Sponsor"
+          target="_blank" rel="noopener noreferrer"
+          aria-label="网易云音乐"
         >
           
           
-            <span class="material-symbols-outlined">favorite</span>
-          
-        </a>
-        
-      
-        
-        <a
-          href="/rss/"
-          class="profile-social-link"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="RSS"
-        >
-          
-          
-            <span class="material-symbols-outlined">rss_feed</span>
+            <span class="material-symbols-outlined">music_note</span>
           
         </a>
         
@@ -1404,7 +1386,7 @@
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/5 16:43:17</div>
+          <div class="site-info-card-value">2026/9/5 16:57:59</div>
         </div>
 
         <!-- System Info -->
@@ -1488,10 +1470,9 @@ if (!window._siteInfoToggleBound) {
       
         
         <a
-          href="https://github.com"
+          href="https://github.com/Entropyqwe"
           class="profile-social-link"
-          target="_blank"
-          rel="noopener noreferrer"
+          target="_blank" rel="noopener noreferrer"
           aria-label="GitHub"
         >
           
@@ -1503,10 +1484,9 @@ if (!window._siteInfoToggleBound) {
       
         
         <a
-          href="mailto:example@email.com"
+          href="mailto:2383282254@qq.com"
           class="profile-social-link"
-          target="_blank"
-          rel="noopener noreferrer"
+          
           aria-label="Email"
         >
           
@@ -1518,30 +1498,14 @@ if (!window._siteInfoToggleBound) {
       
         
         <a
-          href="/donate/"
+          href="https://music.163.com"
           class="profile-social-link"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Sponsor"
+          target="_blank" rel="noopener noreferrer"
+          aria-label="网易云音乐"
         >
           
           
-            <span class="material-symbols-outlined">favorite</span>
-          
-        </a>
-        
-      
-        
-        <a
-          href="/rss/"
-          class="profile-social-link"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="RSS"
-        >
-          
-          
-            <span class="material-symbols-outlined">rss_feed</span>
+            <span class="material-symbols-outlined">music_note</span>
           
         </a>
         
@@ -1740,7 +1704,7 @@ if (!window._siteInfoToggleBound) {
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/5 16:43:17</div>
+          <div class="site-info-card-value">2026/9/5 16:57:59</div>
         </div>
 
         <!-- System Info -->
@@ -2598,6 +2562,179 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 
+
+  
+
+<style>
+  #ffm-panel, #ffp-player { position: fixed; z-index: 600; background: var(--card-bg, #fff);
+    color: var(--text-color, #222); border-radius: 14px; box-shadow: 0 14px 44px rgba(0,0,0,.28);
+    font-size: .9rem; max-width: min(340px, calc(100vw - 24px)); }
+  #ffm-panel[hidden], #ffp-player[hidden] { display: none; }
+  #ffm-panel { right: 16px; top: 64px; padding: 14px 16px; width: 300px; }
+  #ffm-panel .ffm-title { display:flex; align-items:center; gap:8px; font-weight:700; font-size:1rem; margin-bottom:6px; }
+  #ffm-panel .ffm-sub { opacity:.6; font-size:.78rem; margin-bottom:10px; }
+  #ffm-panel ul { list-style:none; margin:0 0 10px; padding:0; }
+  #ffm-panel li { padding:7px 8px; border-radius:8px; cursor:pointer; }
+  #ffm-panel li:hover { background: rgba(127,127,127,.12); }
+  #ffm-panel .ffm-empty { opacity:.55; padding:6px 8px; }
+  #ffm-panel .ffm-go { display:block; text-align:center; padding:8px; border-radius:9px; color:#fff; text-decoration:none;
+    background: linear-gradient(135deg,#ff7eb3,#ff758c 60%,#ff9a5a); }
+  #ffp-player { left: 24px; bottom: 24px; padding: 14px 16px; width: 300px; }
+  #ffp-player .ffp-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+  #ffp-player .ffp-name { font-weight:700; font-size:.92rem; }
+  #ffp-player .ffp-note { font-size:.72rem; opacity:.55; margin-top:2px; }
+  #ffp-player .ffp-close { border:0; background:none; cursor:pointer; font-size:16px; opacity:.6; padding:0 2px; }
+  #ffp-controls { display:flex; align-items:center; gap:10px; margin:8px 0 4px; }
+  #ffp-controls button { border:0; background:none; cursor:pointer; font-size:1.35rem; color: inherit; display:flex; padding:0; }
+  #ffp-play { font-size:2rem; }
+  #ffp-progress { position:relative; height:6px; border-radius:3px; background: rgba(127,127,127,.28); cursor:pointer; }
+  #ffp-progress .ffp-fill { position:absolute; left:0; top:0; height:100%; width:0%; border-radius:3px;
+    background: linear-gradient(90deg,#ff7eb3,#ff758c); pointer-events:none; }
+  #ffp-progress .ffp-thumb { position:absolute; top:50%; width:12px; height:12px; border-radius:50%;
+    background:#ff758c; transform:translate(-50%,-50%); pointer-events:none; }
+  #ffp-time { display:flex; justify-content:space-between; font-size:.72rem; opacity:.6; margin-top:4px; }
+</style>
+
+<script>
+(function () {
+  var RECS = [] || [];
+  var MUSIC_URL = '/music';
+  var ffBound = document.getElementById('ffp-player');
+
+  function posText(sec) {
+    sec = Math.max(0, Math.floor(sec || 0));
+    var m = Math.floor(sec / 60), s = sec % 60;
+    return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  function recListHtml(list) {
+    if (!list.length) return '<li class="ffm-empty">曲目整理中，敬请期待 🎧</li>';
+    var html = '';
+    for (var i = 0; i < Math.min(5, list.length); i++) {
+      var it = list[i];
+      html += '<li data-go="1"><span>🎵</span> ' + (it.name || '未命名曲目')
+            + (it.artist ? ' <span style="opacity:.6">— ' + it.artist + '</span>' : '') + '</li>';
+    }
+    if (list.length > 5) html += '<li class="ffm-empty">还有 ' + (list.length - 5) + ' 首…</li>';
+    return html;
+  }
+
+  // ---- 音乐（乐符）按钮：弹出「无人之境（我的推荐）」文本，点击跳推荐页 ----
+  function toggleMusicPanel(anchor) {
+    var panel = document.getElementById('ffm-panel');
+    if (!panel) {
+      panel = document.createElement('div');
+      panel.id = 'ffm-panel';
+      document.body.appendChild(panel);
+    }
+    if (!panel.hidden) { panel.hidden = true; return; }
+    panel.hidden = false;
+    panel.innerHTML =
+      '<div class="ffm-title"><span>🎵</span><span>无人之境（我的推荐）</span></div>' +
+      '<div class="ffm-sub">站长私藏的一些曲子，点击跳转到推荐页查看全部</div>' +
+      '<ul>' + recListHtml(RECS) + '</ul>' +
+      '<a class="ffm-go" href="' + MUSIC_URL + '">进入「音乐推荐」页 →</a>';
+  }
+
+  // ---- 播放按钮：在点击处弹出迷你播放器 ----
+  var seekPos = 0, dragging = false;
+
+  function buildPlayer(x, y) {
+    var p = document.getElementById('ffp-player');
+    if (!p) {
+      p = document.createElement('div');
+      p.id = 'ffp-player';
+      document.body.appendChild(p);
+    }
+    p.hidden = false;
+    p.innerHTML =
+      '<div class="ffp-head"><div>' +
+      '<div class="ffp-name">🎧 迷你播放器</div>' +
+      '<div class="ffp-note">暂无音频资源 · 界面就绪，可在数据文件中添加</div></div>' +
+      '<button class="ffp-close" data-ffp-close="1" title="隐藏播放器">✕</button></div>' +
+      '<div id="ffp-controls">' +
+      '  <button data-ffp-prev="1" title="上一首" disabled>⏮</button>' +
+      '  <button data-ffp-play="1" id="ffp-play" title="播放/暂停">▶</button>' +
+      '  <button data-ffp-next="1" title="下一首" disabled>⏭</button>' +
+      '</div>' +
+      '<div id="ffp-progress"><span class="ffp-fill" id="ffp-fill"></span><span class="ffp-thumb" id="ffp-thumb"></span></div>' +
+      '<div id="ffp-time"><span id="ffp-cur">00:00</span><span id="ffp-end">00:00</span></div>';
+    // 放在点击位置附近（不超出视口）
+    var rect = p.getBoundingClientRect();
+    var px = Math.min(x + 14, window.innerWidth - rect.width - 10);
+    var py = Math.min(y + 14, window.innerHeight - rect.height - 10);
+    p.style.left = Math.max(10, px) + 'px';
+    p.style.top = Math.max(10, py) + 'px';
+
+    var bar = p.querySelector('#ffp-progress');
+    function setFromEvent(ev) {
+      var r = bar.getBoundingClientRect();
+      var ratio = Math.min(1, Math.max(0, (ev.clientX - r.left) / r.width));
+      seekPos = ratio * 210; // 演示时间轴 3:30，接入真实音频后按音频时长
+      updateBar();
+    }
+    bar.addEventListener('pointerdown', function (ev) {
+      dragging = true; bar.setPointerCapture(ev.pointerId); setFromEvent(ev); ev.preventDefault();
+    });
+    bar.addEventListener('pointermove', function (ev) { if (dragging) setFromEvent(ev); });
+    bar.addEventListener('pointerup', function (ev) { dragging = false; });
+    bar.addEventListener('pointercancel', function () { dragging = false; });
+    bar.addEventListener('click', function (ev) { if (!dragging) setFromEvent(ev); });
+    p.querySelector('[data-ffp-play]').addEventListener('click', function () {
+      var b = this;
+      if (window.__ffAudio && window.__ffAudio.src) {
+        if (window.__ffAudio.paused) { window.__ffAudio.play(); b.textContent = '⏸'; }
+        else { window.__ffAudio.pause(); b.textContent = '▶'; }
+      } else {
+        b.textContent = '⏸';
+        setTimeout(function () { b.textContent = '▶'; }, 900);
+      }
+    });
+    p.querySelector('[data-ffp-close]').addEventListener('click', function () { p.hidden = true; });
+    p.addEventListener('click', function (e) { e.stopPropagation(); });
+    function updateBar() {
+      var el = document.getElementById('ffp-fill'), th = document.getElementById('ffp-thumb');
+      var cur = document.getElementById('ffp-cur'), end = document.getElementById('ffp-end');
+      var total = (window.__ffAudio && window.__ffAudio.duration && isFinite(window.__ffAudio.duration)) ? window.__ffAudio.duration : 210;
+      var pct = Math.min(1, seekPos / total) * 100;
+      if (el) el.style.width = pct + '%';
+      if (th) th.style.left = pct + '%';
+      if (cur) cur.textContent = posText(seekPos);
+      if (end) end.textContent = posText(total);
+    }
+    updateBar();
+    if (window.__ffAudio) {
+      window.__ffAudio.ontimeupdate = function () { if (!dragging) { seekPos = window.__ffAudio.currentTime; updateBar(); } };
+    }
+    return p;
+  }
+
+  // 捕获阶段接管：阻止主题原逻辑，避免“崩溃”
+  document.addEventListener('click', function (e) {
+    var musicHit = e.target.closest && e.target.closest('#nav-music-btn');
+    var playHit = e.target.closest && e.target.closest('#nav-play-btn');
+    if (!musicHit && !playHit) {
+      if (!e.target.closest('#ffm-panel')) { var pm = document.getElementById('ffm-panel'); if (pm && !pm.hidden) pm.hidden = true; }
+      if (!e.target.closest('#ffp-player')) { var pp = document.getElementById('ffp-player'); if (pp && !pp.hidden && !playHit) { /* 保持播放器常驻，可手动隐藏 */ } }
+      return;
+    }
+    e.preventDefault();
+    e.stopPropagation();   // 阻止主题按钮的原监听
+    if (musicHit) { toggleMusicPanel(); return; }
+    if (playHit) {
+      var cur = document.getElementById('ffp-player');
+      if (cur && !cur.hidden) { cur.hidden = true; }        // 再点一次即手动隐藏
+      else { buildPlayer(e.clientX, e.clientY); }
+    }
+  }, true);
+
+  // 面板/播放器里的跳转与内容点击（冒泡阶段自行处理）
+  document.addEventListener('click', function (e) {
+    var go = e.target.closest && e.target.closest('[data-go="1"]');
+    if (go) { window.location.href = MUSIC_URL; return; }
+  });
+})();
+</script>
 
 </body>
 </html>
