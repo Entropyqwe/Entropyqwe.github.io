@@ -635,6 +635,175 @@
     </article>
 
     
+    <style>
+      .ffu-fab { position: fixed; right: 22px; bottom: 22px; z-index: 400; width: 56px; height: 56px;
+        border: 0; border-radius: 50%; cursor: pointer; font-size: 24px; color: #fff;
+        background: linear-gradient(135deg, #ff7eb3, #ff758c 60%, #ff9a5a);
+        box-shadow: 0 6px 18px rgba(255, 118, 136, .45); transition: transform .2s; display: flex; align-items: center; justify-content: center; }
+      .ffu-fab:hover { transform: scale(1.08); }
+      .ffu-modal { position: fixed; inset: 0; z-index: 500; background: rgba(10,10,20,.55);
+        display: flex; align-items: center; justify-content: center; padding: 14px; backdrop-filter: blur(3px); }
+      .ffu-modal[hidden] { display: none; }
+      .ffu-box { width: min(420px, 92vw); max-height: 86vh; overflow: auto; background: var(--card-bg, #fff);
+        color: var(--text-color, #222); border-radius: 14px; padding: 20px 22px; position: relative; box-shadow: 0 18px 50px rgba(0,0,0,.3); }
+      .ffu-box h3 { margin: 0 0 12px; font-size: 1.2rem; }
+      .ffu-close { position: absolute; top: 10px; right: 12px; border: 0; background: none; cursor: pointer; font-size: 18px; opacity: .6; }
+      .ffu-field { display: block; margin: 10px 0; font-size: .9rem; opacity: .9; }
+      .ffu-field input, .ffu-field select { width: 100%; margin-top: 4px; padding: 8px 10px; border-radius: 8px;
+        border: 1px solid rgba(127,127,127,.4); background: var(--input-bg, rgba(127,127,127,.06)); color: inherit; box-sizing: border-box; }
+      .ffu-status { min-height: 18px; font-size: .85rem; margin: 8px 0; opacity: .85; white-space: pre-wrap; }
+      .ffu-btn { width: 100%; padding: 11px; border: 0; border-radius: 10px; cursor: pointer; color: #fff; font-size: 1rem;
+        background: linear-gradient(135deg, #ff7eb3, #ff758c 60%, #ff9a5a); }
+      .ffu-btn:disabled { opacity: .55; cursor: not-allowed; }
+      .ffu-hint { font-size: .78rem; opacity: .55; margin-top: 8px; }
+    </style>
+
+    <button id="ffu-fab" class="ffu-fab" title="上传照片" aria-label="上传照片">📤</button>
+    <div id="ffu-modal" class="ffu-modal" hidden>
+      <div class="ffu-box">
+        <button id="ffu-close" class="ffu-close" aria-label="关闭">✕</button>
+        <h3>📤 上传照片</h3>
+
+        <label class="ffu-field">上传口令
+          <input id="ffu-key" type="password" placeholder="请输入上传口令" autocomplete="off">
+        </label>
+
+        <label class="ffu-field">选择相册
+          <select id="ffu-album">
+            
+            <option value="街拍">街拍</option>
+            
+            <option value="城市鸟瞰">城市鸟瞰</option>
+            
+            <option value="__new__">➕ 新建相册…</option>
+          </select>
+        </label>
+        <label class="ffu-field" id="ffu-new-wrap" hidden>新相册名
+          <input id="ffu-newalbum" placeholder="如：旅行 / 夜景">
+        </label>
+
+        <label class="ffu-field">选择照片（可多选）
+          <input id="ffu-files" type="file" accept="image/*" multiple>
+        </label>
+
+        <div id="ffu-status" class="ffu-status"></div>
+        <button id="ffu-submit" class="ffu-btn">上传</button>
+        <div class="ffu-hint">照片会在浏览器内自动压缩为 JPG（长边 2560px）后发送，提交成功后约 1~3 分钟自动出现在相册中。</div>
+      </div>
+    </div>
+
+    <script>
+    (function () {
+      var ENDPOINT = 'https:\/\/entropy-photo-uploader.entropy-img.workers.dev';
+      var MAX_FILES = parseInt('10', 10) || 10;
+
+      var fab = document.getElementById('ffu-fab');
+      var modal = document.getElementById('ffu-modal');
+      var box = modal.querySelector('.ffu-box');
+      var closeBtn = document.getElementById('ffu-close');
+      var keyEl = document.getElementById('ffu-key');
+      var albumSel = document.getElementById('ffu-album');
+      var newWrap = document.getElementById('ffu-new-wrap');
+      var newAlbumEl = document.getElementById('ffu-newalbum');
+      var filesEl = document.getElementById('ffu-files');
+      var statusEl = document.getElementById('ffu-status');
+      var submitBtn = document.getElementById('ffu-submit');
+
+      if (!fab || !modal) return;
+
+      function setStatus(t) { statusEl.textContent = t; }
+      function setBusy(b) { submitBtn.disabled = b; submitBtn.textContent = b ? '上传中…' : '上传'; }
+
+      fab.addEventListener('click', function () {
+        modal.hidden = false;
+        setTimeout(function () { keyEl.focus(); }, 60);
+      });
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+      function closeModal() { modal.hidden = true; }
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.hidden) closeModal(); });
+      box.addEventListener('click', function (e) { e.stopPropagation(); });
+
+      albumSel.addEventListener('change', function () {
+        newWrap.hidden = albumSel.value !== '__new__';
+        if (!newWrap.hidden) newAlbumEl.focus();
+      });
+
+      // 前端压缩：长边 2560、JPEG 0.85，返回 { data(base64), name }
+      function compress(file) {
+        return new Promise(function (resolve, reject) {
+          var url = URL.createObjectURL(file);
+          var img = new Image();
+          img.onload = function () {
+            var MAX = 2560, w = img.naturalWidth, h = img.naturalHeight;
+            var scale = Math.min(1, MAX / Math.max(w, h));
+            var canvas = document.createElement('canvas');
+            canvas.width = Math.round(w * scale); canvas.height = Math.round(h * scale);
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            URL.revokeObjectURL(url);
+            var dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+            var base = (file.name || 'photo').replace(/\.[^.]+$/, '').replace(/[^\w\u4e00-\u9fa5-]+/g, '_').slice(0, 60) || 'photo';
+            resolve({ data: dataUrl.split(',')[1], name: base });
+          };
+          img.onerror = function () { URL.revokeObjectURL(url); reject(new Error('无法读取图片 ' + file.name)); };
+          img.src = url;
+        });
+      }
+
+      submitBtn.addEventListener('click', async function () {
+        var key = keyEl.value.trim();
+        var files = Array.prototype.slice.call(filesEl.files || []);
+        var album = albumSel.value === '__new__' ? newAlbumEl.value.trim() : albumSel.value;
+        if (!key) return setStatus('⚠️ 请先输入上传口令');
+        if (!album) return setStatus('⚠️ 请填写新相册名');
+        if (!files.length) return setStatus('⚠️ 请选择要上传的照片');
+        if (files.length > MAX_FILES) return setStatus('⚠️ 一次最多上传 ' + MAX_FILES + ' 张，请分批上传');
+
+        // 网络不稳时自动重试（最多 3 次）
+        async function postJson(payload, tries) {
+          var lastErr = null;
+          for (var t = 0; t < tries; t++) {
+            try {
+              var resp = await fetch(ENDPOINT + '/upload', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+              });
+              var out = await resp.json().catch(function () { return { ok: false, error: 'HTTP ' + resp.status }; });
+              if (out && out.ok) return out;
+              lastErr = (out && out.error) || ('HTTP ' + resp.status);
+            } catch (err) { lastErr = err.message; }
+            if (t < tries - 1) await new Promise(function (r) { setTimeout(r, 1200 * (t + 1)); });
+          }
+          throw new Error(lastErr || '网络错误');
+        }
+
+        setBusy(true);
+        setStatus('正在压缩并上传 0/' + files.length + ' …');
+        var okCount = 0, errMsgs = [];
+        for (var i = 0; i < files.length; i++) {
+          setStatus('正在压缩并上传 ' + i + '/' + files.length + ' …');
+          try {
+            var img = await compress(files[i]);
+            var out = await postJson({ key: key, album: album, filename: img.name + '.jpg', data: img.data }, 3);
+            if (out && out.ok) okCount++;
+            else errMsgs.push((img.name || files[i].name) + ': ' + ((out && out.error) || '未知错误'));
+          } catch (err) {
+            errMsgs.push((files[i].name || '?') + ': ' + err.message);
+          }
+        }
+        setBusy(false);
+        if (okCount === files.length) {
+          setStatus('✅ 全部 ' + okCount + ' 张已提交！\n照片将在 1~3 分钟内自动出现在「' + album + '」相册，请稍后刷新页面查看。');
+          filesEl.value = '';
+        } else {
+          setStatus('⚠️ 成功 ' + okCount + '/' + files.length + ' 张' + (errMsgs.length ? '\n失败：' + errMsgs.join('\n') : ''));
+        }
+      });
+    })();
+    </script>
+    
   </main>
 
   
