@@ -1,0 +1,510 @@
+/* ============================================================
+   code.css
+   Code highlighting and code block UI for Firefly Hexo theme
+   Redesigned matching macOS window controls & One Dark theme
+   ============================================================ */
+
+/* Enforce monospace font stack on all code elements */
+pre, code, 
+.code-block-wrapper, 
+.code-block-wrapper pre, 
+.code-block-wrapper code, 
+.hljs,
+.hljs-ln, 
+.hljs-ln td,
+.hljs-ln-numbers, 
+.hljs-ln-code, 
+.hljs-ln-line,
+figure.highlight,
+figure.highlight pre,
+figure.highlight code,
+figure.highlight td {
+  font-family: var(--font-mono, "JetBrains Mono", "Fira Code", Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace) !important;
+}
+
+/* Base Code Block Wrapper */
+.code-block-wrapper {
+  position: relative;
+  margin: 1.5rem 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #21252b; /* Dark editor background */
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.35);
+  transition: all var(--duration-medium, 0.3s ease);
+}
+
+.code-block-wrapper pre {
+  margin: 0;
+  padding: 1rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #abb2bf; /* One Dark code color */
+  background: transparent;
+}
+
+.code-block-wrapper figure.highlight {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+}
+
+/* Header bar styling (macOS window style matching screenshot) */
+.code-block-header {
+  height: 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #181a1f; /* Darker header bar */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 0 1rem;
+  box-sizing: border-box;
+  user-select: none;
+}
+
+.code-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.terminal-dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-red { background-color: #ff5f56; }
+.dot-yellow { background-color: #ffbd2e; }
+.dot-green { background-color: #27c93f; }
+
+.code-header-filename {
+  font-size: 0.8125rem;
+  color: #abb2bf;
+  margin-left: 0.5rem;
+  font-family: var(--font-mono);
+  opacity: 0.8;
+}
+
+.code-header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #abb2bf;
+  font-size: 0.8125rem;
+  font-family: var(--font-mono);
+}
+
+.code-header-lang {
+  font-weight: 500;
+  color: #abb2bf;
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+}
+
+/* Header Copy Button */
+.code-header-right .code-copy-btn {
+  position: static;
+  background: transparent;
+  border: none;
+  color: #abb2bf;
+  cursor: pointer;
+  padding: 0.2rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  opacity: 0.85;
+  transition: color 0.2s, background 0.2s, opacity 0.2s;
+}
+
+.code-header-right .code-copy-btn:hover {
+  opacity: 1;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.code-header-right .code-copy-btn .material-symbols-outlined {
+  font-size: 1.125rem;
+}
+
+.code-header-right .code-copy-btn.copied {
+  color: #98c379;
+}
+
+/* Header Fold Chevron Button */
+.code-header-fold-btn {
+  background: transparent;
+  border: none;
+  color: #abb2bf;
+  cursor: pointer;
+  padding: 0.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  opacity: 0.85;
+  transition: transform 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+}
+
+.code-header-fold-btn:hover {
+  opacity: 1;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.code-header-fold-btn .material-symbols-outlined {
+  font-size: 1.25rem;
+}
+
+/* Hexo figure.highlight table & gutter layout */
+figure.highlight table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+  border-spacing: 0;
+}
+
+figure.highlight .gutter {
+  width: 2.75rem;
+  text-align: right;
+  padding: 0.875rem 0.875rem 0.875rem 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  user-select: none;
+  vertical-align: top;
+}
+
+figure.highlight .gutter pre {
+  padding: 0;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #5c6370; /* Muted gray line numbers */
+  background: transparent;
+  margin: 0;
+}
+
+figure.highlight .code {
+  padding: 0;
+  vertical-align: top;
+}
+
+figure.highlight .code pre {
+  padding: 0.875rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #abb2bf;
+  background: transparent;
+  margin: 0;
+  overflow-x: auto;
+}
+
+/* Highlight.js Line Numbers Table Integration */
+.markdown-body table.hljs-ln,
+table.hljs-ln {
+  border: none !important;
+  border-collapse: collapse !important;
+  border-spacing: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  margin: 0 !important;
+  width: 100% !important;
+  box-shadow: none !important;
+}
+
+table.hljs-ln tr {
+  border: none !important;
+  background: transparent !important;
+}
+
+table.hljs-ln td {
+  border: none !important;
+  padding: 0 !important;
+  background: transparent !important;
+  vertical-align: top;
+}
+
+.hljs-ln-numbers {
+  text-align: right;
+  color: #5c6370 !important; /* Muted gray line numbers matching screenshot */
+  border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+  padding-right: 0.875rem !important;
+  width: 2.75rem;
+  user-select: none;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.hljs-ln-code {
+  padding-left: 1rem !important;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #abb2bf;
+}
+
+/* Collapsible Code Blocks */
+.code-collapsible.collapsed {
+  max-height: 280px;
+}
+
+.code-collapsible.collapsed figure.highlight,
+.code-collapsible.collapsed pre {
+  max-height: 230px;
+  overflow: hidden;
+}
+
+.code-expand-pill-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4.5rem;
+  background: linear-gradient(to bottom, transparent, #21252b);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 0.5rem;
+  z-index: 3;
+  box-sizing: border-box;
+}
+
+.code-collapsible.expanded .code-expand-pill-wrapper {
+  position: relative;
+  height: 3rem;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+.code-expand-pill-btn {
+  background: #282c34;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #abb2bf;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  padding: 0.35rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: all var(--duration-fast, 0.2s ease);
+}
+
+.code-expand-pill-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  transform: scale(1.03);
+}
+
+.code-expand-pill-btn .material-symbols-outlined {
+  font-size: 1rem;
+}
+
+/* Line Markers / Annotations & Diff Styles */
+.code-line-ins {
+  background: rgba(76, 175, 80, 0.15) !important;
+  border-left: 3px solid #4caf50;
+}
+.code-line-ins .hljs-ln-numbers {
+  color: #4caf50 !important;
+}
+.code-line-del {
+  background: rgba(244, 67, 54, 0.15) !important;
+  border-left: 3px solid #f44336;
+}
+.code-line-del .hljs-ln-numbers {
+  color: #f44336 !important;
+}
+.code-line-mark {
+  background: rgba(33, 150, 243, 0.15) !important;
+  border-left: 3px solid #2196f3;
+}
+.code-line-mark .hljs-ln-numbers {
+  color: #2196f3 !important;
+}
+
+/* Banner Labels (// 1. Label) */
+.code-line-label {
+  background: var(--banner-bg) !important;
+  border-left: 3px solid var(--banner-border);
+}
+.code-line-label.label-blue {
+  --banner-bg: rgba(33, 150, 243, 0.2);
+  --banner-border: #2196f3;
+}
+.code-line-label.label-red {
+  --banner-bg: rgba(244, 67, 54, 0.2);
+  --banner-border: #f44336;
+}
+.code-line-label.label-green {
+  --banner-bg: rgba(76, 175, 80, 0.2);
+  --banner-border: #4caf50;
+}
+.code-line-label .hljs-ln-line {
+  color: #fff !important;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  padding: 0.25rem 0.5rem !important;
+}
+
+/* ============================================================
+   Syntax Highlighting Colors (Atom One Dark Palette)
+   Supports Hexo server-side highlight and Highlight.js classes
+   ============================================================ */
+
+/* Comments */
+figure.highlight .comment,
+.hljs-comment,
+figure.highlight .quote,
+.hljs-quote {
+  color: #5c6370;
+  font-style: italic;
+}
+
+/* Keywords (function, var, let, const, return, if, else, defaults, options) */
+figure.highlight .keyword,
+.hljs-keyword,
+figure.highlight .selector-tag,
+.hljs-selector-tag,
+figure.highlight .addition,
+.hljs-addition {
+  color: #c678dd; /* One Dark Purple */
+  font-weight: 600;
+}
+
+/* Strings ('absolute', '#AFDAEF', 'snowbox', 'body') */
+figure.highlight .string,
+.hljs-string,
+figure.highlight .meta .string,
+.hljs-meta .string,
+figure.highlight .doctag,
+.hljs-doctag {
+  color: #98c379; /* One Dark Green */
+}
+
+/* Numbers & Literals (10, 20, 1000, 0.5, 100, 500) */
+figure.highlight .number,
+.hljs-number,
+figure.highlight .literal,
+.hljs-literal {
+  color: #d19a66; /* One Dark Orange */
+}
+
+/* Variables & Properties ($flake, defaults, documentHeight, minSize, maxSize) */
+figure.highlight .variable,
+.hljs-variable,
+figure.highlight .template-variable,
+.hljs-template-variable,
+figure.highlight .attr,
+.hljs-attr,
+figure.highlight .attribute,
+.hljs-attribute {
+  color: #e06c75; /* One Dark Red/Coral */
+}
+
+/* Functions & Methods (snow, setInterval, random, css, height, width, extend, clone, appendTo) */
+figure.highlight .title,
+.hljs-title,
+figure.highlight .title.function_,
+.hljs-title.function_,
+figure.highlight .section,
+.hljs-section {
+  color: #61afef; /* One Dark Blue */
+}
+
+/* Built-ins & Classes (jQuery, $, Math, document, window, console) */
+figure.highlight .built_in,
+.hljs-built_in,
+figure.highlight .type,
+.hljs-type,
+figure.highlight .class,
+.hljs-class {
+  color: #e5c07b; /* One Dark Yellow/Gold */
+}
+
+/* Operators, Regexp & Punctuation */
+figure.highlight .regexp,
+.hljs-regexp,
+figure.highlight .meta,
+.hljs-meta,
+figure.highlight .symbol,
+.hljs-symbol,
+figure.highlight .operator,
+.hljs-operator {
+  color: #56b6c2; /* One Dark Cyan */
+}
+
+/* ============================================================
+   Markdown Syntax Highlighting Rules
+   ============================================================ */
+
+/* Headings (# Heading 1, ## Heading 2) */
+figure.highlight.markdown .section,
+figure.highlight.md .section,
+.hljs-section {
+  color: #61afef !important;
+  font-weight: 700 !important;
+}
+
+/* Strong / Bold (**bold**) */
+figure.highlight.markdown .strong,
+figure.highlight.md .strong,
+.hljs-strong {
+  color: #98c379 !important;
+  font-weight: 700 !important;
+}
+
+/* Emphasis / Italic (*italic*) */
+figure.highlight.markdown .emphasis,
+figure.highlight.md .emphasis,
+.hljs-emphasis {
+  color: #e5c07b !important;
+  font-style: italic !important;
+}
+
+/* Bullets / Lists (- Item 1, * Item 2, 1. Item 3) */
+figure.highlight.markdown .bullet,
+figure.highlight.md .bullet,
+.hljs-bullet {
+  color: #d19a66 !important;
+  font-weight: 600 !important;
+}
+
+/* Blockquotes (> Quote) */
+figure.highlight.markdown .quote,
+figure.highlight.md .quote,
+.hljs-quote {
+  color: #5c6370 !important;
+  font-style: italic !important;
+}
+
+/* Markdown Code (`inline code` or ```code block```) */
+figure.highlight.markdown .code,
+figure.highlight.md .code,
+.hljs-code {
+  color: #e06c75 !important;
+}
+
+/* Markdown Links ([Title](url)) */
+figure.highlight.markdown .link,
+figure.highlight.md .link,
+.hljs-link {
+  color: #56b6c2 !important;
+  text-decoration: underline !important;
+}
+
+/* Markdown Frontmatter / YAML metadata */
+figure.highlight.markdown .meta,
+figure.highlight.md .meta,
+.hljs-meta {
+  color: #c678dd !important;
+}
