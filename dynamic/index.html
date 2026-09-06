@@ -1402,7 +1402,7 @@
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/6 02:07:59</div>
+          <div class="site-info-card-value">2026/9/6 02:10:36</div>
         </div>
 
         <!-- System Info -->
@@ -1726,7 +1726,7 @@ if (!window._siteInfoToggleBound) {
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/6 02:07:59</div>
+          <div class="site-info-card-value">2026/9/6 02:10:36</div>
         </div>
 
         <!-- System Info -->
@@ -2826,28 +2826,27 @@ document.addEventListener('DOMContentLoaded', function() {
   #ffs[hidden] { display: none; }
   #ffs-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: crosshair; }
   .ffs-vignette { position: absolute; inset: 0; pointer-events: none;
-    background: radial-gradient(120% 90% at 50% 42%, transparent 55%, rgba(0,0,0,.30) 100%); }
+    background: radial-gradient(120% 90% at 50% 42%, transparent 55%, rgba(0,0,0,.28) 100%); }
   .ffs-enter-wrap { position: absolute; left: 50%; bottom: 13%; transform: translateX(-50%);
     display: flex; flex-direction: column; align-items: center; gap: 14px; pointer-events: auto; }
   #ffs-enter { appearance: none; cursor: pointer; border: 0; background: transparent; padding: 0;
     animation: ffsBreathe 2.6s ease-in-out infinite; }
   .ffs-enter-in { display: block; padding: 18px 52px; border-radius: 999px; font-size: 1.35rem; font-weight: 800;
-    letter-spacing: 3px;
-    color: #26282e;
-    background: rgba(248, 246, 240, .30);            /* 低透度磨砂乳白 */
+    letter-spacing: 3px; color: #26282e;
+    background: rgba(248, 246, 240, .30);
     border: 1px solid rgba(255, 255, 255, .55);
     backdrop-filter: blur(20px) saturate(1.15); -webkit-backdrop-filter: blur(20px) saturate(1.15);
     box-shadow: 0 6px 26px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.55);
     transition: transform .25s, background .25s, box-shadow .25s; }
   #ffs-enter:hover .ffs-enter-in { transform: translateY(-3px) scale(1.03);
-    background: rgba(252, 250, 244, .42);
-    box-shadow: 0 10px 34px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.7); }
+    background: rgba(252, 250, 244, .42); box-shadow: 0 10px 34px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.7); }
   #ffs-enter:active .ffs-enter-in { transform: scale(.97); }
   .ffs-enter-sub { color: rgba(255,255,255,.62); font-size: .78rem; letter-spacing: 2px; text-shadow: 0 1px 8px rgba(0,0,0,.6); }
   .ffs-foot { position: absolute; left: 0; right: 0; bottom: 6px; text-align: center; pointer-events: none; }
   .ffs-hint { font-size: .72rem; letter-spacing: 3px; color: rgba(255,255,255,.5); text-shadow: 0 1px 6px rgba(0,0,0,.55); }
   @keyframes ffsBreathe { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
   @media (max-width: 640px) { .ffs-enter-in { padding: 15px 34px; font-size: 1.05rem; } }
+  @media (prefers-reduced-motion: reduce) { #ffs-enter { animation: none; } }
 </style>
 <script>
 (function () {
@@ -2863,15 +2862,22 @@ document.addEventListener('DOMContentLoaded', function() {
     try { entered = sessionStorage.getItem(ENTERED_KEY) === '1'; } catch (e) {}
     if (entered) { overlay.hidden = true; return; }
 
+    // 能力探测：弱设备 / 降动效偏好
+    var reduced = false;
+    try { reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+    var weak = false;
+    try {
+      var mm = navigator.deviceMemory || 8;
+      weak = /Android|iPhone|iPad|Mobile/i.test(navigator.userAgent) || mm <= 4;
+    } catch (e) {}
+
     var img = new Image();
-    var ready = false, dead = false, raf = null;
-    var view = null;
-    var photoCanvas = null;   // 预渲染的清晰原图（cover）
-    var particles = [];
+    var ready = false, dead = false, raf = null, painted = false;
+    var photoCanvas = null, view = null, particles = [];
     var mouse = { x: -9999, y: -9999 };
-    var par = { x: 0, y: 0 };       // 平滑视差目标量
-    var act = 0;                    // 活动度 0(原图) → 1(泼溅)
-    var lastMove = -1e9;
+    var par = { x: 0, y: 0 };
+    var act = 0, lastMove = -1e9;
+    var ema = 16, step = weak ? 2 : 1, frames = 0;
 
     function lockScroll(on) {
       try {
@@ -2883,31 +2889,39 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function hideSplash() {
       if (dead) return; dead = true;
-      if (raf) cancelAnimationFrame(raf);
+      if (raf) { cancelAnimationFrame(raf); raf = null; }
       overlay.classList.add('ffs-out');
       lockScroll(false);
       try { sessionStorage.setItem(ENTERED_KEY, '1'); } catch (e) {}
-      setTimeout(function () { overlay.hidden = true; }, 850);
+      // 彻底释放：淡出结束后移除节点与位图
+      setTimeout(function () {
+        try {
+          if (photoCanvas) { photoCanvas.width = 1; photoCanvas = null; }
+          canvas.width = 1;
+          img.src = '';
+          overlay.parentNode && overlay.parentNode.removeChild(overlay);
+        } catch (e2) { overlay.hidden = true; }
+      }, 900);
     }
     enterBtn.addEventListener('click', hideSplash);
-    window.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && !overlay.hidden && !dead) { e.preventDefault(); hideSplash(); } });
+    window.addEventListener('keydown', function (e) {
+      if ((e.key === 'Enter' || e.key === ' ') && !overlay.hidden && !dead) { e.preventDefault(); hideSplash(); }
+    });
 
-    function setFromClient(cx, cy) {
+    function poke(cx, cy) {
       var r = canvas.getBoundingClientRect();
       mouse.x = cx - r.left; mouse.y = cy - r.top;
       lastMove = performance.now();
-      act = Math.min(1, act + 0.5); // 移动即刻抬升活动度
+      if (!reduced && ready && act < 0.999) { act = Math.min(1, act + 0.5); }
+      if (!reduced && ready && raf === null) { raf = requestAnimationFrame(frame); }
     }
-    window.addEventListener('mousemove', function (e) { setFromClient(e.clientX, e.clientY); }, { passive: true });
-    window.addEventListener('touchmove', function (e) {
-      if (e.touches && e.touches[0]) setFromClient(e.touches[0].clientX, e.touches[0].clientY);
-    }, { passive: true });
-    window.addEventListener('touchstart', function (e) {
-      if (e.touches && e.touches[0]) setFromClient(e.touches[0].clientX, e.touches[0].clientY);
-    }, { passive: true });
+    window.addEventListener('mousemove', function (e) { poke(e.clientX, e.clientY); }, { passive: true });
+    window.addEventListener('touchmove', function (e) { if (e.touches && e.touches[0]) poke(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+    window.addEventListener('touchstart', function (e) { if (e.touches && e.touches[0]) poke(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
 
     function buildParticles(ar) {
-      var COLS = 104, ROWS = Math.max(48, Math.round(COLS / ar));
+      var COLS = weak ? 78 : 104;
+      var ROWS = Math.max(44, Math.round(COLS / ar));
       var c = document.createElement('canvas');
       c.width = COLS; c.height = ROWS;
       var ctx = c.getContext('2d', { willReadFrequently: true });
@@ -2921,14 +2935,24 @@ document.addEventListener('DOMContentLoaded', function() {
           var i = (y * COLS + x) * 4;
           if (data[i + 3] === 0) continue;
           P.push({ x: x / COLS, y: y / ROWS, r: data[i], g: data[i + 1], b: data[i + 2],
-                   d: 0.25 + Math.random() * 0.75, ph: Math.random() * 6.283, sp: 0.4 + Math.random() * 0.9 });
+                   d: 0.25 + Math.random() * 0.75, ph: Math.random() * 6.283 });
         }
       }
       return P;
     }
 
-    // 渲染一张清晰原图到离屏（视口 device 像素），主帧直接整张贴出
-    function buildPhoto() {
+    function sizeCanvas() {
+      var dpr = Math.min(window.devicePixelRatio || 1, weak ? 1.15 : 1.6);
+      var w = window.innerWidth, h = window.innerHeight;
+      canvas.width = w * dpr; canvas.height = h * dpr;
+      canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+      canvas.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0);
+      view = { w: w, h: h, ctx: canvas.getContext('2d') };
+      renderPhotoOffscreen();
+    }
+
+    function renderPhotoOffscreen() {
+      if (!view || !img.naturalWidth) return;
       var dpr = canvas.width / view.w;
       var w = canvas.width, h = canvas.height;
       var ar = img.naturalWidth / img.naturalHeight;
@@ -2937,93 +2961,117 @@ document.addEventListener('DOMContentLoaded', function() {
       var dx = (w - dw) / 2, dy = (h - dh) / 2;
       photoCanvas = document.createElement('canvas');
       photoCanvas.width = w; photoCanvas.height = h;
-      var ctx = photoCanvas.getContext('2d');
-      ctx.scale(dpr, dpr);
-      ctx.drawImage(img, dx / dpr, dy / dpr, dw / dpr, dh / dpr);
+      var c = photoCanvas.getContext('2d');
+      c.scale(dpr, dpr);
+      c.drawImage(img, dx / dpr, dy / dpr, dw / dpr, dh / dpr);
     }
 
-    function sizeCanvas() {
-      var dpr = Math.min(window.devicePixelRatio || 1, 1.6);
-      var w = window.innerWidth, h = window.innerHeight;
-      canvas.width = w * dpr; canvas.height = h * dpr;
-      canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
-      var ctx = canvas.getContext('2d');
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      view = { w: w, h: h, ctx: ctx };
-      if (img.complete && img.naturalWidth) buildPhoto();
+    function paintStatic() {
+      var ctx = view && view.ctx;
+      if (!ctx || !photoCanvas) return;
+      ctx.clearRect(0, 0, view.w, view.h);
+      ctx.globalAlpha = 1;
+      ctx.drawImage(photoCanvas, 0, 0, view.w, view.h);
+      painted = true;
     }
 
     function frame(t) {
-      if (dead || !ready || !view) return;
-      var ctx = view.ctx, w = view.w, h = view.h;
-
-      // 活动度：移动后快速升高，停止后约 0.9s 回落
-      var idleMs = t - lastMove;
-      var want = idleMs < 700 ? 1 : 0;
+      raf = null;
+      if (dead || !ready || reduced) return;
+      var now = performance.now();
+      var want = (now - lastMove < 700) ? 1 : 0;
       act += (want - act) * (want > act ? 0.22 : 0.035);
-      if (act < 0.001) act = 0;
+      if (act < 0.0008) act = 0;
 
-      // 1) 待机/过渡：清晰原图垫底
+      if (act === 0) {
+        if (!painted) paintStatic();
+        return; // 空闲 → 停转 rAF，接近 0 CPU
+      }
+
+      var ctx = view.ctx, w = view.w, h = view.h;
       ctx.clearRect(0, 0, w, h);
-      if (act < 1 && photoCanvas) {
-        ctx.globalAlpha = 1 - act;
+
+      // 原图随活动度淡出
+      if (1 - act > 0.01 && photoCanvas) {
+        ctx.globalAlpha = Math.max(0, 1 - act);
         ctx.drawImage(photoCanvas, 0, 0, w, h);
         ctx.globalAlpha = 1;
       }
 
-      // 2) 泼溅粒子层（随鼠标活动淡入）
-      if (act > 0.02 && particles.length) {
-        var ar = img.naturalWidth / img.naturalHeight;
-        var dw = w, dh = w / ar;
-        if (dh < h) { dh = h; dw = h * ar; }
-        var dx = (w - dw) / 2, dy = (h - dh) / 2;
-        var cxm = mouse.x - w / 2, cym = mouse.y - h / 2;
-        var mx = 0, my = 0;
-        if (mouse.x > -1000) { mx = cxm / (w / 2); my = cym / (h / 2); }
-        par.x += (mx - par.x) * 0.06;
-        par.y += (my - par.y) * 0.06;
-        var amp = 34 + Math.abs(par.x) * 9 + Math.abs(par.y) * 9;
-        var ps = Math.min(2.1, Math.max(1, w / 1300));
-        var i = 0, n = particles.length;
-        ctx.globalAlpha = Math.min(1, act * 1.25);
-        for (; i < n; i++) {
-          var p = particles[i];
-          var bx = dx + p.x * dw, by = dy + p.y * dh;
-          var px = bx + par.x * amp * p.d + Math.sin(t * .0006 + p.ph) * 5 * p.d;
-          var py = by + par.y * amp * p.d + Math.cos(t * .0005 + p.ph * 1.7) * 5 * p.d;
-          if (mouse.x > -1000) {
-            var ddx = px - mouse.x, ddy = py - mouse.y;
-            var dist = Math.sqrt(ddx * ddx + ddy * ddy);
-            var mr = 200;
-            if (dist < mr && dist > 0.001) {
-              var k = 1 - dist / mr;
-              px += (ddx / dist) * k * k * 320 * p.d;
-              py += (ddy / dist) * k * k * 320 * p.d;
-            }
-          }
-          var r = (1.2 + p.d * 1.9) * ps + Math.sin(t * .0012 + p.ph) * .55;
-          var a = 0.85;
-          ctx.beginPath();
-          ctx.fillStyle = 'rgba(' + p.r + ',' + p.g + ',' + p.b + ',' + a + ')';
-          ctx.arc(px, py, r, 0, 6.2832);
-          ctx.fill();
-        }
-        ctx.globalAlpha = 1;
+      // 自适应帧率：掉帧→加大采样步长(粒子减半/再减)，回稳→恢复
+      frames++;
+      var dt = Math.min(120, t - (frame._t || t));
+      frame._t = t;
+      ema = ema * 0.88 + dt * 0.12;
+      if (frames % 30 === 0) {
+        var fps = 1000 / ema;
+        if (fps < 42 && step < (weak ? 3 : 4)) step++;
+        else if (fps > 55 && step > (weak ? 2 : 1)) step--;
       }
+
+      // 泼溅粒子层
+      var ar = img.naturalWidth / img.naturalHeight;
+      var dw = w, dh = w / ar;
+      if (dh < h) { dh = h; dw = h * ar; }
+      var dx = (w - dw) / 2, dy = (h - dh) / 2;
+      var mx = 0, my = 0;
+      if (mouse.x > -1000) { mx = (mouse.x - w / 2) / (w / 2); my = (mouse.y - h / 2) / (h / 2); }
+      par.x += (mx - par.x) * 0.06;
+      par.y += (my - par.y) * 0.06;
+      var amp = 34 + Math.abs(par.x) * 9 + Math.abs(par.y) * 9;
+      var ps = Math.min(2.1, Math.max(1, w / 1300));
+      var alphaAll = Math.min(1, act * 1.25);
+      var t0 = performance.now();
+      var i = 0, n = particles.length;
+      ctx.globalAlpha = alphaAll;
+      for (; i < n; i += step) {
+        var p = particles[i];
+        var bx = dx + p.x * dw, by = dy + p.y * dh;
+        var px = bx + par.x * amp * p.d + Math.sin(t * .0006 + p.ph) * 5 * p.d;
+        var py = by + par.y * amp * p.d + Math.cos(t * .0005 + p.ph * 1.7) * 5 * p.d;
+        if (mouse.x > -1000) {
+          var ddx = px - mouse.x, ddy = py - mouse.y;
+          var dist = ddx * ddx + ddy * ddy;
+          var mr = 200, mr2 = mr * mr;
+          if (dist < mr2 && dist > 0.01) {
+            var inv = 1 / Math.sqrt(dist), k = 1 - Math.sqrt(dist) / mr;
+            px += ddx * inv * k * k * 320 * p.d;
+            py += ddy * inv * k * k * 320 * p.d;
+          }
+        }
+        var r = (1.2 + p.d * 1.9) * ps + Math.sin(t * .0012 + p.ph) * .55;
+        ctx.beginPath();
+        ctx.fillStyle = 'rgba(' + p.r + ',' + p.g + ',' + p.b + ',.9)';
+        ctx.arc(px, py, r, 0, 6.2832);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      // 极致卡顿保护：单帧超 46ms 直接加大步长，不调度到帧末
+      var spent = performance.now() - t0;
+      if (spent > 46 && step < (weak ? 3 : 4)) step++;
+      painted = true;
       raf = requestAnimationFrame(frame);
     }
+
 
     img.onload = function () {
       try {
         sizeCanvas();
         particles = buildParticles(img.naturalWidth / img.naturalHeight);
-        buildPhoto();
         ready = true;
-        window.addEventListener('resize', function () { if (!dead && ready) { sizeCanvas(); } });
-        raf = requestAnimationFrame(frame);
+        if (!painted) paintStatic();
+        if (reduced) return;                 // 不做泼溅动画
+        window.addEventListener('resize', function () {
+          if (dead) return;
+          sizeCanvas();
+          painted = false;
+          if (raf === null) raf = requestAnimationFrame(frame);
+        });
+        // 待机不跑动画；等首次鼠标移动再启动
       } catch (e) { console.warn('splash:', e); hideSplash(); }
     };
     img.onerror = function () { hideSplash(); };
+    img.decoding = 'async';
     img.src = SRC;
     setTimeout(function () { if (!ready && !dead) hideSplash(); }, 12000);
   } catch (e) {
