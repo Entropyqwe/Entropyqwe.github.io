@@ -1455,7 +1455,7 @@
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/6 01:34:59</div>
+          <div class="site-info-card-value">2026/9/6 02:00:34</div>
         </div>
 
         <!-- System Info -->
@@ -1779,7 +1779,7 @@ if (!window._siteInfoToggleBound) {
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/6 01:34:59</div>
+          <div class="site-info-card-value">2026/9/6 02:00:34</div>
         </div>
 
         <!-- System Info -->
@@ -2823,6 +2823,221 @@ if (!window._siteInfoToggleBound) {
   });
 })();
 </script>
+
+  
+
+<div id="ffs" aria-hidden="false" role="dialog" aria-label="欢迎页">
+  <canvas id="ffs-canvas"></canvas>
+  <div class="ffs-vignette"></div>
+  <div class="ffs-foot"><span class="ffs-hint">移动鼠标 · 感受光影泼溅</span></div>
+  <div class="ffs-enter-wrap">
+    <button id="ffs-enter" type="button"><span class="ffs-enter-in">✦ 进入网站</span></button>
+    <div class="ffs-enter-sub">Enter · 或按回车键</div>
+  </div>
+</div>
+<style>
+  #ffs { position: fixed; inset: 0; z-index: 999; background: #05060a; overflow: hidden;
+         transition: opacity .8s ease; display: flex; align-items: center; justify-content: center; }
+  #ffs.ffs-out { opacity: 0; pointer-events: none; }
+  #ffs[hidden] { display: none; }
+  #ffs-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: crosshair; }
+  .ffs-vignette { position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(120% 90% at 50% 42%, transparent 55%, rgba(0,0,0,.34) 100%); }
+  .ffs-enter-wrap { position: absolute; left: 50%; bottom: 13%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 12px; pointer-events: auto; }
+  #ffs-enter { --ffc: #ff7eb3; pointer-events: auto; appearance: none; cursor: pointer;
+    border: 0; border-radius: 999px; padding: 0; background: transparent;
+    animation: ffsBreathe 2.6s ease-in-out infinite; }
+  .ffs-enter-in { display: block; padding: 18px 52px; border-radius: 999px; font-size: 1.35rem; font-weight: 800;
+    letter-spacing: 3px; color: #fff; text-shadow: 0 2px 18px rgba(0,0,0,.55);
+    background: rgba(12,14,20,.42);
+    border: 1.5px solid color-mix(in srgb, var(--ffc) 75%, transparent);
+    box-shadow: 0 0 0 6px rgba(255,255,255,.06), 0 10px 40px -8px color-mix(in srgb, var(--ffc) 60%, transparent),
+                inset 0 0 26px -6px color-mix(in srgb, var(--ffc) 45%, transparent);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: transform .25s, box-shadow .25s; }
+  #ffs-enter:hover .ffs-enter-in { transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 0 0 10px rgba(255,255,255,.09), 0 16px 52px -6px color-mix(in srgb, var(--ffc) 75%, transparent),
+                inset 0 0 34px -4px color-mix(in srgb, var(--ffc) 55%, transparent); }
+  #ffs-enter:active .ffs-enter-in { transform: scale(.97); }
+  .ffs-enter-sub { color: rgba(255,255,255,.55); font-size: .78rem; letter-spacing: 2px; }
+  .ffs-foot { position: absolute; left: 0; right: 0; bottom: 6px; text-align: center; pointer-events: none; }
+  .ffs-hint { font-size: .72rem; letter-spacing: 3px; color: rgba(255,255,255,.45); }
+  @keyframes ffsBreathe { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+  @media (max-width: 640px) { .ffs-enter-in { padding: 15px 34px; font-size: 1.05rem; } }
+</style>
+<script>
+(function () {
+  try {
+    var SRC = '/img/splash.jpg';
+    var ENTERED_KEY = 'ff_entered';
+    var overlay = document.getElementById('ffs');
+    var canvas = document.getElementById('ffs-canvas');
+    var enterBtn = document.getElementById('ffs-enter');
+    if (!overlay || !canvas || !enterBtn) return;
+
+    // 本会话已进入过 → 直接隐藏
+    var entered = false;
+    try { entered = sessionStorage.getItem(ENTERED_KEY) === '1'; } catch (e) {}
+    if (entered) { overlay.hidden = true; return; }
+
+    var lockBody = true;
+    var particles = [];
+    var img = new Image();
+    var ready = false, dead = false;
+    var raf = null;
+    var mouse = { x: -9999, y: -9999, tx: 0, ty: 0 };
+    var avg = [255, 126, 179];
+    var reduced = false;
+    try { reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+
+    function lockScroll(on) {
+      try {
+        document.body.style.overflow = on ? 'hidden' : '';
+        document.documentElement.style.overflow = on ? 'hidden' : '';
+      } catch (e) {}
+    }
+    lockScroll(true);
+
+    function hideSplash() {
+      if (dead) return; dead = true;
+      if (raf) cancelAnimationFrame(raf);
+      overlay.classList.add('ffs-out');
+      lockScroll(false);
+      try { sessionStorage.setItem(ENTERED_KEY, '1'); } catch (e) {}
+      setTimeout(function () { overlay.hidden = true; }, 850);
+    }
+    enterBtn.addEventListener('click', hideSplash);
+    window.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && !overlay.hidden && !dead) { e.preventDefault(); hideSplash(); } });
+
+    // 鼠标/触摸
+    function setFromClient(cx, cy) {
+      var r = canvas.getBoundingClientRect();
+      mouse.x = cx - r.left; mouse.y = cy - r.top;
+    }
+    window.addEventListener('mousemove', function (e) { setFromClient(e.clientX, e.clientY); }, { passive: true });
+    window.addEventListener('touchmove', function (e) {
+      if (e.touches && e.touches[0]) setFromClient(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: true });
+    window.addEventListener('touchstart', function (e) {
+      if (e.touches && e.touches[0]) { setFromClient(e.touches[0].clientX, e.touches[0].clientY); }
+    }, { passive: true });
+
+    // 平均色（给按钮取风格色调）
+    function sampleAvg(ctx, w, h) {
+      try {
+        var d = ctx.getImageData(0, 0, w, h).data;
+        var r = 0, g = 0, b = 0, n = 0;
+        for (var i = 0; i < d.length; i += 16) { r += d[i]; g += d[i + 1]; b += d[i + 2]; n++; }
+        if (n) { avg = [r / n | 0, g / n | 0, b / n | 0]; }
+      } catch (e) {}
+      overlay.style.setProperty('--ffc', 'rgb(' + avg.join(',') + ')');
+    }
+
+    function buildParticles(w, h, ar) {
+      var COLS = 230, ROWS = Math.max(60, Math.round(COLS / ar));
+      var c = document.createElement('canvas');
+      c.width = COLS; c.height = ROWS;
+      var ctx = c.getContext('2d', { willReadFrequently: true });
+      var sx = Math.max(COLS / w, ROWS / h);
+      var sw = w * sx, sh = h * sx;
+      ctx.drawImage(img, (COLS - sw) / 2, (ROWS - sh) / 2, sw, sh);
+      var data = ctx.getImageData(0, 0, COLS, ROWS).data;
+      sampleAvg(ctx, COLS, ROWS);
+      var P = [];
+      for (var y = 0; y < ROWS; y++) {
+        for (var x = 0; x < COLS; x++) {
+          var i = (y * COLS + x) * 4;
+          if (data[i + 3] === 0) continue;
+          P.push({ x: x / COLS, y: y / ROWS, r: data[i], g: data[i + 1], b: data[i + 2],
+                   d: 0.25 + Math.random() * 0.75, ph: Math.random() * 6.283, sp: 0.4 + Math.random() * 0.9 });
+        }
+      }
+      return P;
+    }
+
+    function sizeCanvas() {
+      var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      var w = window.innerWidth, h = window.innerHeight;
+      canvas.width = w * dpr; canvas.height = h * dpr;
+      canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+      var ctx = canvas.getContext('2d');
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      return { w: w, h: h, ctx: ctx };
+    }
+
+    var par = { x: 0, y: 0 }; // 平滑后的视差
+    var rep = 0;              // 溅射冲量
+    var view = null;
+
+    function frame(t) {
+      if (dead || !ready || !view) return;
+      var ctx = view.ctx, w = view.w, h = view.h;
+      ctx.clearRect(0, 0, w, h);
+      // 图片 cover 区域
+      var ar = img.naturalWidth / img.naturalHeight;
+      var dw = w, dh = w / ar;
+      if (dh < h) { dh = h; dw = h * ar; }
+      var dx = (w - dw) / 2, dy = (h - dh) / 2;
+      // 鼠标视差目标（向中心方向），溅射量
+      var cxm = mouse.x - w / 2, cym = mouse.y - h / 2;
+      var mx = 0, my = 0;
+      if (mouse.x > -1000) { mx = cxm / (w / 2); my = cym / (h / 2); }
+      par.x += (mx - par.x) * 0.055;
+      par.y += (my - par.y) * 0.055;
+      rep += 0.92 - rep * 0.14;
+
+      var amp = 46 + Math.abs(par.x) * 8 + Math.abs(par.y) * 8;
+      var ps = Math.min(2.1, Math.max(1, w / 1300));
+      var i = 0, n = particles.length;
+      for (; i < n; i++) {
+        var p = particles[i];
+        var bx = dx + p.x * dw, by = dy + p.y * dh;
+        // 深度视差 + 水波
+        var px = bx + par.x * amp * p.d + Math.sin(t * .0006 + p.ph) * 5 * p.d;
+        var py = by + par.y * amp * p.d + Math.cos(t * .0005 + p.ph * 1.7) * 5 * p.d;
+        // 鼠标近处溅射
+        if (mouse.x > -1000) {
+          var ddx = px - mouse.x, ddy = py - mouse.y;
+          var dist = Math.sqrt(ddx * ddx + ddy * ddy);
+          var mr = 190;
+          if (dist < mr && dist > 0.001) {
+            var k = (1 - dist / mr);
+            px += (ddx / dist) * k * k * 300 * p.d * (0.6 + rep * 0.4);
+            py += (ddy / dist) * k * k * 300 * p.d * (0.6 + rep * 0.4);
+          }
+        }
+        // 高斯光斑（随深度尺寸/透明度不同，形成景深“泼溅”感）
+        var r = (0.55 + p.d * 1.35) * ps + Math.sin(t * .0012 + p.ph) * .35;
+        var a = 0.5 + p.d * 0.5;
+        ctx.beginPath();
+        ctx.fillStyle = 'rgba(' + p.r + ',' + p.g + ',' + p.b + ',' + a + ')';
+        ctx.arc(px, py, r, 0, 6.2832);
+        ctx.fill();
+      }
+      raf = requestAnimationFrame(frame);
+    }
+
+    img.onload = function () {
+      try {
+        view = sizeCanvas();
+        particles = buildParticles(img.naturalWidth, img.naturalHeight, img.naturalWidth / img.naturalHeight);
+        ready = true;
+        window.addEventListener('resize', function () {
+          if (!dead && ready) { view = sizeCanvas(); cancelAnimationFrame(raf); frame(performance.now()); }
+        });
+        frame(performance.now());
+      } catch (e) { console.warn('splash:', e); hideSplash(); }
+    };
+    img.onerror = function () { hideSplash(); };
+    img.src = SRC;
+    // 兜底：12s 内未加载完成也放行（避免卡住）
+    setTimeout(function () { if (!ready && !dead) hideSplash(); }, 12000);
+  } catch (e) {
+    var o = document.getElementById('ffs'); if (o) { o.hidden = true; }
+  }
+})();
+</script>
+
 
 </body>
 </html>
