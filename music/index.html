@@ -2308,7 +2308,7 @@
 <div id="ffs" aria-hidden="false" role="dialog" aria-label="欢迎页">
   <canvas id="ffs-canvas"></canvas>
   <div class="ffs-vignette"></div>
-  <div class="ffs-foot"><span class="ffs-hint">移动鼠标 · 感受光影泼溅</span></div>
+  <div class="ffs-foot"><span class="ffs-hint">移动鼠标 · 在指针处感受高斯泼溅</span></div>
   <div class="ffs-enter-wrap">
     <button id="ffs-enter" type="button"><span class="ffs-enter-in">✦ 进入网站</span></button>
     <div class="ffs-enter-sub">Enter · 或按回车键</div>
@@ -2357,22 +2357,18 @@
     try { entered = sessionStorage.getItem(ENTERED_KEY) === '1'; } catch (e) {}
     if (entered) { overlay.hidden = true; return; }
 
-    // 能力探测：弱设备 / 降动效偏好
     var reduced = false;
     try { reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
     var weak = false;
-    try {
-      var mm = navigator.deviceMemory || 8;
-      weak = /Android|iPhone|iPad|Mobile/i.test(navigator.userAgent) || mm <= 4;
-    } catch (e) {}
+    try { weak = /Android|iPhone|iPad|Mobile/i.test(navigator.userAgent) || (navigator.deviceMemory || 8) <= 4; } catch (e) {}
 
     var img = new Image();
     var ready = false, dead = false, raf = null, painted = false;
     var photoCanvas = null, view = null, particles = [];
-    var mouse = { x: -9999, y: -9999 };
-    var par = { x: 0, y: 0 };
+    var mouse = { x: -1e4, y: -1e4 };
     var act = 0, lastMove = -1e9;
-    var ema = 16, step = weak ? 2 : 1, frames = 0;
+    var velX = 0, velY = 0, velMag = 0;
+    var ema = 16, frames = 0, STEP = weak ? 2 : 1, psK = 1;
 
     function lockScroll(on) {
       try {
@@ -2388,7 +2384,6 @@
       overlay.classList.add('ffs-out');
       lockScroll(false);
       try { sessionStorage.setItem(ENTERED_KEY, '1'); } catch (e) {}
-      // 彻底释放：淡出结束后移除节点与位图
       setTimeout(function () {
         try {
           if (photoCanvas) { photoCanvas.width = 1; photoCanvas = null; }
@@ -2405,18 +2400,23 @@
 
     function poke(cx, cy) {
       var r = canvas.getBoundingClientRect();
-      mouse.x = cx - r.left; mouse.y = cy - r.top;
+      var nx = cx - r.left, ny = cy - r.top;
+      if (mouse.x > -9000) {
+        velX = velX * 0.55 + (nx - mouse.x) * 0.45;
+        velY = velY * 0.55 + (ny - mouse.y) * 0.45;
+      } else { velX = 0; velY = 0; }
+      mouse.x = nx; mouse.y = ny;
       lastMove = performance.now();
-      if (!reduced && ready && act < 0.999) { act = Math.min(1, act + 0.5); }
-      if (!reduced && ready && raf === null) { raf = requestAnimationFrame(frame); }
+      if (!reduced && ready && act < 1) act = Math.min(1, act + 0.55);
+      if (!reduced && ready && raf === null) raf = requestAnimationFrame(frame);
     }
     window.addEventListener('mousemove', function (e) { poke(e.clientX, e.clientY); }, { passive: true });
     window.addEventListener('touchmove', function (e) { if (e.touches && e.touches[0]) poke(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
     window.addEventListener('touchstart', function (e) { if (e.touches && e.touches[0]) poke(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
 
     function buildParticles(ar) {
-      var COLS = weak ? 78 : 104;
-      var ROWS = Math.max(44, Math.round(COLS / ar));
+      var COLS = weak ? 84 : 116;
+      var ROWS = Math.max(48, Math.round(COLS / ar));
       var c = document.createElement('canvas');
       c.width = COLS; c.height = ROWS;
       var ctx = c.getContext('2d', { willReadFrequently: true });
@@ -2424,29 +2424,29 @@
       var sw = img.naturalWidth * sx, sh = img.naturalHeight * sx;
       ctx.drawImage(img, (COLS - sw) / 2, (ROWS - sh) / 2, sw, sh);
       var data = ctx.getImageData(0, 0, COLS, ROWS).data;
-      var P = [];
+      var P = [], ph = 0;
       for (var y = 0; y < ROWS; y++) {
         for (var x = 0; x < COLS; x++) {
           var i = (y * COLS + x) * 4;
           if (data[i + 3] === 0) continue;
           P.push({ x: x / COLS, y: y / ROWS, r: data[i], g: data[i + 1], b: data[i + 2],
-                   d: 0.25 + Math.random() * 0.75, ph: Math.random() * 6.283 });
+                   d: 0.35 + Math.random() * 0.65, ph: (ph++) * 0.37 });
         }
       }
       return P;
     }
 
     function sizeCanvas() {
-      var dpr = Math.min(window.devicePixelRatio || 1, weak ? 1.15 : 1.6);
+      var dpr = Math.min(window.devicePixelRatio || 1, weak ? 1.2 : 1.6);
       var w = window.innerWidth, h = window.innerHeight;
       canvas.width = w * dpr; canvas.height = h * dpr;
       canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
       canvas.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0);
       view = { w: w, h: h, ctx: canvas.getContext('2d') };
-      renderPhotoOffscreen();
+      if (img.complete && img.naturalWidth) renderPhoto();
     }
 
-    function renderPhotoOffscreen() {
+    function renderPhoto() {
       if (!view || !img.naturalWidth) return;
       var dpr = canvas.width / view.w;
       var w = canvas.width, h = canvas.height;
@@ -2461,7 +2461,7 @@
       c.drawImage(img, dx / dpr, dy / dpr, dw / dpr, dh / dpr);
     }
 
-    function paintStatic() {
+    function paintBase() {
       var ctx = view && view.ctx;
       if (!ctx || !photoCanvas) return;
       ctx.clearRect(0, 0, view.w, view.h);
@@ -2470,99 +2470,99 @@
       painted = true;
     }
 
+    function drawBlob(ctx, x, y, p, k, now) {
+      var a = (0.09 + 0.19 * p.d) * k;
+      if (a < 0.012 || a > 1) return;
+      var wob = 1 + Math.sin(now * 0.004 + p.ph) * 0.16;
+      var r = (1.7 + p.d * 2.2) * psK * (0.55 + 0.6 * k) * wob;
+      ctx.beginPath();
+      ctx.fillStyle = 'rgba(' + p.r + ',' + p.g + ',' + p.b + ',' + a.toFixed(3) + ')';
+      ctx.arc(x, y, r, 0, 6.2832);
+      ctx.fill();
+    }
+
     function frame(t) {
       raf = null;
       if (dead || !ready || reduced) return;
       var now = performance.now();
-      var want = (now - lastMove < 700) ? 1 : 0;
-      act += (want - act) * (want > act ? 0.22 : 0.035);
-      if (act < 0.0008) act = 0;
+      var moving = now - lastMove < 650;
+      act += ((moving ? 1 : 0) - act) * (moving ? 0.24 : 0.045);
+      if (act < 0.0006) act = 0;
+      velMag = Math.sqrt(velX * velX + velY * velY);
+      velX *= 0.94; velY *= 0.94;
 
-      if (act === 0) {
-        if (!painted) paintStatic();
-        return; // 空闲 → 停转 rAF，接近 0 CPU
-      }
+      if (act === 0) { paintBase(); return; } // 空闲：只留一张原图，停转
 
       var ctx = view.ctx, w = view.w, h = view.h;
-      ctx.clearRect(0, 0, w, h);
-
-      // 原图随活动度淡出
-      if (1 - act > 0.01 && photoCanvas) {
-        ctx.globalAlpha = Math.max(0, 1 - act);
-        ctx.drawImage(photoCanvas, 0, 0, w, h);
-        ctx.globalAlpha = 1;
-      }
-
-      // 自适应帧率：掉帧→加大采样步长(粒子减半/再减)，回稳→恢复
-      frames++;
-      var dt = Math.min(120, t - (frame._t || t));
-      frame._t = t;
-      ema = ema * 0.88 + dt * 0.12;
-      if (frames % 30 === 0) {
-        var fps = 1000 / ema;
-        if (fps < 42 && step < (weak ? 3 : 4)) step++;
-        else if (fps > 55 && step > (weak ? 2 : 1)) step--;
-      }
-
-      // 泼溅粒子层
       var ar = img.naturalWidth / img.naturalHeight;
       var dw = w, dh = w / ar;
       if (dh < h) { dh = h; dw = h * ar; }
       var dx = (w - dw) / 2, dy = (h - dh) / 2;
-      var mx = 0, my = 0;
-      if (mouse.x > -1000) { mx = (mouse.x - w / 2) / (w / 2); my = (mouse.y - h / 2) / (h / 2); }
-      par.x += (mx - par.x) * 0.06;
-      par.y += (my - par.y) * 0.06;
-      var amp = 34 + Math.abs(par.x) * 9 + Math.abs(par.y) * 9;
-      var ps = Math.min(2.1, Math.max(1, w / 1300));
-      var alphaAll = Math.min(1, act * 1.25);
-      var t0 = performance.now();
-      var i = 0, n = particles.length;
-      ctx.globalAlpha = alphaAll;
-      for (; i < n; i += step) {
+      psK = Math.min(1.35, Math.max(0.8, w / 1500));
+
+      // 帧率自适应
+      frames++;
+      var dt = Math.min(120, t - (frame._t || t)); frame._t = t;
+      ema = ema * 0.88 + dt * 0.12;
+      if (frames % 30 === 0) {
+        var fps = 1000 / ema;
+        if (fps < 42 && STEP < (weak ? 4 : 6)) STEP++;
+        else if (fps > 56 && STEP > (weak ? 2 : 1)) STEP--;
+      }
+
+      ctx.clearRect(0, 0, w, h);
+      ctx.globalAlpha = 1;
+      ctx.drawImage(photoCanvas, 0, 0, w, h); // 原图常驻 → 主体始终清晰
+
+      var R = Math.max(240, Math.min(480, Math.min(w, h) * 0.46));
+      var R2 = R * R;
+      var cx = mouse.x, cy = mouse.y;
+      var swirl = 0.5 + Math.min(1.5, velMag * 0.01);
+      var kMax = act * Math.min(1, 0.7 + velMag * 0.03);
+      var n = particles.length, i = 0, j = 0;
+
+      for (; i < n; i += STEP) {
         var p = particles[i];
         var bx = dx + p.x * dw, by = dy + p.y * dh;
-        var px = bx + par.x * amp * p.d + Math.sin(t * .0006 + p.ph) * 5 * p.d;
-        var py = by + par.y * amp * p.d + Math.cos(t * .0005 + p.ph * 1.7) * 5 * p.d;
-        if (mouse.x > -1000) {
-          var ddx = px - mouse.x, ddy = py - mouse.y;
-          var dist = ddx * ddx + ddy * ddy;
-          var mr = 200, mr2 = mr * mr;
-          if (dist < mr2 && dist > 0.01) {
-            var inv = 1 / Math.sqrt(dist), k = 1 - Math.sqrt(dist) / mr;
-            px += ddx * inv * k * k * 320 * p.d;
-            py += ddy * inv * k * k * 320 * p.d;
-          }
+        var ddx = bx - cx, ddy = by - cy;
+        var d2 = ddx * ddx + ddy * ddy;
+        if (d2 > R2) {
+          // 区域外：极其稀疏的细尘（几乎不影响清晰度，增添整体呼吸感）
+          if ((j++ & 31) === 0 && d2 < R2 * 36) drawBlob(ctx, bx, by, p, kMax * 0.05, now);
+          continue;
         }
-        var r = (1.2 + p.d * 1.9) * ps + Math.sin(t * .0012 + p.ph) * .55;
-        ctx.beginPath();
-        ctx.fillStyle = 'rgba(' + p.r + ',' + p.g + ',' + p.b + ',.9)';
-        ctx.arc(px, py, r, 0, 6.2832);
-        ctx.fill();
+        var dist = Math.sqrt(d2);
+        var u = dist / R;
+        var f1 = 1 - u;
+        var fall = f1 < 0 ? 0 : f1 * f1 * (3 - 2 * f1); // smoothstep 衰减
+        if (fall < 0.02) continue;
+        var k = kMax * fall;
+        var inv = dist > 0.1 ? 1 / dist : 0;
+        var ux = ddx * inv, uy = ddy * inv;
+        var tx = -uy, ty = ux;               // 切向旋流
+        var mag = (110 + 130 * p.d) * k + Math.min(70, velMag) * 0.5 * k;
+        var px = bx + ux * mag + tx * mag * swirl * 0.2 * p.d;
+        var py = by + uy * mag + ty * mag * swirl * 0.2 * p.d;
+        drawBlob(ctx, px, py, p, k, now);
       }
-      ctx.globalAlpha = 1;
-      // 极致卡顿保护：单帧超 46ms 直接加大步长，不调度到帧末
-      var spent = performance.now() - t0;
-      if (spent > 46 && step < (weak ? 3 : 4)) step++;
       painted = true;
       raf = requestAnimationFrame(frame);
     }
-
 
     img.onload = function () {
       try {
         sizeCanvas();
         particles = buildParticles(img.naturalWidth / img.naturalHeight);
+        renderPhoto();
         ready = true;
-        if (!painted) paintStatic();
-        if (reduced) return;                 // 不做泼溅动画
+        paintBase();
+        if (reduced) return;
         window.addEventListener('resize', function () {
           if (dead) return;
           sizeCanvas();
           painted = false;
           if (raf === null) raf = requestAnimationFrame(frame);
         });
-        // 待机不跑动画；等首次鼠标移动再启动
       } catch (e) { console.warn('splash:', e); hideSplash(); }
     };
     img.onerror = function () { hideSplash(); };
