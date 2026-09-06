@@ -344,6 +344,10 @@
 
     <!-- Right Side Buttons -->
     <div class="navbar-actions" style="position: relative;">
+      <!-- 手机版：导航栏直接显示的相册入口 -->
+      <a id="nav-mb-gallery" href="/gallery" class="navbar-action-btn" aria-label="相册" title="相册">
+        <span class="material-symbols-outlined">photo_library</span>
+      </a>
       <!-- Search Toggle -->
       <button id="search-toggle" class="navbar-action-btn search-toggle-btn" aria-label="搜索" title="搜索">
         <span class="material-symbols-outlined">search</span>
@@ -405,6 +409,10 @@
         transition: background .2s, color .2s; white-space: nowrap; }
       #ff-mc-entry:hover { background: rgba(255,255,255,.22); color: #fff; }
       @media (max-width: 700px) { #ff-mc-entry { right: 8px; font-size: 9px; padding: 3px 6px; } }
+      #nav-mb-gallery { display: none; text-decoration: none; }
+      @media (max-width: 768px) {
+        #nav-mb-gallery { display: inline-flex; align-items: center; justify-content: center; }
+      }
     </style>
     <a id="ff-mc-entry" href="/wushuang/" title="应张大公子需求加的鸣潮入口">应张大公子需求加的鸣潮入口 ↗</a>
 
@@ -1416,7 +1424,7 @@
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/6 03:20:46</div>
+          <div class="site-info-card-value">2026/9/6 03:41:26</div>
         </div>
 
         <!-- System Info -->
@@ -1740,7 +1748,7 @@ if (!window._siteInfoToggleBound) {
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/6 03:20:46</div>
+          <div class="site-info-card-value">2026/9/6 03:41:26</div>
         </div>
 
         <!-- System Info -->
