@@ -1417,7 +1417,7 @@
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/6 04:14:44</div>
+          <div class="site-info-card-value">2026/9/6 04:21:01</div>
         </div>
 
         <!-- System Info -->
@@ -1741,7 +1741,7 @@ if (!window._siteInfoToggleBound) {
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/6 04:14:44</div>
+          <div class="site-info-card-value">2026/9/6 04:21:01</div>
         </div>
 
         <!-- System Info -->
@@ -3346,22 +3346,31 @@ if (!window._siteInfoToggleBound) {
   });
   keyEl.addEventListener('input', render);
 
-  listEl.addEventListener('click', function (e) {
-    var btn = e.target.closest('.gb-del');
+  // 文档级代理删除（两步确认，不依赖浏览器 confirm）
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest ? e.target.closest('.gb-del') : null;
     if (!btn) return;
     var item = btn.closest('.gb-item');
     if (!item) return;
     var id = item.getAttribute('data-id');
     var key = keyEl.value.trim();
-    if (!key) return st('请先输入管理口令');
-    if (!window.confirm('确定删除这条留言吗？')) return;
+    if (!key) { st('⚠️ 请先点「🔑 管理」并输入口令'); return; }
+    if (btn.getAttribute('data-arm') !== '1') {
+      btn.setAttribute('data-arm', '1');
+      btn.textContent = '确认删除？';
+      st('再点一次「确认删除？」即可删除');
+      setTimeout(function () { btn.removeAttribute('data-arm'); btn.textContent = '删除'; }, 4000);
+      return;
+    }
+    btn.disabled = true;
+    st('删除中…');
     fetch(EP + '/gb', { method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'delete', key: key, id: id }) })
       .then(function (r) { return r.json(); })
       .then(function (d) {
         if (d && d.ok) { st('✓ 已删除'); load(); }
-        else st((d && d.error) || '删除失败');
-      }).catch(function () { st('网络错误'); });
+        else { st('⚠️ ' + ((d && d.error) || '删除失败')); btn.disabled = false; btn.textContent = '删除'; }
+      }).catch(function (err) { st('⚠️ 网络错误：' + err.message); btn.disabled = false; btn.textContent = '删除'; });
   });
 })();
 </script>
