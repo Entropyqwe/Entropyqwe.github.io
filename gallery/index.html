@@ -521,13 +521,13 @@
 
   <!-- Dynamic Categories -->
   
-    <a href="/categories/%E9%9A%8F%E7%AC%94/" class="content-nav-item">
-      <span class="nav-item-label">随笔</span>
+    <a href="/categories/%E7%A1%AC%E4%BB%B6/" class="content-nav-item">
+      <span class="nav-item-label">硬件</span>
       <span class="nav-item-count">1</span>
     </a>
   
-    <a href="/categories/%E7%A1%AC%E4%BB%B6/" class="content-nav-item">
-      <span class="nav-item-label">硬件</span>
+    <a href="/categories/%E9%9A%8F%E7%AC%94/" class="content-nav-item">
+      <span class="nav-item-label">随笔</span>
       <span class="nav-item-count">1</span>
     </a>
   
@@ -594,15 +594,26 @@
         background: linear-gradient(135deg, #6a7cff, #5b6cf0); }
       .ffu-btn:disabled { opacity: .55; cursor: not-allowed; }
       .ffu-hint { font-size: .78rem; opacity: .55; margin-top: 8px; }
+      /* —— 删除照片入口 —— */
+      .ffd-manage { margin: 2px 0 14px; }
+      .ffd-manage button, .ffd-open2 { cursor: pointer; border: 1px solid rgba(127,127,127,.35); background: transparent;
+        color: inherit; font-size: .82rem; padding: 5px 12px; border-radius: 999px; opacity: .8; }
+      .ffd-manage button:hover { opacity: 1; border-color: #e05a5a; color: #e05a5a; }
+      #ffd-file { color: inherit; }
+      .ffd-tip { font-size: .78rem; opacity: .55; margin: 6px 0; }
     </style>
 
     <article class="page-content">
       <header class="page-header">
         <h1 class="page-title">相册</h1>
         
-        <p class="page-description">4 个相册 · 共 36 个媒体 · 每个相册展示前 9 个，点击「查看全部」浏览更多</p>
+        <p class="page-description">4 个相册 · 共 33 个媒体 · 每个相册展示前 9 个，点击「查看全部」浏览更多</p>
         
       </header>
+
+      
+      <div class="ffd-manage"><button id="ffd-open" type="button">🗑 删除照片</button></div>
+      
 
       
 
@@ -672,24 +683,16 @@
           <div class="ffg-album-head">
             <h2>街拍</h2>
             
-            <span class="ffg-count">16 个媒体</span>
+            <span class="ffg-count">15 个媒体</span>
           </div>
           
           <div class="ffg-grid">
-            
-              <a class="ffg-item" href="/images/gallery/%E8%A1%97%E6%8B%8D/20260905-mtol6xpc-IMG_20260820_235638.jpg"
-                 data-fancybox="ffgal-1"
-                 >
-                <img src="/images/gallery/%E8%A1%97%E6%8B%8D/20260905-mtol6xpc-IMG_20260820_235638.jpg"
-                     alt="街拍-1"
-                     loading="lazy">
-              </a>
             
               <a class="ffg-item" href="/images/gallery/%E8%A1%97%E6%8B%8D/20260905-mtoo1zib-IMG_20250621_185906.jpg"
                  data-fancybox="ffgal-1"
                  >
                 <img src="/images/gallery/%E8%A1%97%E6%8B%8D/20260905-mtoo1zib-IMG_20250621_185906.jpg"
-                     alt="街拍-2"
+                     alt="街拍-1"
                      loading="lazy">
               </a>
             
@@ -697,7 +700,7 @@
                  data-fancybox="ffgal-1"
                  >
                 <img src="/images/gallery/%E8%A1%97%E6%8B%8D/20260905-mtoo2gpp-IMG_20250622_121943.jpg"
-                     alt="街拍-3"
+                     alt="街拍-2"
                      loading="lazy">
               </a>
             
@@ -705,7 +708,7 @@
                  data-fancybox="ffgal-1"
                  >
                 <img src="/images/gallery/%E8%A1%97%E6%8B%8D/20260905-mtoo2s4n-IMG_20250621_200255.jpg"
-                     alt="街拍-4"
+                     alt="街拍-3"
                      loading="lazy">
               </a>
             
@@ -713,7 +716,7 @@
                  data-fancybox="ffgal-1"
                  >
                 <img src="/images/gallery/%E8%A1%97%E6%8B%8D/20260905-mtoo3fv5-IMG_20250622_112901.jpg"
-                     alt="街拍-5"
+                     alt="街拍-4"
                      loading="lazy">
               </a>
             
@@ -721,7 +724,7 @@
                  data-fancybox="ffgal-1"
                  >
                 <img src="/images/gallery/%E8%A1%97%E6%8B%8D/20260905-mtoo3xxc-IMG_20250627_203836.jpg"
-                     alt="街拍-6"
+                     alt="街拍-5"
                      loading="lazy">
               </a>
             
@@ -729,7 +732,7 @@
                  data-fancybox="ffgal-1"
                  >
                 <img src="/images/gallery/%E8%A1%97%E6%8B%8D/20260905-mtoo4ds6-IMG_20250701_072809.jpg"
-                     alt="街拍-7"
+                     alt="街拍-6"
                      loading="lazy">
               </a>
             
@@ -737,7 +740,7 @@
                  data-fancybox="ffgal-1"
                  >
                 <img src="/images/gallery/%E8%A1%97%E6%8B%8D/20260905-mtoo4qdu-IMG_20250707_123507.jpg"
-                     alt="街拍-8"
+                     alt="街拍-7"
                      loading="lazy">
               </a>
             
@@ -745,6 +748,14 @@
                  data-fancybox="ffgal-1"
                  >
                 <img src="/images/gallery/%E8%A1%97%E6%8B%8D/20260905-mtoo9rys-IMG_20260722_181927.jpg"
+                     alt="街拍-8"
+                     loading="lazy">
+              </a>
+            
+              <a class="ffg-item" href="/images/gallery/%E8%A1%97%E6%8B%8D/20260905-mtoo34j9-IMG_20250622_182353.jpg"
+                 data-fancybox="ffgal-1"
+                 >
+                <img src="/images/gallery/%E8%A1%97%E6%8B%8D/20260905-mtoo34j9-IMG_20250622_182353.jpg"
                      alt="街拍-9"
                      loading="lazy">
               </a>
@@ -752,7 +763,7 @@
           </div>
           
           <div class="ffg-more">
-            <a href="/gallery/%E8%A1%97%E6%8B%8D/">查看全部 · 还有 7 个 →</a>
+            <a href="/gallery/%E8%A1%97%E6%8B%8D/">查看全部 · 还有 6 个 →</a>
           </div>
           
         </section>
@@ -822,7 +833,7 @@
           <div class="ffg-album-head">
             <h2>城市鸟瞰</h2>
             
-            <span class="ffg-count">8 个媒体</span>
+            <span class="ffg-count">6 个媒体</span>
           </div>
           
           <div class="ffg-grid">
@@ -835,27 +846,11 @@
                      loading="lazy">
               </a>
             
-              <a class="ffg-item" href="/images/gallery/%E5%9F%8E%E5%B8%82%E9%B8%9F%E7%9E%B0/20260905-mtonvt43-IMG_20250630_182303.jpg"
-                 data-fancybox="ffgal-3"
-                 >
-                <img src="/images/gallery/%E5%9F%8E%E5%B8%82%E9%B8%9F%E7%9E%B0/20260905-mtonvt43-IMG_20250630_182303.jpg"
-                     alt="城市鸟瞰-2"
-                     loading="lazy">
-              </a>
-            
-              <a class="ffg-item" href="/images/gallery/%E5%9F%8E%E5%B8%82%E9%B8%9F%E7%9E%B0/20260905-mtonwsln-IMG_20250628_192422.jpg"
-                 data-fancybox="ffgal-3"
-                 >
-                <img src="/images/gallery/%E5%9F%8E%E5%B8%82%E9%B8%9F%E7%9E%B0/20260905-mtonwsln-IMG_20250628_192422.jpg"
-                     alt="城市鸟瞰-3"
-                     loading="lazy">
-              </a>
-            
               <a class="ffg-item" href="/images/gallery/%E5%9F%8E%E5%B8%82%E9%B8%9F%E7%9E%B0/20260905-mtonx4wg-IMG_20250630_182303.jpg"
                  data-fancybox="ffgal-3"
                  >
                 <img src="/images/gallery/%E5%9F%8E%E5%B8%82%E9%B8%9F%E7%9E%B0/20260905-mtonx4wg-IMG_20250630_182303.jpg"
-                     alt="城市鸟瞰-4"
+                     alt="城市鸟瞰-2"
                      loading="lazy">
               </a>
             
@@ -863,7 +858,7 @@
                  data-fancybox="ffgal-3"
                  >
                 <img src="/images/gallery/%E5%9F%8E%E5%B8%82%E9%B8%9F%E7%9E%B0/20260905-mtonykfb-IMG_20250628_192731.jpg"
-                     alt="城市鸟瞰-5"
+                     alt="城市鸟瞰-3"
                      loading="lazy">
               </a>
             
@@ -871,7 +866,7 @@
                  data-fancybox="ffgal-3"
                  >
                 <img src="/images/gallery/%E5%9F%8E%E5%B8%82%E9%B8%9F%E7%9E%B0/20260905-mtonywkf-IMG_20250628_192422.jpg"
-                     alt="城市鸟瞰-6"
+                     alt="城市鸟瞰-4"
                      loading="lazy">
               </a>
             
@@ -879,7 +874,7 @@
                  data-fancybox="ffgal-3"
                  >
                 <img src="/images/gallery/%E5%9F%8E%E5%B8%82%E9%B8%9F%E7%9E%B0/20260905-mtonzbh8-IMG_20260719_193350.jpg"
-                     alt="城市鸟瞰-7"
+                     alt="城市鸟瞰-5"
                      loading="lazy">
               </a>
             
@@ -887,7 +882,7 @@
                  data-fancybox="ffgal-3"
                  >
                 <img src="/images/gallery/%E5%9F%8E%E5%B8%82%E9%B8%9F%E7%9E%B0/20260905-mtoooq3k-IMG_20260719_180653.jpg"
-                     alt="城市鸟瞰-8"
+                     alt="城市鸟瞰-6"
                      loading="lazy">
               </a>
             
@@ -1061,6 +1056,104 @@
         } else {
           setStatus('⚠️ 成功 ' + okCount + '/' + files.length + (errMsgs.length ? '\n失败：' + errMsgs.join('\n') : ''));
         }
+      });
+    })();
+    </script>
+
+    <div id="ffd-modal" class="ffu-modal" hidden>
+      <div class="ffu-box">
+        <button id="ffd-close" class="ffu-close" aria-label="关闭">✕</button>
+        <h3>🗑 删除照片/视频</h3>
+        <label class="ffu-field">管理口令
+          <input id="ffd-key" type="password" placeholder="与上传口令一致" autocomplete="off">
+        </label>
+        <label class="ffu-field">选择相册
+          <select id="ffd-album"></select>
+        </label>
+        <label class="ffu-field">选择要删除的文件
+          <select id="ffd-file"></select>
+        </label>
+        <div class="ffd-tip">删除后约 1~3 分钟自动从站点移除（不可恢复，请确认选对）。</div>
+        <div id="ffd-status" class="ffu-status"></div>
+        <button id="ffd-submit" class="ffu-btn" style="background:linear-gradient(135deg,#e05a5a,#c84444)">删除</button>
+      </div>
+    </div>
+
+    
+    <script id="ffd-data" type="application/json">[{"name":"飞友日常","folder":"飞友日常","photos":[{"src":"/images/gallery/飞友日常/20260905-mtooaxif-IMG_20260715_183649.jpg","video":false},{"src":"/images/gallery/飞友日常/20260905-mtoob5wz-IMG_20260715_175559.jpg","video":false},{"src":"/images/gallery/飞友日常/20260905-mtoojyg1-IMG_20250709_201331.jpg","video":false},{"src":"/images/gallery/飞友日常/20260905-mtoomtb2-IMG_20250623_065459.jpg","video":false},{"src":"/images/gallery/飞友日常/20260905-mtoon4rl-IMG_20260906_015316.jpg","video":false},{"src":"/images/gallery/飞友日常/20260905-mtoonftb-quality_restoration_20260709183031438.jpg","video":false}]},{"name":"街拍","folder":"街拍","photos":[{"src":"/images/gallery/街拍/20260905-mtoo1zib-IMG_20250621_185906.jpg","video":false},{"src":"/images/gallery/街拍/20260905-mtoo2gpp-IMG_20250622_121943.jpg","video":false},{"src":"/images/gallery/街拍/20260905-mtoo2s4n-IMG_20250621_200255.jpg","video":false},{"src":"/images/gallery/街拍/20260905-mtoo3fv5-IMG_20250622_112901.jpg","video":false},{"src":"/images/gallery/街拍/20260905-mtoo3xxc-IMG_20250627_203836.jpg","video":false},{"src":"/images/gallery/街拍/20260905-mtoo4ds6-IMG_20250701_072809.jpg","video":false},{"src":"/images/gallery/街拍/20260905-mtoo4qdu-IMG_20250707_123507.jpg","video":false},{"src":"/images/gallery/街拍/20260905-mtoo9rys-IMG_20260722_181927.jpg","video":false},{"src":"/images/gallery/街拍/20260905-mtoo34j9-IMG_20250622_182353.jpg","video":false},{"src":"/images/gallery/街拍/20260905-mtoo94ou-IMG_20260727_183803.jpg","video":false},{"src":"/images/gallery/街拍/20260905-mtood4ed-IMG_20260713_182234.jpg","video":false},{"src":"/images/gallery/街拍/20260905-mtooedeq-IMG_20260716_164301.jpg","video":false},{"src":"/images/gallery/街拍/20260905-mtooeukl-IMG_20260713_202339.jpg","video":false},{"src":"/images/gallery/街拍/20260905-mtooff93-IMG_20260714_175524.jpg","video":false},{"src":"/images/gallery/街拍/20260905-mtooqeih-IMG_20260729_184056.jpg","video":false}]},{"name":"微星","folder":"微星","photos":[{"src":"/images/gallery/微星/20260905-mtoo0ez8-IMG_20260905_130734.jpg","video":false},{"src":"/images/gallery/微星/20260905-mtoo0sjr-Image_1788270949265_282.jpg","video":false},{"src":"/images/gallery/微星/20260905-mtoo8orv-IMG_20260727_185215.jpg","video":false},{"src":"/images/gallery/微星/20260905-mtoo14e9-IMG_20260831_123528.jpg","video":false},{"src":"/images/gallery/微星/20260905-mtoody1m-IMG_20260714_174457.jpg","video":false},{"src":"/images/gallery/微星/20260905-mtoot1pf-IMG_20250622_113728.jpg","video":false}]},{"name":"城市鸟瞰","folder":"城市鸟瞰","photos":[{"src":"/images/gallery/城市鸟瞰/20260905-mtol9gk1-IMG_20260820_235638.jpg","video":false},{"src":"/images/gallery/城市鸟瞰/20260905-mtonx4wg-IMG_20250630_182303.jpg","video":false},{"src":"/images/gallery/城市鸟瞰/20260905-mtonykfb-IMG_20250628_192731.jpg","video":false},{"src":"/images/gallery/城市鸟瞰/20260905-mtonywkf-IMG_20250628_192422.jpg","video":false},{"src":"/images/gallery/城市鸟瞰/20260905-mtonzbh8-IMG_20260719_193350.jpg","video":false},{"src":"/images/gallery/城市鸟瞰/20260905-mtoooq3k-IMG_20260719_180653.jpg","video":false}]}]</script>
+    <script>
+    (function () {
+      var DEL_ENDPOINT = 'https:\/\/entropy-upload.pages.dev';
+      var albums = JSON.parse(document.getElementById('ffd-data').textContent || '[]');
+      var openBtn = document.getElementById('ffd-open');
+      var modal = document.getElementById('ffd-modal');
+      var keyEl = document.getElementById('ffd-key');
+      var albumSel = document.getElementById('ffd-album');
+      var fileSel = document.getElementById('ffd-file');
+      var statusEl = document.getElementById('ffd-status');
+      var submitBtn = document.getElementById('ffd-submit');
+      var box = modal.querySelector('.ffu-box');
+      if (!openBtn || !modal) return;
+
+      document.getElementById('ffd-close').addEventListener('click', function(){ modal.hidden = true; });
+      modal.addEventListener('click', function (e) { if (e.target === modal) modal.hidden = true; });
+
+      function fillFiles() {
+        fileSel.innerHTML = '';
+        var a = albums[albumSel.selectedIndex];
+        if (!a) return;
+        (a.photos || []).forEach(function (it, i) {
+          var nm = it.src.split('/').pop() || ('file-' + i);
+          var o = document.createElement('option');
+          o.value = it.src;
+          o.textContent = (it.video ? '🎬 ' : '🖼 ') + nm;
+          fileSel.appendChild(o);
+        });
+      }
+      function fillAlbums() {
+        albumSel.innerHTML = '';
+        albums.forEach(function (a) {
+          var o = document.createElement('option');
+          o.value = a.folder;
+          o.textContent = a.name + '（' + (a.photos || []).length + '）';
+          albumSel.appendChild(o);
+        });
+        fillFiles();
+      }
+      fillAlbums();
+      albumSel.addEventListener('change', fillFiles);
+
+      openBtn.addEventListener('click', function () {
+        modal.hidden = false;
+        fillAlbums();
+        setTimeout(function () { keyEl.focus(); }, 60);
+      });
+
+      submitBtn.addEventListener('click', async function () {
+        var key = keyEl.value.trim();
+        var src = fileSel.value;
+        if (!key) return statusEl.textContent = '⚠️ 请输入管理口令';
+        if (!src) return statusEl.textContent = '⚠️ 请选择要删除的文件';
+        if (!window.confirm('确定删除该文件吗？删除后不可恢复。')) return;
+        submitBtn.disabled = true;
+        statusEl.textContent = '删除中…';
+        try {
+          var resp = await fetch(DEL_ENDPOINT + '/delete', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ key: key, src: src })
+          });
+          var out = await resp.json().catch(function(){ return {ok:false,error:'HTTP '+resp.status}; });
+          if (out && out.ok) {
+            statusEl.textContent = '✅ 已删除：' + src.split('/').pop() + '
+站点将在 1~3 分钟内自动更新，请稍后刷新查看。';
+            keyEl.value = '';
+          } else {
+            statusEl.textContent = '⚠️ 删除失败：' + ((out && out.error) || '未知错误');
+          }
+        } catch (err) {
+          statusEl.textContent = '⚠️ 网络错误：' + err.message;
+        }
+        submitBtn.disabled = false;
       });
     })();
     </script>
