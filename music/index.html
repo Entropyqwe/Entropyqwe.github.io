@@ -2160,355 +2160,252 @@
   
 
 <style>
-  /* ============ 推荐弹层 & 迷你播放器：紧凑 · 毛玻璃半透明 ============ */
-  #ffm-panel, #ffp-player { position: fixed; z-index: 600; color: #f2f3f7;
-    border-radius: 16px; border: 1px solid rgba(255,255,255,.16);
-    background: rgba(22,24,32,.55); backdrop-filter: blur(18px) saturate(1.25);
-    -webkit-backdrop-filter: blur(18px) saturate(1.25);
+  .ffm-panel, .ffp-player { position: fixed; z-index: 620; color: #f2f3f7; border-radius: 16px;
+    border: 1px solid rgba(255,255,255,.16);
+    background: rgba(22,24,32,.62); backdrop-filter: blur(18px) saturate(1.2); -webkit-backdrop-filter: blur(18px) saturate(1.2);
     box-shadow: 0 12px 40px rgba(0,0,0,.4); font-size: .86rem; }
-  #ffm-panel[hidden], #ffp-player[hidden] { display: none; }
+  .ffm-panel[hidden], .ffp-player[hidden] { display: none; }
 
-  /* —— 推荐弹层 —— */
-  #ffm-panel { right: 14px; top: 58px; width: 262px; padding: 10px 12px; max-height: 70vh; overflow: auto; }
-  #ffm-panel .ffm-title { display:flex; align-items:center; gap:7px; font-weight:800; font-size:.98rem; padding:2px 2px 2px; }
-  #ffm-panel .ffm-sub { opacity:.55; font-size:.72rem; margin:2px 2px 8px; letter-spacing:.2px; }
-  #ffm-panel ul { list-style:none; margin:0; padding:0; }
-  #ffm-panel li { padding:6px 9px; border-radius:9px; cursor:pointer; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    display:flex; gap:8px; align-items:center; }
-  #ffm-panel li:hover { background: rgba(255,255,255,.12); }
-  #ffm-panel .ffm-empty { opacity:.6; cursor:default; padding:6px 9px; }
-  #ffm-panel li.ffm-empty:hover { background: transparent; }
-  #ffm-panel .ffm-go { display:block; text-align:center; padding:7px 6px; margin-top:6px; border-radius:10px; color:#fff;
-    background: linear-gradient(135deg, rgba(255,126,179,.9), rgba(255,117,140,.85) 60%, rgba(255,154,90,.9));
-    text-decoration:none; font-weight:700; }
-  #ffm-panel .ffm-go:hover { filter: brightness(1.08); }
-
-  /* —— 迷你播放器 —— */
-  #ffp-player { left: 18px; bottom: 18px; width: 268px; padding: 10px 12px 8px; overflow: hidden; }
-  #ffp-player .ffp-head { display:flex; align-items:center; gap:10px; }
-  #ffp-player .ffp-art { width:48px; height:48px; border-radius:11px; object-fit:cover; flex:none;
-    background: rgba(255,255,255,.06); box-shadow: 0 3px 10px rgba(0,0,0,.3); }
-  #ffp-player .ffp-art[src=""] { display:none; }
-  #ffp-player .ffp-txt { flex:1; min-width:0; }
-  #ffp-player .ffp-name { font-weight:800; font-size:.88rem; letter-spacing:.2px;
+  /* 🎵 推荐弹层 */
+  .ffm-panel { right: 14px; top: 58px; width: 262px; padding: 10px 12px; max-height: 72vh; overflow: auto; }
+  .ffm-panel .t { display:flex; align-items:center; gap:7px; font-weight:800; font-size:.98rem; }
+  .ffm-panel .sub { opacity:.55; font-size:.72rem; margin:2px 2px 8px; }
+  .ffm-panel ul { list-style:none; margin:0; padding:0; }
+  .ffm-panel li { padding:6px 9px; border-radius:9px; cursor:pointer; display:flex; gap:8px; align-items:center;
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  #ffp-player .ffp-note { font-size:.7rem; opacity:.62; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px; }
-  #ffp-player .ffp-close { border:0; background: rgba(255,255,255,.08); cursor:pointer; color:inherit; font-size:13px; opacity:.75;
-    width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; line-height:1; flex:none; margin:0; padding:0; }
-  #ffp-player .ffp-close:hover { background: rgba(255,255,255,.2); }
-  #ffp-controls { display:flex; align-items:center; justify-content:center; gap:18px; margin:8px 0 6px; }
-  #ffp-controls button { border:0; background:none; cursor:pointer; color:inherit; display:inline-flex; align-items:center; justify-content:center;
-    padding:0; font-size:1.15rem; opacity:.9; }
-  #ffp-controls button:disabled { opacity:.3; cursor:not-allowed; }
-  #ffp-controls button[data-ffp-play] { width:40px; height:40px; border-radius:50%; font-size:1.05rem;
+  .ffm-panel li:hover { background: rgba(255,255,255,.12); }
+  .ffm-panel .empty { opacity:.6; cursor:default; }
+  .ffm-panel .go { display:block; text-align:center; padding:7px; margin-top:6px; border-radius:10px; color:#fff;
+    background: linear-gradient(135deg, rgba(255,126,179,.9), rgba(255,117,140,.85)); text-decoration:none; font-weight:700; }
+
+  /* ▶ 迷你播放器 */
+  .ffp-player { left: 16px; bottom: 72px; width: 300px; padding: 10px 12px; }
+  .ffp-player .head { display:flex; align-items:center; gap:10px; }
+  .ffp-player .art { width:46px; height:46px; border-radius:10px; object-fit:cover; flex:none; background: rgba(255,255,255,.06); }
+  .ffp-player .art[src=""] { display:none; }
+  .ffp-player .txt { flex:1; min-width:0; }
+  .ffp-player .name { font-weight:800; font-size:.9rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .ffp-player .note { font-size:.7rem; opacity:.6; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px; }
+  .ffp-player .close { flex:none; border:0; cursor:pointer; width:22px; height:22px; border-radius:50%; color:inherit;
+    background: rgba(255,255,255,.1); line-height:1; }
+  .ffp-player .ctrls { display:flex; align-items:center; justify-content:center; gap:16px; margin:8px 0 6px; }
+  .ffp-player .ctrls button { border:0; background:none; cursor:pointer; color:inherit; font-size:1.1rem; padding:0; }
+  .ffp-player .ctrls button:disabled { opacity:.3; }
+  .ffp-player .ctrls .play { width:40px; height:40px; border-radius:50%; font-size:1rem;
     background: linear-gradient(135deg,#ff7eb3,#ff758c 60%,#ff9a5a); box-shadow: 0 4px 14px rgba(255,118,136,.5); }
-  #ffp-controls button[data-ffp-play]:hover { filter: brightness(1.1); }
-  #ffp-progress { position:relative; height:5px; border-radius:3px; background: rgba(255,255,255,.16); cursor:pointer; }
-  #ffp-progress .ffp-fill { position:absolute; left:0; top:0; height:100%; border-radius:3px;
-    background: linear-gradient(90deg,#ff7eb3,#ff9a5a); }
-  #ffp-progress .ffp-thumb { position:absolute; top:50%; width:10px; height:10px; border-radius:50%;
+  .ffp-player .bar { position:relative; height:5px; border-radius:3px; background: rgba(255,255,255,.16); cursor:pointer; }
+  .ffp-player .bar .fill { position:absolute; inset:0 auto 0 0; border-radius:3px; background: linear-gradient(90deg,#ff7eb3,#ff9a5a); }
+  .ffp-player .bar .thumb { position:absolute; top:50%; width:10px; height:10px; border-radius:50%;
     background:#ff8ba7; transform:translate(-50%,-50%); box-shadow:0 0 0 3px rgba(255,138,167,.25); }
-  #ffp-time { display:flex; justify-content:space-between; font-size:.66rem; opacity:.62; margin-top:3px; font-variant-numeric:tabular-nums; }
-  #ffp-list { margin-top:7px; max-height:132px; overflow:auto; border-top:1px solid rgba(255,255,255,.08); padding-top:4px; }
-  #ffp-list .ffp-no { text-align:center; opacity:.5; font-size:.7rem; padding:6px 0; }
-  #ffp-list .ffp-row { display:flex; align-items:center; gap:7px; padding:4px 6px; border-radius:8px; cursor:pointer; }
-  #ffp-list .ffp-row:hover { background: rgba(255,255,255,.09); }
-  #ffp-list .ffp-row img { width:22px; height:22px; border-radius:5px; object-fit:cover; flex:none; }
-  #ffp-list .ffp-row .t { flex:1; min-width:0; }
-  #ffp-list .ffp-row .n { display:block; font-size:.74rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  #ffp-list .ffp-row .s { display:block; font-size:.62rem; opacity:.55; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  #ffp-list .ffp-row.on { background: rgba(255,138,167,.18); box-shadow: inset 2px 0 0 #ff8ba7; }
-
-  /* —— 邮箱复制气泡 —— */
-  #ffmail { position: fixed; z-index: 700; width: 250px; padding: 12px 14px; border-radius: 14px;
-    border: 1px solid rgba(255,255,255,.18); color: #f2f3f7;
-    background: rgba(22,24,32,.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-    box-shadow: 0 10px 34px rgba(0,0,0,.4); font-size: .86rem; }
-  #ffmail[hidden] { display: none; }
-  #ffmail .t { font-size: .72rem; opacity: .62; margin-bottom: 4px; }
-  #ffmail .addr { font-weight: 700; word-break: break-all; margin-bottom: 8px; letter-spacing: .2px; }
-  #ffmail .row { display: flex; gap: 8px; align-items: center; }
-  #ffmail button { flex: 1; border: 0; border-radius: 9px; padding: 8px 6px; cursor: pointer; font-size: .86rem;
-    color: #fff; background: linear-gradient(135deg, #6a7cff, #5b6cf0); }
-  #ffmail button.ok { background: linear-gradient(135deg, #2fbf71, #22a65f); }
-  #ffmail .small { background: transparent !important; color: #f2f3f7 !important; border: 1px solid rgba(255,255,255,.22) !important; flex: none; padding: 8px 10px; }
-
+  .ffp-player .times { display:flex; justify-content:space-between; font-size:.64rem; opacity:.6; margin-top:2px; font-variant-numeric:tabular-nums; }
+  .ffp-player .list { margin-top:7px; max-height:128px; overflow:auto; border-top:1px solid rgba(255,255,255,.08); padding-top:4px; }
+  .ffp-player .list .no { text-align:center; opacity:.5; font-size:.7rem; padding:6px 0; }
+  .ffp-player .list .row { display:flex; align-items:center; gap:7px; padding:4px 6px; border-radius:8px; cursor:pointer; }
+  .ffp-player .list .row:hover { background: rgba(255,255,255,.09); }
+  .ffp-player .list .row img { width:22px; height:22px; border-radius:5px; object-fit:cover; flex:none; }
+  .ffp-player .list .row .n { flex:1; min-width:0; font-size:.74rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .ffp-player .list .row.on { background: rgba(255,138,167,.2); box-shadow: inset 2px 0 0 #ff8ba7; }
+  @media (max-width:640px){ .ffp-player { bottom: 72px; } }
 </style>
 
 <script>
+/* ============ 模块一：🎵 音乐推荐弹层 ============ */
 (function () {
-  var RECS = [{"name":"Everyday","audio":"/audio/everyday.m4a"},{"name":"埠上风光 What a Delightful Scenery","artist":"HOYO-MiX","album":"原神 · HOYO-MiX 精选","cover":"/img/music/huibo.jpg","audio":"/audio/huibo-shangfengguang.mp3"},{"name":"半入江风半入云 Through Clouds and Rivers","artist":"HOYO-MiX","album":"原神 · HOYO-MiX 精选","cover":"/img/music/banru.jpg","audio":"/audio/banru-jiangfeng.mp3"},{"name":"One Of The Girls","artist":"The Weeknd / JENNIE / Lily-Rose Depp","album":"The Idol Episode 4 (Music from the HBO Original Series)","url":"https://music.163.com/song?id=2058139099","cover":"https://p3.music.126.net/6aqy20VWVRtn1f2jBLPeKQ==/109951168694564986.jpg?param=400y400"},{"name":"unhappy","artist":"s0rrow","album":"unhappy","url":"https://music.163.com/song?id=3332771263","cover":"https://p3.music.126.net/6Vd1hbi_EVJNVvcaqmVq2w==/109951173608427390.jpg?param=400y400"},{"name":"Come Back To Me","artist":"宇多田ヒカル","album":"Promo Only: Mainstream Radio, March 2009","url":"https://music.163.com/song?id=27158959","cover":"https://p3.music.126.net/gZdwUZdIF_jF_DHQ1HjVXQ==/2135251581170994.jpg?param=400y400"},{"name":"HORSESHOE","artist":"Tate McRae","album":"SO CLOSE TO WHAT??? (deluxe)","url":"https://music.163.com/song?id=3319964828","cover":"https://p4.music.126.net/zB0a81Qs7DavebHg0MpjxQ==/109951172316400964.jpg?param=400y400"},{"name":"刹那、夏が終わっていく","artist":"こはならむ","album":"刹那、夏が終わっていく","url":"https://music.163.com/song?id=2733685504","cover":"https://p4.music.126.net/08TU2041XzxVu3deem5KtA==/109951171783651557.jpg?param=400y400"},{"name":"我本将心向明月","artist":"王朝1982 / 朱旭BooBoo","album":"我本将心向明月","url":"https://music.163.com/song?id=1964850580","cover":"https://p4.music.126.net/iEOD7-UHTtkyurXeFndBrg==/109951172856631446.jpg?param=400y400"},{"name":"咏春","artist":"七朵组合","album":"咏春","url":"https://music.163.com/song?id=372359","cover":"https://p4.music.126.net/GE9hj6I9A-fL64_tFuGZAA==/109951172859327838.jpg?param=400y400"},{"name":"雨ほうし","artist":"平葵","album":"雨ほうし","url":"https://music.163.com/song?id=1889988412","cover":"https://p3.music.126.net/rxSPvAjm26I4f4QbE18UMQ==/109951166557859791.jpg?param=400y400"},{"name":"Traffic Light","artist":"Rival / ORKID","album":"Traffic Light","url":"https://music.163.com/song?id=1910991475","cover":"https://p4.music.126.net/mW9GHO-Evn0yPRo_o4l9uA==/109951166919447113.jpg?param=400y400"},{"name":"Diet Pepsi","artist":"Addison Rae","album":"Diet Pepsi","url":"https://music.163.com/song?id=2614675852","cover":"https://p4.music.126.net/tSFYKVg8sJ0sqZkiQQ--ug==/109951169848232459.jpg?param=400y400"},{"name":"Cheating on You","artist":"Charlie Puth","album":"Cheating on You","url":"https://music.163.com/song?id=1393800989","cover":"https://p3.music.126.net/NCOWM8LHJYzPzL-fjP1lTA==/109951164391414873.jpg?param=400y400"},{"name":"Echo of You","artist":"半分采样","album":"Echo of You","url":"https://music.163.com/song?id=2718628650","cover":"https://p4.music.126.net/H7yK8w72RGjWOCFABEx24g==/109951171350896611.jpg?param=400y400"},{"name":"Roam","artist":"Theia","album":"Roam","url":"https://music.163.com/song?id=431096594","cover":"https://p2.music.126.net/5S7uTsCXWD6EgGP4rbqKMA==/18626826486439732.jpg?param=400y400"},{"name":"Maybe","artist":"mixed matches / Lukrative","album":"Ready for the World","url":"https://music.163.com/song?id=1393412185","cover":"https://p3.music.126.net/JpPEehyuv2IMtDXGkt6pTQ==/109951168881039794.jpg?param=400y400"},{"name":"Wrong (feat. Emilia Ali)","artist":"Far Out / Emilia Ali","album":"Wrong (feat. Emilia Ali)","url":"https://music.163.com/song?id=512358397","cover":"https://p4.music.126.net/SiWpdnTo8Aet4nEBTNSnMQ==/109951166186852893.jpg?param=400y400"},{"name":"I Can't Sleep","artist":"Jolianne","album":"I Can't Sleep","url":"https://music.163.com/song?id=2080855007","cover":"https://p3.music.126.net/pc_6La5E_BRSEHINme0_3g==/109951168904624262.jpg?param=400y400"},{"name":"Tokyo","artist":"Luna Shadows","album":"Tokyo","url":"https://music.163.com/song?id=504264941","cover":"https://p1.music.126.net/wPkQxHl6VHouLKcgyAAZpA==/109951163020632175.jpg?param=400y400"},{"name":"Self Love","artist":"Metro Boomin / Coi Leray","album":"METRO BOOMIN PRESENTS SPIDER-MAN: ACROSS THE SPIDER-VERSE (SOUNDTRACK FROM AND INSPIRED BY THE MOTION PICTURE)","url":"https://music.163.com/song?id=2052349052","cover":"https://p4.music.126.net/SxtseFx6E4yP4o_PlWLPhA==/109951168652317597.jpg?param=400y400"},{"name":"TiK ToK","artist":"Kesha","album":"Animal (Expanded Edition)","url":"https://music.163.com/song?id=2918954","cover":"https://p2.music.126.net/RHv1VNQqb5Q7Y_ephBLqxA==/109951172325402148.jpg?param=400y400"},{"name":"EX","artist":"Kiana Ledé","album":"Selfless","url":"https://music.163.com/song?id=866065093","cover":"https://p4.music.126.net/M4mtnrlc0lMawI8qcQBJxQ==/109951163405837765.jpg?param=400y400"},{"name":"Revolution","artist":"The Score","album":"Revolution","url":"https://music.163.com/song?id=455500439","cover":"https://p3.music.126.net/SQHidvlLtjul2faOGvpHMg==/17719729393683020.jpg?param=400y400"},{"name":"Setting Me Free","artist":"LU2VYK / Marmy","album":"Setting Me Free","url":"https://music.163.com/song?id=1845211689","cover":"https://p4.music.126.net/vXHe5z93fd2XHrI_aA1xlQ==/109951168553186350.jpg?param=400y400"},{"name":"One Last Kiss","artist":"宇多田ヒカル","album":"One Last Kiss","url":"https://music.163.com/song?id=1824020871","cover":"https://p3.music.126.net/l3G4LigZnOxFE9lB4bz_LQ==/109951165791860501.jpg?param=400y400"},{"name":"Patience","artist":"TRA$H","album":"AWAKE Vol. 2","url":"https://music.163.com/song?id=1334295035","cover":"https://p3.music.126.net/Sc3wx1BGHRz5mqw7NnCAhg==/109951163737194148.jpg?param=400y400"},{"name":"greedy","artist":"Tate McRae","album":"greedy","url":"https://music.163.com/song?id=2080331573","cover":"https://p3.music.126.net/lqF5-HDkogZfAo2Z2kfngQ==/109951168900606192.jpg?param=400y400"},{"name":"Jealous","artist":"Faustix","album":"Faustix","url":"https://music.163.com/song?id=523001618","cover":"https://p2.music.126.net/Yi32wAqxBlSTJgD-yES4mg==/109951164083748234.jpg?param=400y400"},{"name":"Episode 33","artist":"She Her Her Hers","album":"SPIRAL","url":"https://music.163.com/song?id=1311427648","cover":"https://p3.music.126.net/wboW3wGxFvgGm8ad3WSfSQ==/109951163559799123.jpg?param=400y400"},{"name":"Next to Mine","artist":"Jaymee Franchina / Alina Renae","album":"Next to Mine","url":"https://music.163.com/song?id=1381772521","cover":"https://p1.music.126.net/8vi-ZnKvbuAZTw7wLoiMDQ==/109951164238345920.jpg?param=400y400"},{"name":"What if She Knows","artist":"Severo / Linn / Ellusive","album":"What if She Knows","url":"https://music.163.com/song?id=554375621","cover":"https://p4.music.126.net/1h_VflBrXjucxjVgKn9bvg==/109951165984054972.jpg?param=400y400"},{"name":"terminal (acoustic version)","artist":"lewloh / Sheila Dara Aisha / Aaron Sinclair","album":"terminal (acoustic version)","url":"https://music.163.com/song?id=1887119468","cover":"https://p3.music.126.net/EhZL4oxdnv3YfsfEyc28ww==/109951166519794230.jpg?param=400y400"},{"name":"Interlinked","artist":"Lonely Lies / GOLDKID$","album":"Interlinked","url":"https://music.163.com/song?id=2085499905","cover":"https://p3.music.126.net/OJcSiICqDGHQ4DcJO4tctA==/109951170126385934.jpg?param=400y400"}] || [];
-  var MUSIC_URL = '/music';
-  var DEMO_LEN = 210; // 无真实音频时的演示时间轴(3:30)
+  try {
+    var RECS = [{"name":"Everyday","audio":"/audio/everyday.m4a"},{"name":"埠上风光 What a Delightful Scenery","artist":"HOYO-MiX","album":"原神 · HOYO-MiX 精选","cover":"/img/music/huibo.jpg","audio":"/audio/huibo-shangfengguang.mp3"},{"name":"半入江风半入云 Through Clouds and Rivers","artist":"HOYO-MiX","album":"原神 · HOYO-MiX 精选","cover":"/img/music/banru.jpg","audio":"/audio/banru-jiangfeng.mp3"},{"name":"One Of The Girls","artist":"The Weeknd / JENNIE / Lily-Rose Depp","album":"The Idol Episode 4 (Music from the HBO Original Series)","url":"https://music.163.com/song?id=2058139099","cover":"https://p3.music.126.net/6aqy20VWVRtn1f2jBLPeKQ==/109951168694564986.jpg?param=400y400"},{"name":"unhappy","artist":"s0rrow","album":"unhappy","url":"https://music.163.com/song?id=3332771263","cover":"https://p3.music.126.net/6Vd1hbi_EVJNVvcaqmVq2w==/109951173608427390.jpg?param=400y400"},{"name":"Come Back To Me","artist":"宇多田ヒカル","album":"Promo Only: Mainstream Radio, March 2009","url":"https://music.163.com/song?id=27158959","cover":"https://p3.music.126.net/gZdwUZdIF_jF_DHQ1HjVXQ==/2135251581170994.jpg?param=400y400"},{"name":"HORSESHOE","artist":"Tate McRae","album":"SO CLOSE TO WHAT??? (deluxe)","url":"https://music.163.com/song?id=3319964828","cover":"https://p4.music.126.net/zB0a81Qs7DavebHg0MpjxQ==/109951172316400964.jpg?param=400y400"},{"name":"刹那、夏が終わっていく","artist":"こはならむ","album":"刹那、夏が終わっていく","url":"https://music.163.com/song?id=2733685504","cover":"https://p4.music.126.net/08TU2041XzxVu3deem5KtA==/109951171783651557.jpg?param=400y400"},{"name":"我本将心向明月","artist":"王朝1982 / 朱旭BooBoo","album":"我本将心向明月","url":"https://music.163.com/song?id=1964850580","cover":"https://p4.music.126.net/iEOD7-UHTtkyurXeFndBrg==/109951172856631446.jpg?param=400y400"},{"name":"咏春","artist":"七朵组合","album":"咏春","url":"https://music.163.com/song?id=372359","cover":"https://p4.music.126.net/GE9hj6I9A-fL64_tFuGZAA==/109951172859327838.jpg?param=400y400"},{"name":"雨ほうし","artist":"平葵","album":"雨ほうし","url":"https://music.163.com/song?id=1889988412","cover":"https://p3.music.126.net/rxSPvAjm26I4f4QbE18UMQ==/109951166557859791.jpg?param=400y400"},{"name":"Traffic Light","artist":"Rival / ORKID","album":"Traffic Light","url":"https://music.163.com/song?id=1910991475","cover":"https://p4.music.126.net/mW9GHO-Evn0yPRo_o4l9uA==/109951166919447113.jpg?param=400y400"},{"name":"Diet Pepsi","artist":"Addison Rae","album":"Diet Pepsi","url":"https://music.163.com/song?id=2614675852","cover":"https://p4.music.126.net/tSFYKVg8sJ0sqZkiQQ--ug==/109951169848232459.jpg?param=400y400"},{"name":"Cheating on You","artist":"Charlie Puth","album":"Cheating on You","url":"https://music.163.com/song?id=1393800989","cover":"https://p3.music.126.net/NCOWM8LHJYzPzL-fjP1lTA==/109951164391414873.jpg?param=400y400"},{"name":"Echo of You","artist":"半分采样","album":"Echo of You","url":"https://music.163.com/song?id=2718628650","cover":"https://p4.music.126.net/H7yK8w72RGjWOCFABEx24g==/109951171350896611.jpg?param=400y400"},{"name":"Roam","artist":"Theia","album":"Roam","url":"https://music.163.com/song?id=431096594","cover":"https://p2.music.126.net/5S7uTsCXWD6EgGP4rbqKMA==/18626826486439732.jpg?param=400y400"},{"name":"Maybe","artist":"mixed matches / Lukrative","album":"Ready for the World","url":"https://music.163.com/song?id=1393412185","cover":"https://p3.music.126.net/JpPEehyuv2IMtDXGkt6pTQ==/109951168881039794.jpg?param=400y400"},{"name":"Wrong (feat. Emilia Ali)","artist":"Far Out / Emilia Ali","album":"Wrong (feat. Emilia Ali)","url":"https://music.163.com/song?id=512358397","cover":"https://p4.music.126.net/SiWpdnTo8Aet4nEBTNSnMQ==/109951166186852893.jpg?param=400y400"},{"name":"I Can't Sleep","artist":"Jolianne","album":"I Can't Sleep","url":"https://music.163.com/song?id=2080855007","cover":"https://p3.music.126.net/pc_6La5E_BRSEHINme0_3g==/109951168904624262.jpg?param=400y400"},{"name":"Tokyo","artist":"Luna Shadows","album":"Tokyo","url":"https://music.163.com/song?id=504264941","cover":"https://p1.music.126.net/wPkQxHl6VHouLKcgyAAZpA==/109951163020632175.jpg?param=400y400"},{"name":"Self Love","artist":"Metro Boomin / Coi Leray","album":"METRO BOOMIN PRESENTS SPIDER-MAN: ACROSS THE SPIDER-VERSE (SOUNDTRACK FROM AND INSPIRED BY THE MOTION PICTURE)","url":"https://music.163.com/song?id=2052349052","cover":"https://p4.music.126.net/SxtseFx6E4yP4o_PlWLPhA==/109951168652317597.jpg?param=400y400"},{"name":"TiK ToK","artist":"Kesha","album":"Animal (Expanded Edition)","url":"https://music.163.com/song?id=2918954","cover":"https://p2.music.126.net/RHv1VNQqb5Q7Y_ephBLqxA==/109951172325402148.jpg?param=400y400"},{"name":"EX","artist":"Kiana Ledé","album":"Selfless","url":"https://music.163.com/song?id=866065093","cover":"https://p4.music.126.net/M4mtnrlc0lMawI8qcQBJxQ==/109951163405837765.jpg?param=400y400"},{"name":"Revolution","artist":"The Score","album":"Revolution","url":"https://music.163.com/song?id=455500439","cover":"https://p3.music.126.net/SQHidvlLtjul2faOGvpHMg==/17719729393683020.jpg?param=400y400"},{"name":"Setting Me Free","artist":"LU2VYK / Marmy","album":"Setting Me Free","url":"https://music.163.com/song?id=1845211689","cover":"https://p4.music.126.net/vXHe5z93fd2XHrI_aA1xlQ==/109951168553186350.jpg?param=400y400"},{"name":"One Last Kiss","artist":"宇多田ヒカル","album":"One Last Kiss","url":"https://music.163.com/song?id=1824020871","cover":"https://p3.music.126.net/l3G4LigZnOxFE9lB4bz_LQ==/109951165791860501.jpg?param=400y400"},{"name":"Patience","artist":"TRA$H","album":"AWAKE Vol. 2","url":"https://music.163.com/song?id=1334295035","cover":"https://p3.music.126.net/Sc3wx1BGHRz5mqw7NnCAhg==/109951163737194148.jpg?param=400y400"},{"name":"greedy","artist":"Tate McRae","album":"greedy","url":"https://music.163.com/song?id=2080331573","cover":"https://p3.music.126.net/lqF5-HDkogZfAo2Z2kfngQ==/109951168900606192.jpg?param=400y400"},{"name":"Jealous","artist":"Faustix","album":"Faustix","url":"https://music.163.com/song?id=523001618","cover":"https://p2.music.126.net/Yi32wAqxBlSTJgD-yES4mg==/109951164083748234.jpg?param=400y400"},{"name":"Episode 33","artist":"She Her Her Hers","album":"SPIRAL","url":"https://music.163.com/song?id=1311427648","cover":"https://p3.music.126.net/wboW3wGxFvgGm8ad3WSfSQ==/109951163559799123.jpg?param=400y400"},{"name":"Next to Mine","artist":"Jaymee Franchina / Alina Renae","album":"Next to Mine","url":"https://music.163.com/song?id=1381772521","cover":"https://p1.music.126.net/8vi-ZnKvbuAZTw7wLoiMDQ==/109951164238345920.jpg?param=400y400"},{"name":"What if She Knows","artist":"Severo / Linn / Ellusive","album":"What if She Knows","url":"https://music.163.com/song?id=554375621","cover":"https://p4.music.126.net/1h_VflBrXjucxjVgKn9bvg==/109951165984054972.jpg?param=400y400"},{"name":"terminal (acoustic version)","artist":"lewloh / Sheila Dara Aisha / Aaron Sinclair","album":"terminal (acoustic version)","url":"https://music.163.com/song?id=1887119468","cover":"https://p3.music.126.net/EhZL4oxdnv3YfsfEyc28ww==/109951166519794230.jpg?param=400y400"},{"name":"Interlinked","artist":"Lonely Lies / GOLDKID$","album":"Interlinked","url":"https://music.163.com/song?id=2085499905","cover":"https://p3.music.126.net/OJcSiICqDGHQ4DcJO4tctA==/109951170126385934.jpg?param=400y400"}] || [];
+    var MUSIC_URL = '/music';
 
-  function esc(s) {
-    return String(s == null ? '' : s)
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-  }
-  function posText(sec) {
-    sec = Math.max(0, Math.floor(sec || 0));
-    var m = Math.floor(sec / 60), s = sec % 60;
-    return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
-  }
+    function esc(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
-  // ---------- 乐符按钮：弹出推荐文本 ----------
-  function toggleMusicPanel() {
-    var panel = document.getElementById('ffm-panel');
-    if (!panel) {
-      panel = document.createElement('div');
-      panel.id = 'ffm-panel';
-      document.body.appendChild(panel);
-    }
-    if (!panel.hidden) { panel.hidden = true; return; }
-    panel.hidden = false;
-    var list = RECS.length
-      ? '<ul>' + RECS.slice(0, 5).map(function (it) {
-          return '<li data-go="1"><span>🎵</span> ' + esc(it.name || '未命名曲目')
-            + (it.artist ? ' <span style="opacity:.6">— ' + esc(it.artist) + '</span>' : '') + '</li>';
-        }).join('')
-        + (RECS.length > 5 ? '<li class="ffm-empty">还有 ' + (RECS.length - 5) + ' 首…</li>' : '') + '</ul>'
-      : '<ul><li class="ffm-empty">曲目整理中，敬请期待 🎧</li></ul>';
-    panel.innerHTML =
-      '<div class="ffm-title"><span>🎵</span><span>无人之境（我的推荐）</span></div>' +
-      '<div class="ffm-sub">站长私藏的一些曲子 · 点击跳转推荐页查看全部</div>' + list +
-      '<a class="ffm-go" href="' + MUSIC_URL + '">进入「音乐推荐」页 →</a>';
-  }
-
-  // ---------- 播放按钮：迷你播放器 ----------
-  var dragging = false;
-  var audioItems = RECS.filter(function (r) { return r && r.audio; });
-  var curAudioIdx = -1;
-  var A = null;
-
-  function ensureAudio() {
-    if (audioItems.length && !A) {
-      A = new Audio();
-      curAudioIdx = 0;
-      A.src = audioItems[0].audio;
-      A.addEventListener('loadedmetadata', function () { renderBar(); });
-      A.addEventListener('durationchange', function () { renderBar(); });
-      A.addEventListener('timeupdate', function () { if (!dragging) renderBar(); });
-      A.addEventListener('ended', function () {
-        var b = document.getElementById('ffp-play'); if (b) b.textContent = '▶';
-        if (audioItems.length > 1) step(1); else renderBar();
-      });
-      // 浏览器要求用户手势后才能播放，这里只预加载元数据
-      try { A.load(); } catch (e) {}
-      renderList();
-    }
-    return A;
-  }
-  function step(dir) {
-    if (audioItems.length < 2) return;
-    playItem((curAudioIdx + dir + audioItems.length) % audioItems.length);
-  }
-  function playItem(i) {
-    if (i < 0 || i >= audioItems.length) return;
-    curAudioIdx = i;
-    if (!A) A = new Audio();
-    A.src = audioItems[i].audio;
-    A.play();
-    var b = document.getElementById('ffp-play'); if (b) b.textContent = '⏸';
-    setNowItem(audioItems[i]);
-    renderList();
-    renderBar();
-  }
-  function renderList() {
-    var ls = document.getElementById('ffp-list');
-    if (!ls) return;
-    if (!audioItems.length) { ls.innerHTML = '<div class="ffp-no">暂无音频 · 数据里加 audio 即可播放</div>'; return; }
-    ls.innerHTML = audioItems.map(function (it, i) {
-      return '<div class="ffp-row' + (i === curAudioIdx ? ' on' : '') + '" data-i="' + i + '">' +
-        (it.cover ? '<img src="' + it.cover + '" alt="">' : '<span style="width:22px"></span>') +
-        '<span class="t"><span class="n">' + esc(it.name || ('曲目 ' + (i + 1))) + '</span>' +
-        '<span class="s">' + esc([it.album, it.artist].filter(function (x) { return x; }).join(' · ')) + '</span></span></div>';
-    }).join('');
-  }
-  function renderBar() {
-    var p = document.getElementById('ffp-player');
-    if (!p) return;
-    var bar = p.querySelector('#ffp-progress');
-    var ratio = parseFloat((bar && bar.dataset.ratio) || 0);
-    var total = (A && A.duration && isFinite(A.duration)) ? A.duration : DEMO_LEN;
-    var curT = (A && A.duration && isFinite(A.duration)) ? A.currentTime : ratio * total;
-    if (!A && ratio === 0) ratio = 0;
-    var pct = Math.min(100, (curT / total) * 100);
-    var fill = document.getElementById('ffp-fill'), thumb = document.getElementById('ffp-thumb');
-    if (fill) fill.style.width = pct + '%';
-    if (thumb) thumb.style.left = pct + '%';
-    var cur = document.getElementById('ffp-cur'), end = document.getElementById('ffp-end');
-    if (cur) cur.textContent = posText(curT);
-    if (end) end.textContent = posText(total);
-  }
-  function seekToRatio(ratio) {
-    if (A && A.duration && isFinite(A.duration)) { try { A.currentTime = ratio * A.duration; } catch (e) {} }
-    var p = document.getElementById('ffp-player');
-    if (p) {
-      var bar = p.querySelector('#ffp-progress');
-      if (bar) bar.dataset.ratio = ratio;
-    }
-    renderBar();
-  }
-
-
-  function setNowItem(it) {
-    var nm = document.getElementById('ffp-name');
-    var nt = document.getElementById('ffp-note');
-    var ar = document.getElementById('ffp-art');
-    if (!nm) return;
-    if (!it) { nm.textContent = '迷你播放器'; if (nt) nt.textContent = '暂无音频 · 数据里加 audio 即可播放'; if (ar) ar.removeAttribute('src'); return; }
-    nm.textContent = it.name || '曲目';
-    if (nt) nt.textContent = [it.album, it.artist].filter(function (x) { return x; }).join(' · ');
-    if (ar) ar.setAttribute('src', it.cover ? it.cover : '');
-  }
-
-  function buildPlayer(x, y) {
-    var p = document.getElementById('ffp-player');
-    if (!p) {
-      p = document.createElement('div');
-      p.id = 'ffp-player';
-      document.body.appendChild(p);
-    }
-    p.hidden = false;
-    var first = audioItems.length ? audioItems[0] : null;
-    p.innerHTML =
-      '<div class="ffp-head">' +
-      '<img class="ffp-art" id="ffp-art" alt="" src="' + (first && first.cover ? first.cover : '') + '">' +
-      '<div class="ffp-txt">' +
-      '<div class="ffp-name" id="ffp-name"></div>' +
-      '<div class="ffp-note" id="ffp-note"></div></div>' +
-      '<button class="ffp-close" data-ffp-close="1" title="隐藏播放器">✕</button></div>' +
-      '<div id="ffp-controls">' +
-      '  <button data-ffp-prev="1" title="上一首" ' + (audioItems.length > 1 ? '' : 'disabled') + '>⏮</button>' +
-      '  <button data-ffp-play="1" id="ffp-play" title="播放/暂停">▶</button>' +
-      '  <button data-ffp-next="1" title="下一首" ' + (audioItems.length > 1 ? '' : 'disabled') + '>⏭</button>' +
-      '</div>' +
-      '<div id="ffp-progress"><span class="ffp-fill" id="ffp-fill"></span><span class="ffp-thumb" id="ffp-thumb"></span></div>' +
-      '<div id="ffp-time"><span id="ffp-cur">00:00</span><span id="ffp-end">' + posText(first ? 0 : DEMO_LEN) + '</span></div>' +
-      '<div class="ffp-list" id="ffp-list"></div>';
-
-    var rect = p.getBoundingClientRect();
-    var px = Math.min(x + 14, window.innerWidth - rect.width - 10);
-    var py = Math.min(y + 14, window.innerHeight - rect.height - 10);
-    p.style.left = Math.max(10, px) + 'px';
-    p.style.top = Math.max(10, py) + 'px';
-
-    ensureAudio();
-    setNowItem(first);
-    renderList();
-    var lsEl = p.querySelector('#ffp-list');
-    if (lsEl) {
-      lsEl.addEventListener('click', function (e) {
-        var row = e.target.closest('.ffp-row');
-        if (row) playItem(parseInt(row.getAttribute('data-i'), 10));
-      });
-    }
-
-    var bar = p.querySelector('#ffp-progress');
-    function fromEvent(ev) {
-      var r = bar.getBoundingClientRect();
-      var ratio = Math.min(1, Math.max(0, (ev.clientX - r.left) / r.width));
-      if (!A) { bar.dataset.ratio = ratio; renderBar(); return; }
-      seekToRatio(ratio);
-    }
-    bar.addEventListener('pointerdown', function (ev) { dragging = true; bar.setPointerCapture(ev.pointerId); fromEvent(ev); ev.preventDefault(); });
-    bar.addEventListener('pointermove', function (ev) { if (dragging) fromEvent(ev); });
-    bar.addEventListener('pointerup', function () { dragging = false; });
-    bar.addEventListener('pointercancel', function () { dragging = false; });
-
-    p.querySelector('[data-ffp-play]').addEventListener('click', function () {
-      var b = this;
-      if (!A) { b.textContent = '⏸'; setTimeout(function () { b.textContent = '▶'; }, 800); return; }
-      if (A.paused) { A.play(); b.textContent = '⏸'; }
-      else { A.pause(); b.textContent = '▶'; }
-    });
-    var prevBtn = p.querySelector('[data-ffp-prev]'), nextBtn = p.querySelector('[data-ffp-next]');
-    if (prevBtn) prevBtn.addEventListener('click', function () { step(-1); });
-    if (nextBtn) nextBtn.addEventListener('click', function () { step(1); });
-    p.querySelector('[data-ffp-close]').addEventListener('click', function () { p.hidden = true; });
-    p.addEventListener('click', function (e) { e.stopPropagation(); });
-    renderBar();
-  }
-
-  // 捕获阶段接管：阻止主题原逻辑，避免“崩溃”
-  document.addEventListener('click', function (e) {
-    var musicHit = e.target.closest && e.target.closest('#nav-music-btn');
-    var playHit = e.target.closest && e.target.closest('#nav-play-btn');
-    if (!musicHit && !playHit) {
-      if (!e.target.closest('#ffm-panel')) {
-        var pm = document.getElementById('ffm-panel'); if (pm && !pm.hidden) pm.hidden = true;
+    function build() {
+      var pm = document.getElementById('ffm-panel');
+      if (!pm) {
+        pm = document.createElement('div');
+        pm.className = 'ffm-panel';
+        pm.id = 'ffm-panel';
+        document.body.appendChild(pm);
       }
-      return;
+      var list = RECS.length
+        ? '<ul>' + RECS.slice(0, 5).map(function (it) {
+            return '<li data-go="1"><span>🎵</span> <span>' + esc(it.name || '未命名') + (it.artist ? ' <span style="opacity:.6">— ' + esc(it.artist) + '</span>' : '') + '</span></li>';
+          }).join('') + (RECS.length > 5 ? '<li class="empty">还有 ' + (RECS.length - 5) + ' 首…</li>' : '') + '</ul>'
+        : '<ul><li class="empty">曲目整理中 🎧</li></ul>';
+      pm.innerHTML =
+        '<div class="t"><span>🎵</span><span>无人之境（我的推荐）</span></div>' +
+        '<div class="sub">点击跳转推荐页查看全部</div>' + list +
+        '<a class="go" href="' + MUSIC_URL + '">进入「音乐推荐」页 →</a>';
+      return pm;
     }
-    e.preventDefault();
-    e.stopPropagation();
-    if (musicHit) { toggleMusicPanel(); return; }
-    if (playHit) {
-      var cur = document.getElementById('ffp-player');
-      if (cur && !cur.hidden) { cur.hidden = true; }
-      else { buildPlayer(e.clientX, e.clientY); }
-    }
-  }, true);
 
-  // 冒泡：推荐列表跳转
-  document.addEventListener('click', function (e) {
-    var go = e.target.closest && e.target.closest('[data-go="1"]');
-    if (go) { window.location.href = MUSIC_URL; }
-  });
+    document.addEventListener('click', function (e) {
+      var hit = e.target.closest && e.target.closest('#nav-music-btn');
+      if (!hit) return;
+      e.preventDefault();
+      e.stopPropagation();
+      var pm = build();
+      pm.hidden = !pm.hidden;
+    }, true);
 
-  // ---------- 邮箱图标：点击弹出可复制地址 ----------
-  var mailAddr = '2383282254@qq.com';
-  var mailBox = null;
-  function showMailBubble(e) {
-    if (!mailBox) {
-      mailBox = document.createElement('div');
-      mailBox.id = 'ffmail';
-      document.body.appendChild(mailBox);
-    }
-    mailBox.hidden = false;
-    mailBox.innerHTML =
-      '<div class="t">📧 QQ 邮箱（点击复制）</div>' +
-      '<div class="addr">' + mailAddr + '</div>' +
-      '<div class="row">' +
-      '  <button id="ffmail-copy" type="button">复制</button>' +
-      '  <button class="small" id="ffmail-close" type="button">✕</button>' +
-      '</div>';
-    var rect = mailBox.getBoundingClientRect();
-    var px = Math.min(e.clientX + 12, window.innerWidth - rect.width - 12);
-    var py = Math.min(e.clientY + 12, window.innerHeight - rect.height - 12);
-    mailBox.style.left = Math.max(10, px) + 'px';
-    mailBox.style.top = Math.max(10, py) + 'px';
-
-    var copyBtn = mailBox.querySelector('#ffmail-copy');
-    var ok = false;
-    function done() {
-      if (ok) return; ok = true;
-      copyBtn.textContent = '✓ 已复制';
-      copyBtn.classList.add('ok');
-      setTimeout(function () { ok = false; copyBtn.textContent = '复制'; copyBtn.classList.remove('ok'); }, 1800);
-    }
-    copyBtn.addEventListener('click', function () {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(mailAddr).then(done, function () { fallbackCopy(); done(); });
-      } else { fallbackCopy(); done(); }
+    document.addEventListener('click', function (e) {
+      var go = e.target.closest && e.target.closest('[data-go="1"]');
+      if (go) { e.preventDefault(); window.location.href = MUSIC_URL; }
+      var pp = document.getElementById('ffm-panel');
+      if (pp && !pp.hidden && !e.target.closest('.ffm-panel') && !e.target.closest('#nav-music-btn')) { pp.hidden = true; }
     });
-    mailBox.querySelector('#ffmail-close').addEventListener('click', function () { mailBox.hidden = true; });
-    function fallbackCopy() {
-      try {
-        var ta = document.createElement('textarea');
-        ta.value = mailAddr;
-        ta.style.position = 'fixed'; ta.style.opacity = '0';
-        document.body.appendChild(ta); ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-      } catch (err) {}
+  } catch (e) { try { console.warn('music panel err', e); } catch (e2) {} }
+})();
+</script>
+
+<script>
+/* ============ 模块二：▶ 迷你播放器（含队列） ============ */
+(function () {
+  try {
+    var RECS = [{"name":"Everyday","audio":"/audio/everyday.m4a"},{"name":"埠上风光 What a Delightful Scenery","artist":"HOYO-MiX","album":"原神 · HOYO-MiX 精选","cover":"/img/music/huibo.jpg","audio":"/audio/huibo-shangfengguang.mp3"},{"name":"半入江风半入云 Through Clouds and Rivers","artist":"HOYO-MiX","album":"原神 · HOYO-MiX 精选","cover":"/img/music/banru.jpg","audio":"/audio/banru-jiangfeng.mp3"},{"name":"One Of The Girls","artist":"The Weeknd / JENNIE / Lily-Rose Depp","album":"The Idol Episode 4 (Music from the HBO Original Series)","url":"https://music.163.com/song?id=2058139099","cover":"https://p3.music.126.net/6aqy20VWVRtn1f2jBLPeKQ==/109951168694564986.jpg?param=400y400"},{"name":"unhappy","artist":"s0rrow","album":"unhappy","url":"https://music.163.com/song?id=3332771263","cover":"https://p3.music.126.net/6Vd1hbi_EVJNVvcaqmVq2w==/109951173608427390.jpg?param=400y400"},{"name":"Come Back To Me","artist":"宇多田ヒカル","album":"Promo Only: Mainstream Radio, March 2009","url":"https://music.163.com/song?id=27158959","cover":"https://p3.music.126.net/gZdwUZdIF_jF_DHQ1HjVXQ==/2135251581170994.jpg?param=400y400"},{"name":"HORSESHOE","artist":"Tate McRae","album":"SO CLOSE TO WHAT??? (deluxe)","url":"https://music.163.com/song?id=3319964828","cover":"https://p4.music.126.net/zB0a81Qs7DavebHg0MpjxQ==/109951172316400964.jpg?param=400y400"},{"name":"刹那、夏が終わっていく","artist":"こはならむ","album":"刹那、夏が終わっていく","url":"https://music.163.com/song?id=2733685504","cover":"https://p4.music.126.net/08TU2041XzxVu3deem5KtA==/109951171783651557.jpg?param=400y400"},{"name":"我本将心向明月","artist":"王朝1982 / 朱旭BooBoo","album":"我本将心向明月","url":"https://music.163.com/song?id=1964850580","cover":"https://p4.music.126.net/iEOD7-UHTtkyurXeFndBrg==/109951172856631446.jpg?param=400y400"},{"name":"咏春","artist":"七朵组合","album":"咏春","url":"https://music.163.com/song?id=372359","cover":"https://p4.music.126.net/GE9hj6I9A-fL64_tFuGZAA==/109951172859327838.jpg?param=400y400"},{"name":"雨ほうし","artist":"平葵","album":"雨ほうし","url":"https://music.163.com/song?id=1889988412","cover":"https://p3.music.126.net/rxSPvAjm26I4f4QbE18UMQ==/109951166557859791.jpg?param=400y400"},{"name":"Traffic Light","artist":"Rival / ORKID","album":"Traffic Light","url":"https://music.163.com/song?id=1910991475","cover":"https://p4.music.126.net/mW9GHO-Evn0yPRo_o4l9uA==/109951166919447113.jpg?param=400y400"},{"name":"Diet Pepsi","artist":"Addison Rae","album":"Diet Pepsi","url":"https://music.163.com/song?id=2614675852","cover":"https://p4.music.126.net/tSFYKVg8sJ0sqZkiQQ--ug==/109951169848232459.jpg?param=400y400"},{"name":"Cheating on You","artist":"Charlie Puth","album":"Cheating on You","url":"https://music.163.com/song?id=1393800989","cover":"https://p3.music.126.net/NCOWM8LHJYzPzL-fjP1lTA==/109951164391414873.jpg?param=400y400"},{"name":"Echo of You","artist":"半分采样","album":"Echo of You","url":"https://music.163.com/song?id=2718628650","cover":"https://p4.music.126.net/H7yK8w72RGjWOCFABEx24g==/109951171350896611.jpg?param=400y400"},{"name":"Roam","artist":"Theia","album":"Roam","url":"https://music.163.com/song?id=431096594","cover":"https://p2.music.126.net/5S7uTsCXWD6EgGP4rbqKMA==/18626826486439732.jpg?param=400y400"},{"name":"Maybe","artist":"mixed matches / Lukrative","album":"Ready for the World","url":"https://music.163.com/song?id=1393412185","cover":"https://p3.music.126.net/JpPEehyuv2IMtDXGkt6pTQ==/109951168881039794.jpg?param=400y400"},{"name":"Wrong (feat. Emilia Ali)","artist":"Far Out / Emilia Ali","album":"Wrong (feat. Emilia Ali)","url":"https://music.163.com/song?id=512358397","cover":"https://p4.music.126.net/SiWpdnTo8Aet4nEBTNSnMQ==/109951166186852893.jpg?param=400y400"},{"name":"I Can't Sleep","artist":"Jolianne","album":"I Can't Sleep","url":"https://music.163.com/song?id=2080855007","cover":"https://p3.music.126.net/pc_6La5E_BRSEHINme0_3g==/109951168904624262.jpg?param=400y400"},{"name":"Tokyo","artist":"Luna Shadows","album":"Tokyo","url":"https://music.163.com/song?id=504264941","cover":"https://p1.music.126.net/wPkQxHl6VHouLKcgyAAZpA==/109951163020632175.jpg?param=400y400"},{"name":"Self Love","artist":"Metro Boomin / Coi Leray","album":"METRO BOOMIN PRESENTS SPIDER-MAN: ACROSS THE SPIDER-VERSE (SOUNDTRACK FROM AND INSPIRED BY THE MOTION PICTURE)","url":"https://music.163.com/song?id=2052349052","cover":"https://p4.music.126.net/SxtseFx6E4yP4o_PlWLPhA==/109951168652317597.jpg?param=400y400"},{"name":"TiK ToK","artist":"Kesha","album":"Animal (Expanded Edition)","url":"https://music.163.com/song?id=2918954","cover":"https://p2.music.126.net/RHv1VNQqb5Q7Y_ephBLqxA==/109951172325402148.jpg?param=400y400"},{"name":"EX","artist":"Kiana Ledé","album":"Selfless","url":"https://music.163.com/song?id=866065093","cover":"https://p4.music.126.net/M4mtnrlc0lMawI8qcQBJxQ==/109951163405837765.jpg?param=400y400"},{"name":"Revolution","artist":"The Score","album":"Revolution","url":"https://music.163.com/song?id=455500439","cover":"https://p3.music.126.net/SQHidvlLtjul2faOGvpHMg==/17719729393683020.jpg?param=400y400"},{"name":"Setting Me Free","artist":"LU2VYK / Marmy","album":"Setting Me Free","url":"https://music.163.com/song?id=1845211689","cover":"https://p4.music.126.net/vXHe5z93fd2XHrI_aA1xlQ==/109951168553186350.jpg?param=400y400"},{"name":"One Last Kiss","artist":"宇多田ヒカル","album":"One Last Kiss","url":"https://music.163.com/song?id=1824020871","cover":"https://p3.music.126.net/l3G4LigZnOxFE9lB4bz_LQ==/109951165791860501.jpg?param=400y400"},{"name":"Patience","artist":"TRA$H","album":"AWAKE Vol. 2","url":"https://music.163.com/song?id=1334295035","cover":"https://p3.music.126.net/Sc3wx1BGHRz5mqw7NnCAhg==/109951163737194148.jpg?param=400y400"},{"name":"greedy","artist":"Tate McRae","album":"greedy","url":"https://music.163.com/song?id=2080331573","cover":"https://p3.music.126.net/lqF5-HDkogZfAo2Z2kfngQ==/109951168900606192.jpg?param=400y400"},{"name":"Jealous","artist":"Faustix","album":"Faustix","url":"https://music.163.com/song?id=523001618","cover":"https://p2.music.126.net/Yi32wAqxBlSTJgD-yES4mg==/109951164083748234.jpg?param=400y400"},{"name":"Episode 33","artist":"She Her Her Hers","album":"SPIRAL","url":"https://music.163.com/song?id=1311427648","cover":"https://p3.music.126.net/wboW3wGxFvgGm8ad3WSfSQ==/109951163559799123.jpg?param=400y400"},{"name":"Next to Mine","artist":"Jaymee Franchina / Alina Renae","album":"Next to Mine","url":"https://music.163.com/song?id=1381772521","cover":"https://p1.music.126.net/8vi-ZnKvbuAZTw7wLoiMDQ==/109951164238345920.jpg?param=400y400"},{"name":"What if She Knows","artist":"Severo / Linn / Ellusive","album":"What if She Knows","url":"https://music.163.com/song?id=554375621","cover":"https://p4.music.126.net/1h_VflBrXjucxjVgKn9bvg==/109951165984054972.jpg?param=400y400"},{"name":"terminal (acoustic version)","artist":"lewloh / Sheila Dara Aisha / Aaron Sinclair","album":"terminal (acoustic version)","url":"https://music.163.com/song?id=1887119468","cover":"https://p3.music.126.net/EhZL4oxdnv3YfsfEyc28ww==/109951166519794230.jpg?param=400y400"},{"name":"Interlinked","artist":"Lonely Lies / GOLDKID$","album":"Interlinked","url":"https://music.163.com/song?id=2085499905","cover":"https://p3.music.126.net/OJcSiICqDGHQ4DcJO4tctA==/109951170126385934.jpg?param=400y400"}] || [];
+    var items = RECS.filter(function (r) { return r && r.audio; });
+    var DEMO_LEN = 210;
+
+    function esc(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+    function pos(sec) { sec = Math.max(0, Math.floor(sec || 0)); return pad(Math.floor(sec / 60)) + ':' + pad(sec % 60); }
+
+    var player = null;      // 面板
+    var barEl, fillEl, thumbEl, curEl, endEl, listEl, playBtn;
+    var A = null;
+    var idx = -1;
+    var dragging = false;
+
+    function ensureBox() {
+      if (player) return;
+      player = document.createElement('div');
+      player.className = 'ffp-player';
+      player.id = 'ffp-player';
+      document.body.appendChild(player);
+      player.innerHTML =
+        '<div class="head">' +
+        '<img class="art" id="ffp-art" alt="" src="">' +
+        '<div class="txt"><div class="name" id="ffp-name">迷你播放器</div><div class="note" id="ffp-note">暂无音频 · 数据里加 audio 即可播放</div></div>' +
+        '<button class="close" id="ffp-close" type="button" title="隐藏">✕</button>' +
+        '</div>' +
+        '<div class="ctrls">' +
+        '<button id="ffp-prev" type="button" title="上一首">⏮</button>' +
+        '<button class="play" id="ffp-play" type="button" title="播放/暂停">▶</button>' +
+        '<button id="ffp-next" type="button" title="下一首">⏭</button>' +
+        '</div>' +
+        '<div class="bar" id="ffp-bar"><span class="fill" id="ffp-fill"></span><span class="thumb" id="ffp-thumb"></span></div>' +
+        '<div class="times"><span id="ffp-cur">00:00</span><span id="ffp-end">' + pos(DEMO_LEN) + '</span></div>' +
+        '<div class="list" id="ffp-list"></div>';
+      fillEl = document.getElementById('ffp-fill');
+      thumbEl = document.getElementById('ffp-thumb');
+      curEl = document.getElementById('ffp-cur');
+      endEl = document.getElementById('ffp-end');
+      barEl = document.getElementById('ffp-bar');
+      listEl = document.getElementById('ffp-list');
+
+      document.getElementById('ffp-close').addEventListener('click', function () { hide(); });
+      playBtn = document.getElementById('ffp-play');
+      playBtn.addEventListener('click', toggle);
+      document.getElementById('ffp-prev').addEventListener('click', function () { if (items.length > 1) go(((idx < 0 ? 0 : idx) - 1 + items.length) % items.length); });
+      document.getElementById('ffp-next').addEventListener('click', function () { if (items.length > 1) go(((idx < 0 ? 0 : idx) + 1) % items.length); });
+      barEl.addEventListener('pointerdown', function (ev) { dragging = true; barEl.setPointerCapture(ev.pointerId); seekFrom(ev); ev.preventDefault(); });
+      barEl.addEventListener('pointermove', function (ev) { if (dragging) seekFrom(ev); });
+      barEl.addEventListener('pointerup', function () { dragging = false; });
+      barEl.addEventListener('pointercancel', function () { dragging = false; });
+      listEl.addEventListener('click', function (e) {
+        var row = e.target.closest('.row');
+        if (row) go(parseInt(row.getAttribute('data-i'), 10));
+      });
     }
-  }
-  document.addEventListener('click', function (e) {
-    var link = e.target.closest && e.target.closest('a[href^="mailto:"]');
-    if (link) { e.preventDefault(); e.stopPropagation(); showMailBubble(e); }
-  });
+
+    function hide() { if (player) player.hidden = true; }
+
+    function audio() {
+      if (!A) {
+        A = new Audio();
+        A.addEventListener('loadedmetadata', renderBar);
+        A.addEventListener('durationchange', renderBar);
+        A.addEventListener('timeupdate', function () { if (!dragging) renderBar(); });
+        A.addEventListener('ended', function () { var b = document.getElementById('ffp-play'); if (b) b.textContent = '▶'; if (items.length > 1) go((idx + 1) % items.length); });
+      }
+      return A;
+    }
+
+    function go(i) {
+      if (i < 0 || i >= items.length) return;
+      idx = i;
+      var a = audio();
+      a.src = items[i].audio;
+      a.play();
+      var b = document.getElementById('ffp-play'); if (b) b.textContent = '⏸';
+      setNow(items[i]);
+      renderList();
+      renderBar();
+    }
+
+    function setNow(it) {
+      var nm = document.getElementById('ffp-name');
+      var nt = document.getElementById('ffp-note');
+      var ar = document.getElementById('ffp-art');
+      if (!nm) return;
+      nm.textContent = it.name || '曲目';
+      nt.textContent = [it.album, it.artist].filter(Boolean).join(' · ') || '';
+      if (ar) ar.setAttribute('src', it.cover || '');
+    }
+
+    function renderList() {
+      if (!listEl) return;
+      if (!items.length) { listEl.innerHTML = '<div class="no">暂无音频 · 数据里加 audio 即可播放</div>'; return; }
+      listEl.innerHTML = items.map(function (it, i) {
+        return '<div class="row' + (i === idx ? ' on' : '') + '" data-i="' + i + '">' +
+          (it.cover ? '<img src="' + it.cover + '" alt="">' : '') +
+          '<span class="n">' + (i === idx ? '▶ ' : '') + esc(it.name || ('曲目 ' + (i + 1))) + '</span></div>';
+      }).join('');
+    }
+
+    function totalLen() { return (A && A.duration && isFinite(A.duration)) ? A.duration : DEMO_LEN; }
+    function renderBar() {
+      if (!barEl) return;
+      var total = totalLen();
+      var cur = (A && A.duration && isFinite(A.duration)) ? A.currentTime : 0;
+      var pct = total > 0 ? Math.min(100, (cur / total) * 100) : 0;
+      if (fillEl) fillEl.style.width = pct + '%';
+      if (thumbEl) thumbEl.style.left = pct + '%';
+      if (curEl) curEl.textContent = pos(cur);
+      if (endEl) endEl.textContent = pos(total);
+    }
+    function seekFrom(ev) {
+      var r = barEl.getBoundingClientRect();
+      var ratio = Math.max(0, Math.min(1, (ev.clientX - r.left) / r.width));
+      if (A && A.duration && isFinite(A.duration)) { try { A.currentTime = ratio * A.duration; } catch (e) {} }
+      renderBar();
+    }
+    function toggle() {
+      if (!playBtn) return;
+      if (!items.length) { playBtn.textContent = '⏸'; setTimeout(function () { playBtn.textContent = '▶'; }, 800); return; }
+      if (idx < 0) { go(0); return; }
+      var a = audio();
+      if (a.paused) { a.play(); playBtn.textContent = '⏸'; }
+      else { a.pause(); playBtn.textContent = '▶'; }
+    }
+
+    function open(x, y) {
+      ensureBox();
+      if (!player.hidden) { hide(); return; }
+      player.hidden = false;
+      renderList();
+      if (idx >= 0 && items[idx]) { setNow(items[idx]); }
+      var rect = player.getBoundingClientRect();
+      player.style.left = Math.max(8, Math.min(x + 14, window.innerWidth - rect.width - 8)) + 'px';
+      player.style.top = Math.max(8, Math.min(y + 14, window.innerHeight - rect.height - 8)) + 'px';
+    }
+
+    document.addEventListener('click', function (e) {
+      var hit = e.target.closest && e.target.closest('#nav-play-btn');
+      if (!hit) return;
+      e.preventDefault();
+      e.stopPropagation();
+      open(e.clientX, e.clientY);
+    }, true);
+  } catch (e) { try { console.warn('player err', e); } catch (e2) {} }
 })();
 </script>
 
