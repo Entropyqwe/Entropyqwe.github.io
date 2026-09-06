@@ -1402,7 +1402,7 @@
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/6 02:32:38</div>
+          <div class="site-info-card-value">2026/9/6 02:36:59</div>
         </div>
 
         <!-- System Info -->
@@ -1726,7 +1726,7 @@ if (!window._siteInfoToggleBound) {
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/6 02:32:38</div>
+          <div class="site-info-card-value">2026/9/6 02:36:59</div>
         </div>
 
         <!-- System Info -->
@@ -3019,36 +3019,53 @@ document.addEventListener('DOMContentLoaded', function() {
       ctx.globalAlpha = 1;
       ctx.drawImage(photoCanvas, 0, 0, w, h); // 原图常驻 → 主体始终清晰
 
-      var R = Math.max(240, Math.min(480, Math.min(w, h) * 0.46));
-      var R2 = R * R;
+      var R = Math.max(130, Math.min(250, Math.min(w, h) * 0.2));
       var cx = mouse.x, cy = mouse.y;
-      var swirl = 0.5 + Math.min(1.5, velMag * 0.01);
-      var kMax = act * Math.min(1, 0.7 + velMag * 0.03);
-      var n = particles.length, i = 0, j = 0;
+      var boost = Math.min(1, 0.72 + velMag * 0.04);
+      var kMax = act * boost;
 
+      // ① 把指针处的一小块原图“擦除”（destination-out，软边），随活动度渐显
+      ctx.save();
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.globalAlpha = act * 0.95;
+      var eg = ctx.createRadialGradient(cx, cy, R * 0.45, cx, cy, R * 1.12);
+      eg.addColorStop(0, 'rgba(0,0,0,1)');
+      eg.addColorStop(0.55, 'rgba(0,0,0,1)');
+      eg.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = eg;
+      ctx.fillRect(cx - R * 1.2, cy - R * 1.2, R * 2.4, R * 2.4);
+      ctx.restore();
+
+      // ② 在该区域内用高斯粒子完全替代图片（原图已在洞内被擦除）
+      var Rs = R * 1.5, Rs2 = Rs * Rs;
+      var swirl = 0.55 + Math.min(1.4, velMag * 0.012);
+      var n = particles.length, i = 0;
       for (; i < n; i += STEP) {
         var p = particles[i];
         var bx = dx + p.x * dw, by = dy + p.y * dh;
         var ddx = bx - cx, ddy = by - cy;
         var d2 = ddx * ddx + ddy * ddy;
-        if (d2 > R2) {
-          // 区域外：极其稀疏的细尘（几乎不影响清晰度，增添整体呼吸感）
-          if ((j++ & 63) === 0 && d2 < R2 * 16) drawBlob(ctx, bx, by, p, kMax * 0.05, now);
-          continue;
-        }
+        if (d2 > Rs2) continue;
         var dist = Math.sqrt(d2);
-        var u = dist / R;
-        var f1 = 1 - u;
-        var fall = f1 < 0 ? 0 : f1 * f1 * (3 - 2 * f1); // smoothstep 衰减
-        if (fall < 0.02) continue;
-        var k = kMax * fall;
-        var inv = dist > 0.1 ? 1 / dist : 0;
+        var f1 = 1 - dist / Rs;
+        var fall = f1 < 0 ? 0 : f1 * f1 * (3 - 2 * f1);   // 软衰减
+        if (fall < 0.015) continue;
+        var inv = dist > 0.2 ? 1 / dist : 0;
         var ux = ddx * inv, uy = ddy * inv;
-        var tx = -uy, ty = ux;               // 切向旋流
-        var mag = (110 + 130 * p.d) * k + Math.min(70, velMag) * 0.5 * k;
-        var px = bx + ux * mag + tx * mag * swirl * 0.2 * p.d;
-        var py = by + uy * mag + ty * mag * swirl * 0.2 * p.d;
-        drawBlob(ctx, px, py, p, k, now);
+        var tx = -uy, ty = ux;
+        // 由中心向外“溅”：近中心位移小、往外逐渐抛出，并带旋流
+        var mag = (30 + 190 * (1 - fall)) * fall * kMax * 1.5;
+        var px = bx + ux * mag + tx * (20 + 60 * (1 - fall)) * swirl * fall;
+        var py = by + uy * mag + ty * (20 + 60 * (1 - fall)) * swirl * fall;
+        // 落在洞内的粒子最实（就是那块“完全变为粒子”的高斯云），越出洞边越淡
+        var a = (0.30 + 0.22 * p.d) * fall * kMax;
+        if (a < 0.02 || a > 1) continue;
+        var wob = 1 + Math.sin(now * 0.005 + p.ph) * 0.2;
+        var r = (2.0 + p.d * 2.6) * psK * wob * (0.75 + 0.45 * fall);
+        ctx.beginPath();
+        ctx.fillStyle = 'rgba(' + p.r + ',' + p.g + ',' + p.b + ',' + a.toFixed(3) + ')';
+        ctx.arc(px, py, r, 0, 6.2832);
+        ctx.fill();
       }
       painted = true;
       raf = requestAnimationFrame(frame);
