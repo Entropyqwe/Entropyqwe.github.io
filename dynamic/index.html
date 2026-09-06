@@ -1402,7 +1402,7 @@
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/6 02:21:56</div>
+          <div class="site-info-card-value">2026/9/6 02:32:38</div>
         </div>
 
         <!-- System Info -->
@@ -1726,7 +1726,7 @@ if (!window._siteInfoToggleBound) {
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/6 02:21:56</div>
+          <div class="site-info-card-value">2026/9/6 02:32:38</div>
         </div>
 
         <!-- System Info -->
@@ -2920,8 +2920,8 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('touchstart', function (e) { if (e.touches && e.touches[0]) poke(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
 
     function buildParticles(ar) {
-      var COLS = weak ? 84 : 116;
-      var ROWS = Math.max(48, Math.round(COLS / ar));
+      var COLS = weak ? 126 : 178;
+      var ROWS = Math.max(56, Math.round(COLS / ar));
       var c = document.createElement('canvas');
       c.width = COLS; c.height = ROWS;
       var ctx = c.getContext('2d', { willReadFrequently: true });
@@ -2976,10 +2976,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function drawBlob(ctx, x, y, p, k, now) {
-      var a = (0.09 + 0.19 * p.d) * k;
+      var a = (0.05 + 0.10 * p.d) * k;
       if (a < 0.012 || a > 1) return;
       var wob = 1 + Math.sin(now * 0.004 + p.ph) * 0.16;
-      var r = (1.7 + p.d * 2.2) * psK * (0.55 + 0.6 * k) * wob;
+      var r = (1.85 + p.d * 2.4) * psK * (0.5 + 0.62 * k) * wob;
       ctx.beginPath();
       ctx.fillStyle = 'rgba(' + p.r + ',' + p.g + ',' + p.b + ',' + a.toFixed(3) + ')';
       ctx.arc(x, y, r, 0, 6.2832);
@@ -3033,7 +3033,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var d2 = ddx * ddx + ddy * ddy;
         if (d2 > R2) {
           // 区域外：极其稀疏的细尘（几乎不影响清晰度，增添整体呼吸感）
-          if ((j++ & 31) === 0 && d2 < R2 * 36) drawBlob(ctx, bx, by, p, kMax * 0.05, now);
+          if ((j++ & 63) === 0 && d2 < R2 * 16) drawBlob(ctx, bx, by, p, kMax * 0.05, now);
           continue;
         }
         var dist = Math.sqrt(d2);
