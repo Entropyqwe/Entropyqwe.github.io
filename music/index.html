@@ -2482,7 +2482,7 @@
 
     // 高密度 + 小颗粒采样（桌面 236 列、弱设备 160 列）
     function buildParticles(ar) {
-      var COLS = weak ? 160 : 236;
+      var COLS = weak ? 230 : 340;
       var ROWS = Math.max(70, Math.round(COLS / ar));
       var c = document.createElement('canvas');
       c.width = COLS; c.height = ROWS;
@@ -2590,8 +2590,8 @@
       // 细密高斯点：70% 核心点保持构图≈原图像样貌，30% 溅射点向外飞散
       var Rg = R * 1.55, Rg2 = Rg * Rg;
       var swirl = 0.5 + Math.min(1.2, velMag * 0.012);
-      var spacing = dw / (weak ? 160 : 236);
-      var rBase = Math.max(1.1, spacing * 0.72) * psK;
+      var spacing = dw / (weak ? 230 : 340);
+      var rBase = Math.max(0.55, spacing * 0.36) * psK;
       var n = particles.length, i = 0;
       for (; i < n; i += STEP) {
         var p = particles[i];
