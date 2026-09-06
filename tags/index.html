@@ -1477,7 +1477,7 @@
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/6 03:53:53</div>
+          <div class="site-info-card-value">2026/9/6 03:55:59</div>
         </div>
 
         <!-- System Info -->
@@ -1801,7 +1801,7 @@ if (!window._siteInfoToggleBound) {
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/6 03:53:53</div>
+          <div class="site-info-card-value">2026/9/6 03:55:59</div>
         </div>
 
         <!-- System Info -->
@@ -2626,35 +2626,51 @@ if (!window._siteInfoToggleBound) {
   
 
 <style>
-  #ffm-panel, #ffp-player { position: fixed; z-index: 600; background: var(--card-bg, #fff);
-    color: var(--text-color, #222); border-radius: 14px; box-shadow: 0 14px 44px rgba(0,0,0,.28);
-    font-size: .9rem; max-width: min(340px, calc(100vw - 24px)); }
+  /* ============ 推荐弹层 & 迷你播放器：紧凑 · 毛玻璃半透明 ============ */
+  #ffm-panel, #ffp-player { position: fixed; z-index: 600; color: #f2f3f7;
+    border-radius: 16px; border: 1px solid rgba(255,255,255,.16);
+    background: rgba(22,24,32,.55); backdrop-filter: blur(18px) saturate(1.25);
+    -webkit-backdrop-filter: blur(18px) saturate(1.25);
+    box-shadow: 0 12px 40px rgba(0,0,0,.4); font-size: .86rem; }
   #ffm-panel[hidden], #ffp-player[hidden] { display: none; }
-  #ffm-panel { right: 16px; top: 64px; padding: 14px 16px; width: 300px; }
-  #ffm-panel .ffm-title { display:flex; align-items:center; gap:8px; font-weight:700; font-size:1rem; margin-bottom:6px; }
-  #ffm-panel .ffm-sub { opacity:.6; font-size:.78rem; margin-bottom:10px; }
-  #ffm-panel ul { list-style:none; margin:0 0 10px; padding:0; }
-  #ffm-panel li { padding:7px 8px; border-radius:8px; cursor:pointer; }
-  #ffm-panel li:hover { background: rgba(127,127,127,.12); }
-  #ffm-panel .ffm-empty { opacity:.55; padding:6px 8px; cursor:default; }
+
+  /* —— 推荐弹层 —— */
+  #ffm-panel { right: 14px; top: 58px; width: 262px; padding: 10px 12px; max-height: 70vh; overflow: auto; }
+  #ffm-panel .ffm-title { display:flex; align-items:center; gap:7px; font-weight:800; font-size:.98rem; padding:2px 2px 2px; }
+  #ffm-panel .ffm-sub { opacity:.55; font-size:.72rem; margin:2px 2px 8px; letter-spacing:.2px; }
+  #ffm-panel ul { list-style:none; margin:0; padding:0; }
+  #ffm-panel li { padding:6px 9px; border-radius:9px; cursor:pointer; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    display:flex; gap:8px; align-items:center; }
+  #ffm-panel li:hover { background: rgba(255,255,255,.12); }
+  #ffm-panel .ffm-empty { opacity:.6; cursor:default; padding:6px 9px; }
   #ffm-panel li.ffm-empty:hover { background: transparent; }
-  #ffm-panel .ffm-go { display:block; text-align:center; padding:8px; border-radius:9px; color:#fff; text-decoration:none;
-    background: linear-gradient(135deg,#ff7eb3,#ff758c 60%,#ff9a5a); }
-  #ffp-player { left: 24px; bottom: 24px; padding: 14px 16px; width: 300px; }
-  #ffp-player .ffp-head { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; gap:8px; }
-  #ffp-player .ffp-name { font-weight:700; font-size:.92rem; }
-  #ffp-player .ffp-note { font-size:.72rem; opacity:.55; margin-top:2px; word-break:break-all; }
-  #ffp-player .ffp-close { border:0; background:none; cursor:pointer; font-size:16px; opacity:.6; padding:0 2px; flex:none; }
-  #ffp-controls { display:flex; align-items:center; gap:10px; margin:8px 0 4px; }
-  #ffp-controls button { border:0; background:none; cursor:pointer; font-size:1.3rem; color: inherit; display:flex; padding:0; }
-  #ffp-controls button:disabled { opacity:.35; cursor:not-allowed; }
-  #ffp-controls button[data-ffp-play] { font-size:2rem; }
-  #ffp-progress { position:relative; height:6px; border-radius:3px; background: rgba(127,127,127,.28); cursor:pointer; }
-  #ffp-progress .ffp-fill { position:absolute; left:0; top:0; height:100%; width:0%; border-radius:3px;
-    background: linear-gradient(90deg,#ff7eb3,#ff758c); pointer-events:none; }
-  #ffp-progress .ffp-thumb { position:absolute; top:50%; width:12px; height:12px; border-radius:50%;
-    background:#ff758c; transform:translate(-50%,-50%); pointer-events:none; }
-  #ffp-time { display:flex; justify-content:space-between; font-size:.72rem; opacity:.6; margin-top:4px; }
+  #ffm-panel .ffm-go { display:block; text-align:center; padding:7px 6px; margin-top:6px; border-radius:10px; color:#fff;
+    background: linear-gradient(135deg, rgba(255,126,179,.9), rgba(255,117,140,.85) 60%, rgba(255,154,90,.9));
+    text-decoration:none; font-weight:700; }
+  #ffm-panel .ffm-go:hover { filter: brightness(1.08); }
+
+  /* —— 迷你播放器 —— */
+  #ffp-player { left: 18px; bottom: 18px; width: 268px; padding: 10px 12px 8px; overflow: hidden; }
+  #ffp-player .ffp-head { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
+  #ffp-player .ffp-name { font-weight:800; font-size:.88rem; letter-spacing:.2px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  #ffp-player .ffp-note { font-size:.7rem; opacity:.6; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:1px; }
+  #ffp-player .ffp-close { border:0; background: rgba(255,255,255,.08); cursor:pointer; color:inherit; font-size:13px; opacity:.75;
+    width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; line-height:1; flex:none; margin:0; padding:0; }
+  #ffp-player .ffp-close:hover { background: rgba(255,255,255,.2); }
+  #ffp-controls { display:flex; align-items:center; justify-content:center; gap:18px; margin:8px 0 6px; }
+  #ffp-controls button { border:0; background:none; cursor:pointer; color:inherit; display:inline-flex; align-items:center; justify-content:center;
+    padding:0; font-size:1.15rem; opacity:.9; }
+  #ffp-controls button:disabled { opacity:.3; cursor:not-allowed; }
+  #ffp-controls button[data-ffp-play] { width:40px; height:40px; border-radius:50%; font-size:1.05rem;
+    background: linear-gradient(135deg,#ff7eb3,#ff758c 60%,#ff9a5a); box-shadow: 0 4px 14px rgba(255,118,136,.5); }
+  #ffp-controls button[data-ffp-play]:hover { filter: brightness(1.1); }
+  #ffp-progress { position:relative; height:5px; border-radius:3px; background: rgba(255,255,255,.16); cursor:pointer; }
+  #ffp-progress .ffp-fill { position:absolute; left:0; top:0; height:100%; border-radius:3px;
+    background: linear-gradient(90deg,#ff7eb3,#ff9a5a); }
+  #ffp-progress .ffp-thumb { position:absolute; top:50%; width:10px; height:10px; border-radius:50%;
+    background:#ff8ba7; transform:translate(-50%,-50%); box-shadow:0 0 0 3px rgba(255,138,167,.25); }
+  #ffp-time { display:flex; justify-content:space-between; font-size:.66rem; opacity:.62; margin-top:3px; font-variant-numeric:tabular-nums; }
 </style>
 
 <script>
@@ -2729,7 +2745,7 @@ if (!window._siteInfoToggleBound) {
     var p = document.getElementById('ffp-player');
     if (p) {
       var nm = p.querySelector('.ffp-name');
-      if (nm) nm.textContent = '🎧 ' + (audioItems[curAudioIdx].name || '曲目');
+      if (nm) nm.textContent = audioItems[curAudioIdx].name || '曲目';
     }
     renderBar();
   }
@@ -2768,12 +2784,13 @@ if (!window._siteInfoToggleBound) {
     }
     p.hidden = false;
     var first = audioItems.length ? audioItems[0] : null;
+    var nameTxt = first ? (first.name || '曲目') : '迷你播放器';
     var note = first
-      ? esc((first.artist || '未知歌手') + ' — ' + (first.name || '曲目'))
-      : '暂无音频资源 · 界面已就绪（数据中加 audio 字段即可播放）';
+      ? esc(first.artist || '')
+      : '暂无音频 · 数据里加 audio 字段即可播放';
     p.innerHTML =
       '<div class="ffp-head"><div style="min-width:0">' +
-      '<div class="ffp-name">🎧 迷你播放器</div>' +
+      '<div class="ffp-name">' + esc(nameTxt) + '</div>' +
       '<div class="ffp-note">' + note + '</div></div>' +
       '<button class="ffp-close" data-ffp-close="1" title="隐藏播放器">✕</button></div>' +
       '<div id="ffp-controls">' +
