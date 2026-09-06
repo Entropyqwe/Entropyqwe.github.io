@@ -1136,34 +1136,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         
 
-<div class="widget dynamic-widget">
-  <div class="widget-header">最新动态</div>
-  <div class="widget-body">
-    <div class="dynamic-widget-list">
-      
-      <div class="dynamic-widget-item">
-        <div class="dynamic-widget-meta">
-          <span class="material-symbols-outlined">schedule</span>
-          <span>2026-09-06 20:38:00</span>
-          
-        </div>
-        <!-- Strip HTML tags for clean text excerpt -->
-        <div class="dynamic-widget-content">
-          测试动态正文，稍后删除。
-        </div>
-      </div>
-      
-    </div>
-    
-    <div class="dynamic-widget-footer">
-      <a href="/dynamic/" class="dynamic-widget-more-btn">
-        <span class="material-symbols-outlined">forum</span>
-        <span>更多动态 (1)</span>
-      </a>
-    </div>
-  </div>
-</div>
-
 
       
     
@@ -1354,34 +1326,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
       
 
-<div class="widget dynamic-widget">
-  <div class="widget-header">最新动态</div>
-  <div class="widget-body">
-    <div class="dynamic-widget-list">
-      
-      <div class="dynamic-widget-item">
-        <div class="dynamic-widget-meta">
-          <span class="material-symbols-outlined">schedule</span>
-          <span>2026-09-06 20:38:00</span>
-          
-        </div>
-        <!-- Strip HTML tags for clean text excerpt -->
-        <div class="dynamic-widget-content">
-          测试动态正文，稍后删除。
-        </div>
-      </div>
-      
-    </div>
-    
-    <div class="dynamic-widget-footer">
-      <a href="/dynamic/" class="dynamic-widget-more-btn">
-        <span class="material-symbols-outlined">forum</span>
-        <span>更多动态 (1)</span>
-      </a>
-    </div>
-  </div>
-</div>
-
 
     
   
@@ -1570,7 +1514,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/6 04:38:36</div>
+          <div class="site-info-card-value">2026/9/6 04:39:08</div>
         </div>
 
         <!-- System Info -->
@@ -3301,6 +3245,183 @@ if (!window._siteInfoToggleBound) {
     });
   } catch (e) {
     try { var s = document.getElementById('gb-status'); if (s) s.textContent = '初始化失败：' + e.message; } catch (e2) {}
+  }
+})();
+</script>
+
+
+  
+
+<button id="pb-fab" title="发布动态/文章" aria-label="发布">✍️</button>
+<div id="pb-modal" hidden>
+  <div class="pb-box">
+    <button id="pb-close" class="pb-close" aria-label="关闭">✕</button>
+    <h3>✍️ 发布到溯洄</h3>
+
+    <div class="pb-seg">
+      <button type="button" data-kind="dynamic">💬 动态</button>
+      <button type="button" data-kind="post" class="on">📝 文章</button>
+    </div>
+
+    <label class="pb-field">发布口令
+      <input id="pb-key" type="password" placeholder="与相册上传口令一致" autocomplete="off">
+    </label>
+    <label class="pb-field" id="pb-title-wrap">标题
+      <input id="pb-title" maxlength="60" placeholder="给这条内容起个标题">
+    </label>
+    <label class="pb-field" id="pb-tags-wrap">标签（可选，逗号分隔）
+      <input id="pb-tags" maxlength="80" placeholder="如：摄影, 生活">
+    </label>
+    <label class="pb-field">正文（支持 Markdown）
+      <textarea id="pb-text" rows="4" maxlength="4000" placeholder="写点什么…"></textarea>
+    </label>
+    <label class="pb-field">配图（可选，≤6 张）
+      <input id="pb-files" type="file" accept="image/*" multiple>
+    </label>
+    <div id="pb-preview"></div>
+    <div id="pb-status"></div>
+    <button id="pb-submit">发布</button>
+    <div class="pb-hint">发布后 1~3 分钟内自动上线：动态出现在「动态」，文章出现在首页/归档。图片会自动压缩。</div>
+  </div>
+</div>
+<style>
+  #pb-fab { position: fixed; right: 22px; bottom: 92px; z-index: 600; width: 48px; height: 48px; border: 0;
+    border-radius: 50%; cursor: pointer; font-size: 21px; color: #fff;
+    background: linear-gradient(135deg, #2fbf71, #22a65f); box-shadow: 0 6px 18px rgba(47,191,113,.45); transition: transform .2s; }
+  #pb-fab:hover { transform: scale(1.08); }
+  #pb-modal { position: fixed; inset: 0; z-index: 700; display: flex; align-items: center; justify-content: center;
+    background: rgba(10,10,20,.6); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); padding: 14px; }
+  #pb-modal[hidden] { display: none; }
+  .pb-box { width: min(520px, 94vw); max-height: 88vh; overflow: auto; border-radius: 18px; padding: 20px 22px;
+    color: #f2f3f7; background: rgba(24,26,36,.92); border: 1px solid rgba(255,255,255,.14);
+    box-shadow: 0 20px 60px rgba(0,0,0,.55); position: relative; font-size: .9rem; }
+  .pb-box h3 { margin: 0 0 12px; font-size: 1.15rem; }
+  .pb-close { position: absolute; top: 12px; right: 14px; border: 0; background: rgba(255,255,255,.08); color: inherit;
+    width: 24px; height: 24px; border-radius: 50%; cursor: pointer; line-height: 1; }
+  .pb-seg { display: flex; gap: 8px; margin-bottom: 8px; }
+  .pb-seg button { flex: 1; padding: 8px; border-radius: 10px; cursor: pointer; border: 1px solid rgba(255,255,255,.22);
+    background: transparent; color: inherit; font-size: .95rem; }
+  .pb-seg button.on { color: #fff; border: 0; background: linear-gradient(135deg, #6a7cff, #5b6cf0); }
+  .pb-field { display: block; margin: 9px 0; font-size: .84rem; opacity: .95; }
+  .pb-field input, .pb-field textarea { width: 100%; box-sizing: border-box; margin-top: 4px; padding: 8px 10px;
+    border-radius: 9px; border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.06); color: inherit;
+    font: inherit; resize: none; }
+  #pb-preview img { width: 64px; height: 64px; object-fit: cover; border-radius: 8px; margin: 4px 6px 4px 0; }
+  #pb-status { min-height: 1.1em; margin: 8px 0; font-weight: 600; white-space: pre-wrap; }
+  #pb-submit { width: 100%; border: 0; border-radius: 11px; padding: 12px; cursor: pointer; color: #fff; font-size: 1rem;
+    background: linear-gradient(135deg, #6a7cff, #5b6cf0); }
+  #pb-submit:disabled { opacity: .5; }
+  .pb-hint { font-size: .74rem; opacity: .55; margin-top: 8px; }
+</style>
+<script>
+(function () {
+  try {
+    var EP = 'https:\/\/entropy-upload.pages.dev';
+    var fab = document.getElementById('pb-fab');
+    var modal = document.getElementById('pb-modal');
+    if (!fab || !modal) return;
+    var kind = 'post';
+    var files = [];
+    var box = modal.querySelector('.pb-box');
+
+    var keyEl = document.getElementById('pb-key');
+    var titleEl = document.getElementById('pb-title');
+    var tagsEl = document.getElementById('pb-tags');
+    var textEl = document.getElementById('pb-text');
+    var filesEl = document.getElementById('pb-files');
+    var prevEl = document.getElementById('pb-preview');
+    var statusEl = document.getElementById('pb-status');
+    var submitBtn = document.getElementById('pb-submit');
+
+    function st(m, ok) { statusEl.textContent = m || ''; statusEl.style.color = ok ? '#8ef0b0' : '#ffb4a0'; }
+    function setKind(k) {
+      kind = k;
+      box.querySelectorAll('.pb-seg button').forEach(function (b) { b.classList.toggle('on', b.dataset.kind === k); });
+      document.getElementById('pb-tags-wrap').style.display = k === 'post' ? '' : 'none';
+      document.getElementById('pb-title-wrap').style.display = k === 'post' ? '' : 'none';
+      if (k === 'dynamic') document.getElementById('pb-title').placeholder = '一句话标题（可选）';
+    }
+    box.querySelectorAll('.pb-seg button').forEach(function (b) { b.addEventListener('click', function () { setKind(b.dataset.kind); }); });
+
+    function preview() {
+      prevEl.innerHTML = '';
+      files.slice(0, 12).forEach(function (f) {
+        var img = document.createElement('img');
+        img.src = f.preview;
+        prevEl.appendChild(img);
+      });
+    }
+    filesEl.addEventListener('change', function () {
+      files = [];
+      Array.prototype.slice.call(filesEl.files || []).slice(0, 6).forEach(function (f) {
+        if (!/^image\//.test(f.type)) return;
+        files.push({ file: f, preview: URL.createObjectURL(f) });
+      });
+      preview();
+      if (filesEl.files.length > 6) st('最多 6 张，多余已忽略', false);
+    });
+
+    function compress(file) {
+      return new Promise(function (resolve, reject) {
+        var url = URL.createObjectURL(file);
+        var img = new Image();
+        img.onload = function () {
+          var MAX = 2560, s = Math.min(1, MAX / Math.max(img.naturalWidth, img.naturalHeight));
+          var c = document.createElement('canvas');
+          c.width = Math.round(img.naturalWidth * s); c.height = Math.round(img.naturalHeight * s);
+          c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+          URL.revokeObjectURL(url);
+          var base = (file.name || 'img').replace(/\.[^.]+$/, '').replace(/[^\w\u4e00-\u9fa5-]+/g, '_').slice(0, 40) || 'img';
+          resolve({ data: c.toDataURL('image/jpeg', 0.85).split(',')[1], name: base + '.jpg' });
+        };
+        img.onerror = function () { URL.revokeObjectURL(url); reject(new Error('无法读取 ' + file.name)); };
+        img.src = url;
+      });
+    }
+
+    fab.addEventListener('click', function () {
+      modal.hidden = false;
+      setKind(kind);
+      setTimeout(function () { keyEl.focus(); }, 60);
+    });
+    document.getElementById('pb-close').addEventListener('click', function () { modal.hidden = true; });
+    modal.addEventListener('click', function (e) { if (e.target === modal) modal.hidden = true; });
+
+    submitBtn.addEventListener('click', function () {
+      var key = keyEl.value.trim();
+      var title = kind === 'dynamic' ? (titleEl.value.trim() || ('动态 ' + new Date().toLocaleDateString('zh-CN'))) : titleEl.value.trim();
+      var text = textEl.value.trim();
+      if (!key) return st('⚠️ 请先输入发布口令', false);
+      if (!title) return st('⚠️ 请填写标题', false);
+      if (!text) return st('⚠️ 请填写正文', false);
+      submitBtn.disabled = true;
+      submitBtn.textContent = '发布中…';
+      st('正在压缩并上传配图…', false);
+      (async function () {
+        var imgs = [];
+        for (var i = 0; i < files.length; i++) {
+          var c = await compress(files[i].file);
+          imgs.push(c);
+        }
+        st('正在提交内容…', false);
+        var resp = await fetch(EP + '/publish', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ key: key, kind: kind, title: title, text: text,
+            tags: kind === 'post' ? tagsEl.value : '', images: imgs })
+        });
+        var out = await resp.json().catch(function () { return { ok: false, error: 'HTTP ' + resp.status }; });
+        if (out && out.ok) {
+          st('✅ ' + (out.note || '已发布') + '，稍后刷新可见', true);
+          textEl.value = ''; filesEl.value = ''; files = []; prevEl.innerHTML = '';
+        } else {
+          st('❌ ' + ((out && out.error) || '发布失败'), false);
+        }
+        submitBtn.disabled = false;
+        submitBtn.textContent = '发布';
+      })().catch(function (err) { st('❌ 错误：' + err.message, false); submitBtn.disabled = false; submitBtn.textContent = '发布'; });
+    });
+  } catch (e) {
+    try { var s = document.getElementById('pb-status'); if (s) s.textContent = '初始化失败：' + e.message; } catch (e2) {}
   }
 })();
 </script>
