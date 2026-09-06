@@ -467,7 +467,7 @@
         
         <span class="post-meta-updated">
           <span class="material-symbols-outlined md-18">edit</span>
-          更新于: 2026-09-06 12:59
+          更新于: 2026-09-06 13:02
         </span>
         
         
@@ -686,17 +686,17 @@
   <div class="widget-body">
     <div class="tag-list">
       
-      <a href="/tags/%E9%BA%92%E9%BA%9F/" class="tag-item">麒麟</a>
-      
-      <a href="/tags/%E8%8A%AF%E7%89%87/" class="tag-item">芯片</a>
-      
-      <a href="/tags/%E6%B5%B7%E6%80%9D/" class="tag-item">海思</a>
-      
       <a href="/tags/%E6%B5%8B%E8%AF%95/" class="tag-item">测试</a>
       
       <a href="/tags/%E6%91%84%E5%BD%B1/" class="tag-item">摄影</a>
       
       <a href="/tags/%E9%9A%8F%E7%AC%94/" class="tag-item">随笔</a>
+      
+      <a href="/tags/%E9%BA%92%E9%BA%9F/" class="tag-item">麒麟</a>
+      
+      <a href="/tags/%E8%8A%AF%E7%89%87/" class="tag-item">芯片</a>
+      
+      <a href="/tags/%E6%B5%B7%E6%80%9D/" class="tag-item">海思</a>
       
       
     </div>
@@ -1005,7 +1005,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   <div class="post-last-modified">
     <span class="material-symbols-outlined" aria-hidden="true">edit</span>
-    最后编辑于 2026-09-06 12:59
+    最后编辑于 2026-09-06 13:02
   </div>
   
 </footer>
@@ -1496,17 +1496,17 @@ document.addEventListener('DOMContentLoaded', function() {
   <div class="widget-body">
     <div class="tag-list">
       
-      <a href="/tags/%E9%BA%92%E9%BA%9F/" class="tag-item">麒麟</a>
-      
-      <a href="/tags/%E8%8A%AF%E7%89%87/" class="tag-item">芯片</a>
-      
-      <a href="/tags/%E6%B5%B7%E6%80%9D/" class="tag-item">海思</a>
-      
       <a href="/tags/%E6%B5%8B%E8%AF%95/" class="tag-item">测试</a>
       
       <a href="/tags/%E6%91%84%E5%BD%B1/" class="tag-item">摄影</a>
       
       <a href="/tags/%E9%9A%8F%E7%AC%94/" class="tag-item">随笔</a>
+      
+      <a href="/tags/%E9%BA%92%E9%BA%9F/" class="tag-item">麒麟</a>
+      
+      <a href="/tags/%E8%8A%AF%E7%89%87/" class="tag-item">芯片</a>
+      
+      <a href="/tags/%E6%B5%B7%E6%80%9D/" class="tag-item">海思</a>
       
       
     </div>
@@ -1608,7 +1608,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/6 04:59:31</div>
+          <div class="site-info-card-value">2026/9/6 05:03:03</div>
         </div>
 
         <!-- System Info -->
@@ -2485,6 +2485,15 @@ if (!window._siteInfoToggleBound) {
   #ffp-progress .ffp-thumb { position:absolute; top:50%; width:10px; height:10px; border-radius:50%;
     background:#ff8ba7; transform:translate(-50%,-50%); box-shadow:0 0 0 3px rgba(255,138,167,.25); }
   #ffp-time { display:flex; justify-content:space-between; font-size:.66rem; opacity:.62; margin-top:3px; font-variant-numeric:tabular-nums; }
+  #ffp-list { margin-top:7px; max-height:132px; overflow:auto; border-top:1px solid rgba(255,255,255,.08); padding-top:4px; }
+  #ffp-list .ffp-no { text-align:center; opacity:.5; font-size:.7rem; padding:6px 0; }
+  #ffp-list .ffp-row { display:flex; align-items:center; gap:7px; padding:4px 6px; border-radius:8px; cursor:pointer; }
+  #ffp-list .ffp-row:hover { background: rgba(255,255,255,.09); }
+  #ffp-list .ffp-row img { width:22px; height:22px; border-radius:5px; object-fit:cover; flex:none; }
+  #ffp-list .ffp-row .t { flex:1; min-width:0; }
+  #ffp-list .ffp-row .n { display:block; font-size:.74rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  #ffp-list .ffp-row .s { display:block; font-size:.62rem; opacity:.55; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  #ffp-list .ffp-row.on { background: rgba(255,138,167,.18); box-shadow: inset 2px 0 0 #ff8ba7; }
 
   /* —— 邮箱复制气泡 —— */
   #ffmail { position: fixed; z-index: 700; width: 250px; padding: 12px 14px; border-radius: 14px;
@@ -2562,17 +2571,35 @@ if (!window._siteInfoToggleBound) {
       });
       // 浏览器要求用户手势后才能播放，这里只预加载元数据
       try { A.load(); } catch (e) {}
+      renderList();
     }
     return A;
   }
   function step(dir) {
-    if (audioItems.length < 2 || !A) return;
-    curAudioIdx = (curAudioIdx + dir + audioItems.length) % audioItems.length;
-    A.src = audioItems[curAudioIdx].audio;
+    if (audioItems.length < 2) return;
+    playItem((curAudioIdx + dir + audioItems.length) % audioItems.length);
+  }
+  function playItem(i) {
+    if (i < 0 || i >= audioItems.length) return;
+    curAudioIdx = i;
+    if (!A) A = new Audio();
+    A.src = audioItems[i].audio;
     A.play();
     var b = document.getElementById('ffp-play'); if (b) b.textContent = '⏸';
-    setNowItem(audioItems[curAudioIdx]);
+    setNowItem(audioItems[i]);
+    renderList();
     renderBar();
+  }
+  function renderList() {
+    var ls = document.getElementById('ffp-list');
+    if (!ls) return;
+    if (!audioItems.length) { ls.innerHTML = '<div class="ffp-no">暂无音频 · 数据里加 audio 即可播放</div>'; return; }
+    ls.innerHTML = audioItems.map(function (it, i) {
+      return '<div class="ffp-row' + (i === curAudioIdx ? ' on' : '') + '" data-i="' + i + '">' +
+        (it.cover ? '<img src="' + it.cover + '" alt="">' : '<span style="width:22px"></span>') +
+        '<span class="t"><span class="n">' + esc(it.name || ('曲目 ' + (i + 1))) + '</span>' +
+        '<span class="s">' + esc([it.album, it.artist].filter(function (x) { return x; }).join(' · ')) + '</span></span></div>';
+    }).join('');
   }
   function renderBar() {
     var p = document.getElementById('ffp-player');
@@ -2634,7 +2661,8 @@ if (!window._siteInfoToggleBound) {
       '  <button data-ffp-next="1" title="下一首" ' + (audioItems.length > 1 ? '' : 'disabled') + '>⏭</button>' +
       '</div>' +
       '<div id="ffp-progress"><span class="ffp-fill" id="ffp-fill"></span><span class="ffp-thumb" id="ffp-thumb"></span></div>' +
-      '<div id="ffp-time"><span id="ffp-cur">00:00</span><span id="ffp-end">' + posText(first ? 0 : DEMO_LEN) + '</span></div>';
+      '<div id="ffp-time"><span id="ffp-cur">00:00</span><span id="ffp-end">' + posText(first ? 0 : DEMO_LEN) + '</span></div>' +
+      '<div class="ffp-list" id="ffp-list"></div>';
 
     var rect = p.getBoundingClientRect();
     var px = Math.min(x + 14, window.innerWidth - rect.width - 10);
@@ -2644,6 +2672,14 @@ if (!window._siteInfoToggleBound) {
 
     ensureAudio();
     setNowItem(first);
+    renderList();
+    var lsEl = p.querySelector('#ffp-list');
+    if (lsEl) {
+      lsEl.addEventListener('click', function (e) {
+        var row = e.target.closest('.ffp-row');
+        if (row) playItem(parseInt(row.getAttribute('data-i'), 10));
+      });
+    }
 
     var bar = p.querySelector('#ffp-progress');
     function fromEvent(ev) {
