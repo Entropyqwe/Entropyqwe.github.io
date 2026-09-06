@@ -458,7 +458,7 @@
         
         <span class="post-meta-updated">
           <span class="material-symbols-outlined md-18">edit</span>
-          更新于: 2026-09-06 10:00
+          更新于: 2026-09-06 10:04
         </span>
         
         
@@ -994,7 +994,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   <div class="post-last-modified">
     <span class="material-symbols-outlined" aria-hidden="true">edit</span>
-    最后编辑于 2026-09-06 10:00
+    最后编辑于 2026-09-06 10:04
   </div>
   
 </footer>
@@ -1505,7 +1505,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/6 02:00:34</div>
+          <div class="site-info-card-value">2026/9/6 02:05:01</div>
         </div>
 
         <!-- System Info -->
@@ -2663,7 +2663,7 @@ if (!window._siteInfoToggleBound) {
     }
 
     function buildParticles(w, h, ar) {
-      var COLS = 230, ROWS = Math.max(60, Math.round(COLS / ar));
+      var COLS = 104, ROWS = Math.max(48, Math.round(COLS / ar));
       var c = document.createElement('canvas');
       c.width = COLS; c.height = ROWS;
       var ctx = c.getContext('2d', { willReadFrequently: true });
@@ -2736,8 +2736,8 @@ if (!window._siteInfoToggleBound) {
           }
         }
         // 高斯光斑（随深度尺寸/透明度不同，形成景深“泼溅”感）
-        var r = (0.55 + p.d * 1.35) * ps + Math.sin(t * .0012 + p.ph) * .35;
-        var a = 0.5 + p.d * 0.5;
+        var r = (1.15 + p.d * 1.9) * ps + Math.sin(t * .0012 + p.ph) * .55;
+        var a = 0.42 + p.d * 0.4;
         ctx.beginPath();
         ctx.fillStyle = 'rgba(' + p.r + ',' + p.g + ',' + p.b + ',' + a + ')';
         ctx.arc(px, py, r, 0, 6.2832);

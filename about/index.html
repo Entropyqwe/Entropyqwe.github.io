@@ -533,7 +533,7 @@
 </ul>
 <h2 id="关于本站"><a href="#关于本站" class="headerlink" title="关于本站"></a>关于本站</h2><p>本站基于 <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> 与 <a target="_blank" rel="noopener" href="https://github.com/LKDenchin/hexo-theme-firefly">Firefly 主题</a> 搭建，托管在 GitHub Pages。<br>照片会不定期更新，欢迎常来看看。</p>
 <h2 id="联系我"><a href="#联系我" class="headerlink" title="联系我"></a>联系我</h2><ul>
-<li>Email: <a href="mailto:&#x32;&#x33;&#56;&#x33;&#x32;&#x38;&#50;&#50;&#53;&#x34;&#64;&#113;&#113;&#46;&#x63;&#x6f;&#x6d;">2383282254@qq.com</a></li>
+<li>Email: <a href="mailto:&#x32;&#x33;&#56;&#x33;&#50;&#x38;&#x32;&#x32;&#53;&#x34;&#x40;&#x71;&#113;&#x2e;&#x63;&#111;&#x6d;">2383282254@qq.com</a></li>
 <li>GitHub: <a target="_blank" rel="noopener" href="https://github.com/Entropyqwe">github.com&#x2F;Entropyqwe</a></li>
 </ul>
 
@@ -1658,7 +1658,7 @@
     }
 
     function buildParticles(w, h, ar) {
-      var COLS = 230, ROWS = Math.max(60, Math.round(COLS / ar));
+      var COLS = 104, ROWS = Math.max(48, Math.round(COLS / ar));
       var c = document.createElement('canvas');
       c.width = COLS; c.height = ROWS;
       var ctx = c.getContext('2d', { willReadFrequently: true });
@@ -1731,8 +1731,8 @@
           }
         }
         // 高斯光斑（随深度尺寸/透明度不同，形成景深“泼溅”感）
-        var r = (0.55 + p.d * 1.35) * ps + Math.sin(t * .0012 + p.ph) * .35;
-        var a = 0.5 + p.d * 0.5;
+        var r = (1.15 + p.d * 1.9) * ps + Math.sin(t * .0012 + p.ph) * .55;
+        var a = 0.42 + p.d * 0.4;
         ctx.beginPath();
         ctx.fillStyle = 'rgba(' + p.r + ',' + p.g + ',' + p.b + ',' + a + ')';
         ctx.arc(px, py, r, 0, 6.2832);
