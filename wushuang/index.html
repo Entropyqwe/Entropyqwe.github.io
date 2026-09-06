@@ -1436,6 +1436,21 @@
   #ffp-progress .ffp-thumb { position:absolute; top:50%; width:10px; height:10px; border-radius:50%;
     background:#ff8ba7; transform:translate(-50%,-50%); box-shadow:0 0 0 3px rgba(255,138,167,.25); }
   #ffp-time { display:flex; justify-content:space-between; font-size:.66rem; opacity:.62; margin-top:3px; font-variant-numeric:tabular-nums; }
+
+  /* —— 邮箱复制气泡 —— */
+  #ffmail { position: fixed; z-index: 700; width: 250px; padding: 12px 14px; border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.18); color: #f2f3f7;
+    background: rgba(22,24,32,.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 10px 34px rgba(0,0,0,.4); font-size: .86rem; }
+  #ffmail[hidden] { display: none; }
+  #ffmail .t { font-size: .72rem; opacity: .62; margin-bottom: 4px; }
+  #ffmail .addr { font-weight: 700; word-break: break-all; margin-bottom: 8px; letter-spacing: .2px; }
+  #ffmail .row { display: flex; gap: 8px; align-items: center; }
+  #ffmail button { flex: 1; border: 0; border-radius: 9px; padding: 8px 6px; cursor: pointer; font-size: .86rem;
+    color: #fff; background: linear-gradient(135deg, #6a7cff, #5b6cf0); }
+  #ffmail button.ok { background: linear-gradient(135deg, #2fbf71, #22a65f); }
+  #ffmail .small { background: transparent !important; color: #f2f3f7 !important; border: 1px solid rgba(255,255,255,.22) !important; flex: none; padding: 8px 10px; }
+
 </style>
 
 <script>
@@ -1624,6 +1639,59 @@
   document.addEventListener('click', function (e) {
     var go = e.target.closest && e.target.closest('[data-go="1"]');
     if (go) { window.location.href = MUSIC_URL; }
+  });
+
+  // ---------- 邮箱图标：点击弹出可复制地址 ----------
+  var mailAddr = '2383282254@qq.com';
+  var mailBox = null;
+  function showMailBubble(e) {
+    if (!mailBox) {
+      mailBox = document.createElement('div');
+      mailBox.id = 'ffmail';
+      document.body.appendChild(mailBox);
+    }
+    mailBox.hidden = false;
+    mailBox.innerHTML =
+      '<div class="t">📧 QQ 邮箱（点击复制）</div>' +
+      '<div class="addr">' + mailAddr + '</div>' +
+      '<div class="row">' +
+      '  <button id="ffmail-copy" type="button">复制</button>' +
+      '  <button class="small" id="ffmail-close" type="button">✕</button>' +
+      '</div>';
+    var rect = mailBox.getBoundingClientRect();
+    var px = Math.min(e.clientX + 12, window.innerWidth - rect.width - 12);
+    var py = Math.min(e.clientY + 12, window.innerHeight - rect.height - 12);
+    mailBox.style.left = Math.max(10, px) + 'px';
+    mailBox.style.top = Math.max(10, py) + 'px';
+
+    var copyBtn = mailBox.querySelector('#ffmail-copy');
+    var ok = false;
+    function done() {
+      if (ok) return; ok = true;
+      copyBtn.textContent = '✓ 已复制';
+      copyBtn.classList.add('ok');
+      setTimeout(function () { ok = false; copyBtn.textContent = '复制'; copyBtn.classList.remove('ok'); }, 1800);
+    }
+    copyBtn.addEventListener('click', function () {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(mailAddr).then(done, function () { fallbackCopy(); done(); });
+      } else { fallbackCopy(); done(); }
+    });
+    mailBox.querySelector('#ffmail-close').addEventListener('click', function () { mailBox.hidden = true; });
+    function fallbackCopy() {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = mailAddr;
+        ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      } catch (err) {}
+    }
+  }
+  document.addEventListener('click', function (e) {
+    var link = e.target.closest && e.target.closest('a[href^="mailto:"]');
+    if (link) { e.preventDefault(); e.stopPropagation(); showMailBubble(e); }
   });
 })();
 </script>
