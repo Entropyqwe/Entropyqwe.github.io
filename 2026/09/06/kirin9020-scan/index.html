@@ -458,7 +458,7 @@
         
         <span class="post-meta-updated">
           <span class="material-symbols-outlined md-18">edit</span>
-          更新于: 2026-09-06 10:36
+          更新于: 2026-09-06 10:49
         </span>
         
         
@@ -994,7 +994,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   <div class="post-last-modified">
     <span class="material-symbols-outlined" aria-hidden="true">edit</span>
-    最后编辑于 2026-09-06 10:36
+    最后编辑于 2026-09-06 10:49
   </div>
   
 </footer>
@@ -1505,7 +1505,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/6 02:36:59</div>
+          <div class="site-info-card-value">2026/9/6 02:50:10</div>
         </div>
 
         <!-- System Info -->
@@ -2558,7 +2558,23 @@ if (!window._siteInfoToggleBound) {
 <div id="ffs" aria-hidden="false" role="dialog" aria-label="欢迎页">
   <canvas id="ffs-canvas"></canvas>
   <div class="ffs-vignette"></div>
-  <div class="ffs-foot"><span class="ffs-hint">移动鼠标 · 在指针处感受高斯泼溅</span></div>
+  <div class="ffs-title" id="ffs-title">
+    <span style="animation-delay:0ms">欢</span>
+    <span style="animation-delay:16ms">迎</span>
+    <span style="animation-delay:32ms">来</span>
+    <span style="animation-delay:48ms">到</span>
+    <span style="animation-delay:64ms">E</span>
+    <span style="animation-delay:80ms">n</span>
+    <span style="animation-delay:96ms">t</span>
+    <span style="animation-delay:112ms">r</span>
+    <span style="animation-delay:128ms">o</span>
+    <span style="animation-delay:144ms">p</span>
+    <span style="animation-delay:160ms">y</span>
+    <span style="animation-delay:176ms">的</span>
+    <span style="animation-delay:192ms">小</span>
+    <span style="animation-delay:208ms">站</span>
+  </div>
+  <div class="ffs-foot"><span class="ffs-hint">移动鼠标 · 在指针处把照片化作高斯粒子</span></div>
   <div class="ffs-enter-wrap">
     <button id="ffs-enter" type="button"><span class="ffs-enter-in">✦ 进入网站</span></button>
     <div class="ffs-enter-sub">Enter · 或按回车键</div>
@@ -2571,7 +2587,29 @@ if (!window._siteInfoToggleBound) {
   #ffs[hidden] { display: none; }
   #ffs-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: crosshair; }
   .ffs-vignette { position: absolute; inset: 0; pointer-events: none;
-    background: radial-gradient(120% 90% at 50% 42%, transparent 55%, rgba(0,0,0,.28) 100%); }
+    background: radial-gradient(120% 90% at 50% 42%, transparent 55%, rgba(0,0,0,.22) 100%); }
+
+  /* —— 标题（悬停逐字粒子飘散） —— */
+  .ffs-title { position: absolute; top: 7.5%; left: 50%; transform: translateX(-50%);
+    max-width: 94vw; text-align: center; user-select: none; cursor: default; z-index: 2;
+    font-size: clamp(1.7rem, 4.6vw, 3.1rem); font-weight: 800; letter-spacing: .14em; white-space: nowrap;
+    color: rgba(255,255,255,.96);
+    text-shadow: 0 2px 18px rgba(0,0,0,.55), 0 0 42px rgba(255,255,255,.18);
+    opacity: 0; animation: ffsTitleIn 1.4s ease .5s forwards;
+    transform-origin: 50% 100%; }
+  .ffs-title span { display: inline-block; will-change: transform, opacity, filter;
+    transition: transform .35s ease, opacity .35s ease, filter .35s ease; }
+  .ffs-title.burst span { animation: ffsCharBurst 1.05s ease forwards; }
+  @keyframes ffsTitleIn { from { opacity: 0; transform: translateX(-50%) translateY(16px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+  @keyframes ffsCharBurst {
+    0%   { transform: translate(0,0) rotate(0) scale(1); opacity: 1; filter: blur(0); }
+    30%  { opacity: .95; filter: blur(1.4px); }
+    62%  { transform: translate(var(--bx), calc(-42px - var(--by))) rotate(var(--rt)) scale(.55);
+           opacity: .25; filter: blur(3px); }
+    100% { transform: translate(0,0) rotate(0) scale(1); opacity: 1; filter: blur(0); }
+  }
+  @media (max-width: 640px) { .ffs-title { top: 6%; white-space: normal; } }
+
   .ffs-enter-wrap { position: absolute; left: 50%; bottom: 13%; transform: translateX(-50%);
     display: flex; flex-direction: column; align-items: center; gap: 14px; pointer-events: auto; }
   #ffs-enter { appearance: none; cursor: pointer; border: 0; background: transparent; padding: 0;
@@ -2591,7 +2629,7 @@ if (!window._siteInfoToggleBound) {
   .ffs-hint { font-size: .72rem; letter-spacing: 3px; color: rgba(255,255,255,.5); text-shadow: 0 1px 6px rgba(0,0,0,.55); }
   @keyframes ffsBreathe { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
   @media (max-width: 640px) { .ffs-enter-in { padding: 15px 34px; font-size: 1.05rem; } }
-  @media (prefers-reduced-motion: reduce) { #ffs-enter { animation: none; } }
+  @media (prefers-reduced-motion: reduce) { #ffs-enter { animation: none; } .ffs-title.burst span { animation: none; } }
 </style>
 <script>
 (function () {
@@ -2601,6 +2639,7 @@ if (!window._siteInfoToggleBound) {
     var overlay = document.getElementById('ffs');
     var canvas = document.getElementById('ffs-canvas');
     var enterBtn = document.getElementById('ffs-enter');
+    var titleEl = document.getElementById('ffs-title');
     if (!overlay || !canvas || !enterBtn) return;
 
     var entered = false;
@@ -2619,6 +2658,33 @@ if (!window._siteInfoToggleBound) {
     var act = 0, lastMove = -1e9;
     var velX = 0, velY = 0, velMag = 0;
     var ema = 16, frames = 0, STEP = weak ? 2 : 1, psK = 1;
+
+    // 标题：悬停触发逐字粒子飘散（循环）
+    if (titleEl) {
+      var sp = titleEl.querySelectorAll('span');
+      for (var sIdx = 0; sIdx < sp.length; sIdx++) {
+        var ang = sIdx * 1.17 + (sIdx % 2) * 2.1;
+        sp[sIdx].style.setProperty('--bx', (Math.cos(ang) * 30).toFixed(1) + 'px');
+        sp[sIdx].style.setProperty('--by', ((Math.abs(Math.sin(ang)) * 16) + 6).toFixed(1) + 'px');
+        sp[sIdx].style.setProperty('--rt', ((Math.random() * 40 - 20)).toFixed(1) + 'deg');
+      }
+      var burstTimer = null;
+      var fire = function () {
+        titleEl.classList.remove('burst');
+        void titleEl.offsetWidth;
+        titleEl.classList.add('burst');
+      };
+      titleEl.addEventListener('mouseenter', function () {
+        if (reduced) return;
+        fire();
+        clearInterval(burstTimer);
+        burstTimer = setInterval(fire, 2300);
+      });
+      titleEl.addEventListener('mouseleave', function () {
+        clearInterval(burstTimer);
+        titleEl.classList.remove('burst');
+      });
+    }
 
     function lockScroll(on) {
       try {
@@ -2657,16 +2723,17 @@ if (!window._siteInfoToggleBound) {
       } else { velX = 0; velY = 0; }
       mouse.x = nx; mouse.y = ny;
       lastMove = performance.now();
-      if (!reduced && ready && act < 1) act = Math.min(1, act + 0.55);
+      if (!reduced && ready && act < 1) act = Math.min(1, act + 0.6);
       if (!reduced && ready && raf === null) raf = requestAnimationFrame(frame);
     }
     window.addEventListener('mousemove', function (e) { poke(e.clientX, e.clientY); }, { passive: true });
     window.addEventListener('touchmove', function (e) { if (e.touches && e.touches[0]) poke(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
     window.addEventListener('touchstart', function (e) { if (e.touches && e.touches[0]) poke(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
 
+    // 高密度 + 小颗粒采样（桌面 236 列、弱设备 160 列）
     function buildParticles(ar) {
-      var COLS = weak ? 126 : 178;
-      var ROWS = Math.max(56, Math.round(COLS / ar));
+      var COLS = weak ? 160 : 236;
+      var ROWS = Math.max(70, Math.round(COLS / ar));
       var c = document.createElement('canvas');
       c.width = COLS; c.height = ROWS;
       var ctx = c.getContext('2d', { willReadFrequently: true });
@@ -2680,14 +2747,14 @@ if (!window._siteInfoToggleBound) {
           var i = (y * COLS + x) * 4;
           if (data[i + 3] === 0) continue;
           P.push({ x: x / COLS, y: y / ROWS, r: data[i], g: data[i + 1], b: data[i + 2],
-                   d: 0.35 + Math.random() * 0.65, ph: (ph++) * 0.37 });
+                   d: 0.3 + Math.random() * 0.7, ph: (ph++) * 0.29, spray: Math.random() < 0.3 });
         }
       }
       return P;
     }
 
     function sizeCanvas() {
-      var dpr = Math.min(window.devicePixelRatio || 1, weak ? 1.2 : 1.6);
+      var dpr = Math.min(window.devicePixelRatio || 1, weak ? 1.25 : 1.6);
       var w = window.innerWidth, h = window.innerHeight;
       canvas.width = w * dpr; canvas.height = h * dpr;
       canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
@@ -2720,93 +2787,86 @@ if (!window._siteInfoToggleBound) {
       painted = true;
     }
 
-    function drawBlob(ctx, x, y, p, k, now) {
-      var a = (0.05 + 0.10 * p.d) * k;
-      if (a < 0.012 || a > 1) return;
-      var wob = 1 + Math.sin(now * 0.004 + p.ph) * 0.16;
-      var r = (1.85 + p.d * 2.4) * psK * (0.5 + 0.62 * k) * wob;
-      ctx.beginPath();
-      ctx.fillStyle = 'rgba(' + p.r + ',' + p.g + ',' + p.b + ',' + a.toFixed(3) + ')';
-      ctx.arc(x, y, r, 0, 6.2832);
-      ctx.fill();
-    }
-
     function frame(t) {
       raf = null;
       if (dead || !ready || reduced) return;
       var now = performance.now();
-      var moving = now - lastMove < 650;
-      act += ((moving ? 1 : 0) - act) * (moving ? 0.24 : 0.045);
+      var moving = now - lastMove < 700;
+      act += ((moving ? 1 : 0) - act) * (moving ? 0.22 : 0.04);
       if (act < 0.0006) act = 0;
       velMag = Math.sqrt(velX * velX + velY * velY);
-      velX *= 0.94; velY *= 0.94;
+      velX *= 0.93; velY *= 0.93;
 
-      if (act === 0) { paintBase(); return; } // 空闲：只留一张原图，停转
+      if (act === 0) { paintBase(); return; }
 
       var ctx = view.ctx, w = view.w, h = view.h;
       var ar = img.naturalWidth / img.naturalHeight;
       var dw = w, dh = w / ar;
       if (dh < h) { dh = h; dw = h * ar; }
       var dx = (w - dw) / 2, dy = (h - dh) / 2;
-      psK = Math.min(1.35, Math.max(0.8, w / 1500));
+      psK = Math.min(1.2, Math.max(0.75, w / 1600));
 
-      // 帧率自适应
       frames++;
       var dt = Math.min(120, t - (frame._t || t)); frame._t = t;
       ema = ema * 0.88 + dt * 0.12;
       if (frames % 30 === 0) {
         var fps = 1000 / ema;
-        if (fps < 42 && STEP < (weak ? 4 : 6)) STEP++;
-        else if (fps > 56 && STEP > (weak ? 2 : 1)) STEP--;
+        if (fps < 38 && STEP < (weak ? 3 : 5)) STEP++;
+        else if (fps > 55 && STEP > (weak ? 2 : 1)) STEP--;
       }
 
+      // 底图常驻清晰
       ctx.clearRect(0, 0, w, h);
       ctx.globalAlpha = 1;
-      ctx.drawImage(photoCanvas, 0, 0, w, h); // 原图常驻 → 主体始终清晰
+      ctx.drawImage(photoCanvas, 0, 0, w, h);
 
-      var R = Math.max(130, Math.min(250, Math.min(w, h) * 0.2));
+      var R = Math.max(150, Math.min(300, Math.min(w, h) * 0.24));
       var cx = mouse.x, cy = mouse.y;
-      var boost = Math.min(1, 0.72 + velMag * 0.04);
+      var boost = Math.min(1, 0.6 + velMag * 0.035);
       var kMax = act * boost;
 
-      // ① 把指针处的一小块原图“擦除”（destination-out，软边），随活动度渐显
+      // 柔边溶解（软径向擦除 → 无硬黑圈，边缘羽化融入）
       ctx.save();
       ctx.globalCompositeOperation = 'destination-out';
-      ctx.globalAlpha = act * 0.95;
-      var eg = ctx.createRadialGradient(cx, cy, R * 0.45, cx, cy, R * 1.12);
+      ctx.globalAlpha = act * 0.92;
+      var eg = ctx.createRadialGradient(cx, cy, R * 0.35, cx, cy, R * 1.05);
       eg.addColorStop(0, 'rgba(0,0,0,1)');
-      eg.addColorStop(0.55, 'rgba(0,0,0,1)');
+      eg.addColorStop(0.55, 'rgba(0,0,0,.92)');
       eg.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = eg;
-      ctx.fillRect(cx - R * 1.2, cy - R * 1.2, R * 2.4, R * 2.4);
+      ctx.fillRect(cx - R * 1.15, cy - R * 1.15, R * 2.3, R * 2.3);
       ctx.restore();
 
-      // ② 在该区域内用高斯粒子完全替代图片（原图已在洞内被擦除）
-      var Rs = R * 1.5, Rs2 = Rs * Rs;
-      var swirl = 0.55 + Math.min(1.4, velMag * 0.012);
+      // 细密高斯点：70% 核心点保持构图≈原图像样貌，30% 溅射点向外飞散
+      var Rg = R * 1.55, Rg2 = Rg * Rg;
+      var swirl = 0.5 + Math.min(1.2, velMag * 0.012);
+      var spacing = dw / (weak ? 160 : 236);
+      var rBase = Math.max(1.1, spacing * 0.72) * psK;
       var n = particles.length, i = 0;
       for (; i < n; i += STEP) {
         var p = particles[i];
         var bx = dx + p.x * dw, by = dy + p.y * dh;
         var ddx = bx - cx, ddy = by - cy;
         var d2 = ddx * ddx + ddy * ddy;
-        if (d2 > Rs2) continue;
+        if (d2 > Rg2) continue;
         var dist = Math.sqrt(d2);
-        var f1 = 1 - dist / Rs;
-        var fall = f1 < 0 ? 0 : f1 * f1 * (3 - 2 * f1);   // 软衰减
-        if (fall < 0.015) continue;
-        var inv = dist > 0.2 ? 1 / dist : 0;
+        var f1 = 1 - dist / Rg;
+        var fall = f1 < 0 ? 0 : f1 * f1 * (3 - 2 * f1);
+        if (fall < 0.02) continue;
+        var inv = dist > 0.25 ? 1 / dist : 0;
         var ux = ddx * inv, uy = ddy * inv;
         var tx = -uy, ty = ux;
-        // 由中心向外“溅”：近中心位移小、往外逐渐抛出，并带旋流
-        var mag = (30 + 190 * (1 - fall)) * fall * kMax * 1.5;
-        var px = bx + ux * mag + tx * (20 + 60 * (1 - fall)) * swirl * fall;
-        var py = by + uy * mag + ty * (20 + 60 * (1 - fall)) * swirl * fall;
-        // 落在洞内的粒子最实（就是那块“完全变为粒子”的高斯云），越出洞边越淡
-        var a = (0.30 + 0.22 * p.d) * fall * kMax;
+        // 核心点：越靠中心位移越小（保持构图）；溅射点：向外/旋流飞散
+        var inCore = !p.spray ? Math.max(0, 1 - dist / R) : 0;
+        var magOut = (p.spray ? 230 : 55) * kMax * (p.spray ? fall : (1 - inCore) * fall + 0.18 * inCore);
+        var px = bx + ux * magOut + tx * (p.spray ? 50 : 9) * swirl * fall * kMax;
+        var py = by + uy * magOut + ty * (p.spray ? 50 : 9) * swirl * fall * kMax;
+        var a = (0.17 + 0.16 * p.d) * kMax * (p.spray ? 0.8 : 1);
+        if (p.spray) a += 0.10 * fall;
+        else a += 0.05 * fall;
         if (a < 0.02 || a > 1) continue;
-        var wob = 1 + Math.sin(now * 0.005 + p.ph) * 0.2;
-        var r = (2.0 + p.d * 2.6) * psK * wob * (0.75 + 0.45 * fall);
+        var wob = 1 + Math.sin(now * 0.005 + p.ph) * 0.18;
+        var r = rBase * (0.7 + p.d * 0.8) * wob;
         ctx.beginPath();
         ctx.fillStyle = 'rgba(' + p.r + ',' + p.g + ',' + p.b + ',' + a.toFixed(3) + ')';
         ctx.arc(px, py, r, 0, 6.2832);
