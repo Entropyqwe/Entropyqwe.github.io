@@ -1454,7 +1454,7 @@
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/6 04:26:11</div>
+          <div class="site-info-card-value">2026/9/6 04:34:43</div>
         </div>
 
         <!-- System Info -->
@@ -1778,7 +1778,7 @@ if (!window._siteInfoToggleBound) {
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/6 04:26:11</div>
+          <div class="site-info-card-value">2026/9/6 04:34:43</div>
         </div>
 
         <!-- System Info -->
@@ -3275,13 +3275,31 @@ if (!window._siteInfoToggleBound) {
       <button id="gb-manage" type="button">🔑 管理</button>
       <button id="gb-send" type="button">发送</button>
     </div>
+
     <div id="gb-keyline" hidden>
-      <input id="gb-key" type="password" placeholder="管理口令（与上传一致 Entropy2077）">
-      <div class="gb-tip">开启管理后，每条留言旁会出现红色“删除”，两步确认即可删除。</div>
+      <div class="gb-keyrow">
+        <input id="gb-key" type="password" placeholder="输入管理口令" autocomplete="off">
+        <button id="gb-verify" type="button">验证</button>
+      </div>
+      <div class="gb-tip">验证通过后将进入删除模式，可对单条留言执行删除。</div>
     </div>
+
     <div id="gb-status"></div>
   </div>
 </div>
+
+<!-- 删除确认对话框 -->
+<div id="gb-confirm" hidden>
+  <div class="gb-confirm-box">
+    <div class="gb-confirm-title">🗑 确认删除留言</div>
+    <div class="gb-confirm-text" id="gb-confirm-text">确定要删除这条留言吗？此操作不可恢复。</div>
+    <div class="gb-confirm-btns">
+      <button id="gb-confirm-no" type="button">取消</button>
+      <button id="gb-confirm-yes" type="button">确认删除</button>
+    </div>
+  </div>
+</div>
+
 <style>
   #gb-fab { position: fixed; left: 16px; bottom: 16px; z-index: 620; width: 48px; height: 48px; border: 0;
     border-radius: 50%; cursor: pointer; font-size: 21px; color: #fff;
@@ -3290,7 +3308,7 @@ if (!window._siteInfoToggleBound) {
   #gb-fab:hover { transform: scale(1.08); }
   #gb-panel { position: fixed; left: 16px; bottom: 74px; z-index: 620; width: min(340px, calc(100vw - 24px));
     border-radius: 16px; overflow: hidden; color: #f2f3f7;
-    background: rgba(22,24,32,.66); backdrop-filter: blur(18px) saturate(1.2); -webkit-backdrop-filter: blur(18px) saturate(1.2);
+    background: rgba(22,24,32,.68); backdrop-filter: blur(18px) saturate(1.2); -webkit-backdrop-filter: blur(18px) saturate(1.2);
     border: 1px solid rgba(255,255,255,.16); box-shadow: 0 14px 44px rgba(0,0,0,.42); font-size: .86rem; }
   #gb-panel[hidden] { display: none; }
   .gb-head { display: flex; align-items: baseline; gap: 8px; padding: 12px 14px 8px; }
@@ -3300,13 +3318,12 @@ if (!window._siteInfoToggleBound) {
     border-radius: 50%; line-height: 1; flex: none; }
   .gb-list { max-height: 300px; overflow: auto; padding: 2px 12px 6px; }
   .gb-item { padding: 8px 10px; border-radius: 10px; margin-bottom: 6px; background: rgba(255,255,255,.06); position: relative; }
-  .gb-item .nm { font-size: .78rem; opacity: .9; font-weight: 700; margin-bottom: 2px; }
+  .gb-item .nm { font-size: .78rem; opacity: .9; font-weight: 700; margin-bottom: 2px; padding-right: 48px; }
   .gb-item .nm time { font-weight: 400; opacity: .5; font-size: .68rem; margin-left: 6px; }
   .gb-item .tx { white-space: pre-wrap; word-break: break-word; line-height: 1.45; }
   .gb-item .gb-del { display: none; position: absolute; top: 6px; right: 8px; border: 0; cursor: pointer;
-    background: rgba(224,90,90,.85); color: #fff; border-radius: 7px; padding: 2px 8px; font-size: .74rem; }
+    background: rgba(224,90,90,.9); color: #fff; border-radius: 7px; padding: 3px 9px; font-size: .75rem; }
   .gb-item.admin .gb-del { display: block; }
-  .gb-del.arm { background: #c84444; }
   .gb-empty { text-align: center; opacity: .6; padding: 14px 0; }
   .gb-form { padding: 6px 12px 12px; border-top: 1px solid rgba(255,255,255,.1); }
   .gb-form input, .gb-form textarea { width: 100%; box-sizing: border-box; margin: 4px 0; padding: 7px 9px; border-radius: 9px;
@@ -3314,11 +3331,29 @@ if (!window._siteInfoToggleBound) {
   .gb-form textarea { min-height: 46px; }
   .gb-actions { display: flex; gap: 8px; margin-top: 6px; }
   #gb-manage { background: rgba(255,255,255,.1); color: inherit; border: 1px solid rgba(255,255,255,.2); }
-  #gb-manage.on { color:#fff; background: rgba(224,90,90,.4); border-color:#e05a5a; }
+  #gb-manage.on { color:#fff; background: rgba(224,90,90,.45); border-color:#e05a5a; }
+  #gb-manage.admin-on { color:#fff; background: rgba(47,191,113,.4); border-color:#2fbf71; }
   .gb-actions button { flex: 1; border: 0; border-radius: 10px; padding: 9px; cursor: pointer; color: #fff; font-size: .88rem; }
   #gb-send { background: linear-gradient(135deg, #6a7cff, #5b6cf0); }
+  #gb-keyrow { display: flex; gap: 8px; align-items: center; margin-top: 6px; }
+  #gb-keyrow input { flex: 1; margin: 0; }
+  #gb-verify { border: 0; border-radius: 9px; padding: 8px 14px; cursor: pointer; color: #fff; font-size: .84rem;
+    background: linear-gradient(135deg, #2fbf71, #22a65f); white-space: nowrap; }
+  #gb-verify:disabled { opacity: .5; }
   #gb-status { font-size: .8rem; min-height: 1.1em; margin-top: 6px; font-weight: 600; }
-  .gb-tip { font-size: .7rem; opacity: .55; }
+  .gb-tip { font-size: .7rem; opacity: .55; margin-top: 4px; }
+  /* 确认对话框 */
+  #gb-confirm { position: fixed; inset: 0; z-index: 960; display: flex; align-items: center; justify-content: center;
+    background: rgba(5,8,14,.6); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+  #gb-confirm[hidden] { display: none; }
+  .gb-confirm-box { width: min(340px, calc(100vw - 40px)); border-radius: 16px; padding: 18px 20px; color: #f2f3f7;
+    background: rgba(28,30,40,.95); border: 1px solid rgba(255,255,255,.16); box-shadow: 0 18px 56px rgba(0,0,0,.5); }
+  .gb-confirm-title { font-weight: 800; font-size: 1rem; margin-bottom: 8px; }
+  .gb-confirm-text { opacity: .85; font-size: .9rem; margin-bottom: 16px; word-break: break-word; }
+  .gb-confirm-btns { display: flex; gap: 10px; }
+  .gb-confirm-btns button { flex: 1; border: 0; border-radius: 10px; padding: 10px; cursor: pointer; font-size: .92rem; color: #fff; }
+  #gb-confirm-no { background: rgba(255,255,255,.12); }
+  #gb-confirm-yes { background: linear-gradient(135deg, #e05a5a, #c84444); }
   @media (max-width:640px){ #gb-panel { left: 10px; bottom: 72px; } }
 </style>
 <script>
@@ -3332,13 +3367,18 @@ if (!window._siteInfoToggleBound) {
     var textEl = document.getElementById('gb-text');
     var keyLine = document.getElementById('gb-keyline');
     var keyEl = document.getElementById('gb-key');
+    var verifyBtn = document.getElementById('gb-verify');
     var statusEl = document.getElementById('gb-status');
     var sendBtn = document.getElementById('gb-send');
     var manageBtn = document.getElementById('gb-manage');
     var closeBtn = document.getElementById('gb-close');
-    if (!fab || !panel || !listEl) return;
+    var confirmBox = document.getElementById('gb-confirm');
+    var confirmText = document.getElementById('gb-confirm-text');
+    if (!fab || !panel || !listEl || !confirmBox) return;
+
     var messages = [];
-    var adminMode = false;
+    var verifiedKey = null;   // 验证通过后保存的口令
+    var pending = null;       // 等待确认删除 {id}
 
     function esc(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
     function fmt(t) {
@@ -3346,54 +3386,30 @@ if (!window._siteInfoToggleBound) {
       var p = function (n) { return (n < 10 ? '0' : '') + n; };
       return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
     }
-    function st(msg, ok) {
-      statusEl.textContent = msg || '';
-      statusEl.style.color = ok ? '#8ef0b0' : '#ffb4a0';
-    }
-
-    function bindDelete(itemEl, id) {
-      var btn = itemEl.querySelector('.gb-del');
-      if (!btn) return;
-      btn.addEventListener('click', function () {
-        var key = keyEl.value.trim();
-        if (!key) { st('⚠️ 请先点「🔑 管理」并输入口令', false); return; }
-        if (btn.getAttribute('data-arm') !== '1') {
-          btn.setAttribute('data-arm', '1');
-          btn.textContent = '确认删除？';
-          btn.classList.add('arm');
-          st('再点一次「确认删除？」即可删除', false);
-          setTimeout(function () { btn.removeAttribute('data-arm'); btn.textContent = '删除'; btn.classList.remove('arm'); }, 4000);
-          return;
-        }
-        btn.disabled = true;
-        btn.textContent = '…';
-        st('删除中…', false);
-        fetch(EP + '/gb', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'delete', key: key, id: id }) })
-          .then(function (r) { return r.json(); })
-          .then(function (d) {
-            if (d && d.ok) { st('✓ 已删除', true); load(); }
-            else { st('⚠️ ' + ((d && d.error) || '删除失败'), false); btn.disabled = false; btn.textContent = '删除'; }
-          })
-          .catch(function (err) { st('⚠️ 网络错误：' + err.message, false); btn.disabled = false; btn.textContent = '删除'; });
-      });
-    }
+    function st(msg, ok) { statusEl.textContent = msg || ''; statusEl.style.color = ok ? '#8ef0b0' : '#ffb4a0'; }
 
     function render() {
+      listEl.innerHTML = '';
       if (!messages.length) {
         listEl.innerHTML = '<div class="gb-empty">还没有留言，来抢沙发～</div>';
         return;
       }
-      listEl.innerHTML = '';
       messages.forEach(function (m) {
         var item = document.createElement('div');
-        item.className = 'gb-item' + (adminMode ? ' admin' : '');
+        item.className = 'gb-item' + (verifiedKey ? ' admin' : '');
         item.innerHTML =
           '<button class="gb-del" type="button">删除</button>' +
           '<div class="nm">' + esc(m.name || '匿名') + '<time>' + fmt(m.t) + '</time></div>' +
           '<div class="tx">' + esc(m.text) + '</div>';
         listEl.appendChild(item);
-        bindDelete(item, m.id);
+        var del = item.querySelector('.gb-del');
+        if (del) {
+          del.addEventListener('click', function () {
+            pending = { id: m.id };
+            confirmText.textContent = '确定要删除这条留言吗？（' + esc(m.name || '匿名') + '）\n此操作不可恢复。';
+            confirmBox.hidden = false;
+          });
+        }
       });
     }
 
@@ -3403,6 +3419,75 @@ if (!window._siteInfoToggleBound) {
         else listEl.innerHTML = '<div class="gb-empty">留言加载失败</div>';
       }).catch(function () { listEl.innerHTML = '<div class="gb-empty">留言加载失败（网络）</div>'; });
     }
+
+    // 开关：进入"准备验证"
+    manageBtn.addEventListener('click', function () {
+      if (verifiedKey) {
+        // 已是删除模式 → 退出
+        verifiedKey = null;
+        manageBtn.textContent = '🔑 管理';
+        manageBtn.classList.remove('admin-on');
+        keyEl.value = '';
+        keyLine.hidden = true;
+        st('已退出删除模式', false);
+        render();
+        return;
+      }
+      keyLine.hidden = !keyLine.hidden;
+      manageBtn.classList.toggle('on', !keyLine.hidden);
+      if (!keyLine.hidden) { st('请输入口令并点「验证」', false); keyEl.focus(); }
+      else { st(''); }
+    });
+
+    // 验证
+    verifyBtn.addEventListener('click', function () {
+      var key = keyEl.value.trim();
+      if (!key) { st('⚠️ 请输入口令', false); return; }
+      verifyBtn.disabled = true;
+      verifyBtn.textContent = '验证中…';
+      st('正在验证口令…', false);
+      fetch(EP + '/gb', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'verify', key: key }) })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (d && d.ok) {
+            verifiedKey = key;
+            keyEl.disabled = true;
+            verifyBtn.textContent = '✓ 已验证';
+            manageBtn.textContent = '退出删除模式';
+            manageBtn.classList.add('admin-on');
+            manageBtn.classList.remove('on');
+            st('✅ 口令正确，已进入删除模式：点任意留言的「删除」', true);
+            render();
+          } else {
+            st('❌ ' + ((d && d.error) || '验证失败'), false);
+            verifyBtn.disabled = false;
+            verifyBtn.textContent = '验证';
+          }
+        })
+        .catch(function (err) { st('❌ 网络错误：' + err.message, false); verifyBtn.disabled = false; verifyBtn.textContent = '验证'; });
+    });
+
+    // 确认框
+    document.getElementById('gb-confirm-no').addEventListener('click', function () {
+      confirmBox.hidden = true;
+      pending = null;
+      st('已取消删除', false);
+    });
+    document.getElementById('gb-confirm-yes').addEventListener('click', function () {
+      if (!pending || !verifiedKey) { confirmBox.hidden = true; return; }
+      var id = pending.id;
+      confirmBox.hidden = true;
+      pending = null;
+      st('删除中…', false);
+      fetch(EP + '/gb', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete', key: verifiedKey, id: id }) })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          if (d && d.ok) { st('✅ 已删除该留言', true); load(); }
+          else st('❌ ' + ((d && d.error) || '删除失败'), false);
+        }).catch(function (err) { st('❌ 网络错误：' + err.message, false); });
+    });
 
     fab.addEventListener('click', function (e) { e.stopPropagation(); panel.hidden = !panel.hidden; if (!panel.hidden) load(); });
     closeBtn.addEventListener('click', function () { panel.hidden = true; });
@@ -3415,22 +3500,12 @@ if (!window._siteInfoToggleBound) {
         body: JSON.stringify({ action: 'post', name: nameEl.value, text: text }) })
         .then(function (r) { return r.json(); })
         .then(function (d) {
-          if (d && d.ok) { textEl.value = ''; st('✓ 已发布', true); load(); }
-          else st('⚠️ ' + ((d && d.error) || '发送失败'), false);
-        }).catch(function (err) { st('⚠️ 网络错误：' + err.message, false); });
+          if (d && d.ok) { textEl.value = ''; st('✅ 已发布', true); load(); }
+          else st('❌ ' + ((d && d.error) || '发送失败'), false);
+        }).catch(function (err) { st('❌ 网络错误：' + err.message, false); });
     });
-
-    manageBtn.addEventListener('click', function () {
-      adminMode = !adminMode;
-      keyLine.hidden = !adminMode;
-      manageBtn.classList.toggle('on', adminMode);
-      if (adminMode) { st('管理已开启：输入口令后点“删除”→再点“确认删除？”', false); keyEl.focus(); }
-      else { keyEl.value = ''; st(''); }
-      render();
-    });
-    keyEl.addEventListener('input', function () { if (adminMode) st('可直接点“删除”了', false); });
   } catch (e) {
-    try { var st2 = document.getElementById('gb-status'); if (st2) st2.textContent = '留言板初始化失败：' + e.message; } catch (e2) {}
+    try { var s = document.getElementById('gb-status'); if (s) s.textContent = '初始化失败：' + e.message; } catch (e2) {}
   }
 })();
 </script>
