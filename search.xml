@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>关于本网站的简化markdown的文章发送流程与相册设置</title>
+      <link href="/2026/09/09/p20260909224535/"/>
+      <url>/2026/09/09/p20260909224535/</url>
+      
+        <content type="html"><![CDATA[<p>相册设置源码<a href="https://github.com/Entropyqwe/hexo-gallery-plugin">https://github.com/Entropyqwe/hexo-gallery-plugin</a><br>文章发布流程简化<a href="https://github.com/Entropyqwe/hexo-quick-post">https://github.com/Entropyqwe/hexo-quick-post</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 随笔 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 代码 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>这是一条测试</title>
       <link href="/2026/09/06/p20260906124505/"/>
       <url>/2026/09/06/p20260906124505/</url>
