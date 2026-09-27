@@ -36,6 +36,12 @@
         <content type="html"><![CDATA[<p>这是一条测试</p>]]></content>
       
       
+      <categories>
+          
+          <category> 网站日志 </category>
+          
+      </categories>
+      
       
         <tags>
             
@@ -417,7 +423,7 @@
       
       <categories>
           
-          <category> 随笔 </category>
+          <category> 硬件 </category>
           
       </categories>
       
