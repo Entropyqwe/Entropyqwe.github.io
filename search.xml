@@ -4,31 +4,6 @@
   
     
     <entry>
-      <title>换为GitHub pages,二次开站</title>
-      <link href="/2026/09/27/p20260927232955/"/>
-      <url>/2026/09/27/p20260927232955/</url>
-      
-        <content type="html"><![CDATA[<p>时隔800多天</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 随笔 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 网站 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>关于本网站的简化markdown的文章发送流程与相册设置</title>
       <link href="//2026/09/09/p20260909224535/"/>
       <url>//2026/09/09/p20260909224535/</url>
@@ -65,6 +40,31 @@
         <tags>
             
             <tag> 测试 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>换为GitHub pages,二次开站</title>
+      <link href="//2026/09/27/p20260927232955/"/>
+      <url>//2026/09/27/p20260927232955/</url>
+      
+        <content type="html"><![CDATA[<p>时隔800多天</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 随笔 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 网站 </tag>
             
         </tags>
       
