@@ -4,31 +4,6 @@
   
     
     <entry>
-      <title>麒麟9000s</title>
-      <link href="/2026/09/27/p20260927234456/"/>
-      <url>/2026/09/27/p20260927234456/</url>
-      
-        <content type="html"><![CDATA[<p>麒麟9000s的12核架构（2+6+4真假有待验证），此前安兔兔称是两颗A34超大核（主频3.1Ghz），六颗定制的A78AE大核，以及四颗A510小核。不过据技术人士透露，此为严重误读！大核中核未知架构（没准是自研核心呢），小核A510，代号马良910的GPU。哪哪儿看都神秘<br>大核可能是新研发的与鲲鹏930核心配套的大核。<br>GPU几乎可以确定，是新研架构</p><p><img src="/images/uploaded/1790523896594-k80r/psc-2-1.jpg"></p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 随笔 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 硬件 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>关于本网站的简化markdown的文章发送流程与相册设置</title>
       <link href="//2026/09/09/p20260909224535/"/>
       <url>//2026/09/09/p20260909224535/</url>
@@ -377,6 +352,31 @@
             <tag> 摄影 </tag>
             
             <tag> 建模 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>麒麟9000s</title>
+      <link href="//2026/09/27/p20260927234456/"/>
+      <url>//2026/09/27/p20260927234456/</url>
+      
+        <content type="html"><![CDATA[<p>麒麟9000s的12核架构（2+6+4真假有待验证），此前安兔兔称是两颗A34超大核（主频3.1Ghz），六颗定制的A78AE大核，以及四颗A510小核。不过据技术人士透露，此为严重误读！大核中核未知架构（没准是自研核心呢），小核A510，代号马良910的GPU。哪哪儿看都神秘<br>大核可能是新研发的与鲲鹏930核心配套的大核。<br>GPU几乎可以确定，是新研架构</p><p><img src="/images/uploaded/1790523896594-k80r/psc-2-1.jpg"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 随笔 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 硬件 </tag>
             
         </tags>
       
