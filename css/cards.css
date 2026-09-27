@@ -70,9 +70,14 @@
   grid-column: 2;
   grid-row: 1;
   border-radius: var(--radius-large);
-  aspect-ratio: auto;
-  height: 100%;
-  min-height: 140px;
+  /* 固定 16:9 + 高度上限：封面尺寸不再由图片自身比例决定。
+     否则 126x2560 这类极端长图会把卡片撑到几千像素高，列表长短不一。
+     图片仍用 object-fit:cover 填满裁剪，任何比例都整齐。 */
+  aspect-ratio: 16 / 9;
+  height: auto;
+  max-height: 190px;
+  min-height: 0;
+  align-self: center;
 }
 
 .post-list-container[data-layout="list"] .post-card-item[data-has-cover="false"] {
@@ -156,6 +161,7 @@
 .post-card-cover img {
   width: 100%;
   height: 100%;
+  max-height: 100%;
   object-fit: cover;
   transition: transform 0.3s ease;
 }
@@ -167,6 +173,7 @@
 /* Card mode (grid): cover at top, content below */
 .post-list-container[data-layout="grid"] .post-card-cover {
   border-radius: var(--radius-large) var(--radius-large) 0 0;
+  max-height: 240px;
 }
 
 /* --------------------------------------------------------------------------
