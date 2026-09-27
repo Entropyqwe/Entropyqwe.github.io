@@ -542,7 +542,7 @@
 </ul>
 <h2 id="关于本站"><a href="#关于本站" class="headerlink" title="关于本站"></a>关于本站</h2><p>本站基于 <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a> 与 <a target="_blank" rel="noopener" href="https://github.com/LKDenchin/hexo-theme-firefly">Firefly 主题</a> 搭建，托管在 GitHub Pages。<br>照片会不定期更新，欢迎常来看看。</p>
 <h2 id="联系我"><a href="#联系我" class="headerlink" title="联系我"></a>联系我</h2><ul>
-<li>Email: <a href="mailto:&#x32;&#x33;&#x38;&#51;&#50;&#56;&#50;&#x32;&#x35;&#x34;&#64;&#113;&#113;&#46;&#x63;&#x6f;&#109;">2383282254@qq.com</a></li>
+<li>Email: <a href="mailto:&#50;&#51;&#56;&#51;&#x32;&#56;&#50;&#50;&#x35;&#52;&#x40;&#x71;&#x71;&#46;&#x63;&#x6f;&#109;">2383282254@qq.com</a></li>
 <li>GitHub: <a target="_blank" rel="noopener" href="https://github.com/Entropyqwe">github.com&#x2F;Entropyqwe</a></li>
 </ul>
 
@@ -2540,7 +2540,11 @@
       api('verify').then(function (o) {
         if (o && o.ok) { gst('✅ 验证通过', true); showPanel(); load(); }
         else { sessionStorage.removeItem(SK); gst('❌ ' + ((o && o.error) || '验证失败'), false); }
-      }).catch(function (e) { sessionStorage.removeItem(SK); gst('❌ 网络错误：' + e.message, false); });
+      }).catch(function (e) {
+        // fetch 被浏览器直接掐断（CORS 预检失败）通常=云函数还没部署
+        sessionStorage.removeItem(SK);
+        gst('❌ 连不上云函数 ' + EP + '/manage。\n多半是 manage.js 还没部署到 Cloudflare Pages（部署后即可正常使用）。\n原始报错：' + e.message, false);
+      });
     }
     document.getElementById('pm-enter').addEventListener('click', doEnter);
     keyEl.addEventListener('keydown', function (e) { if (e.key === 'Enter') doEnter(); });
