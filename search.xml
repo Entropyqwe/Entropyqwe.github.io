@@ -310,6 +310,31 @@
     
     
     <entry>
+      <title>黑客帝国Demo</title>
+      <link href="//2026/09/27/p20260927233811/"/>
+      <url>//2026/09/27/p20260927233811/</url>
+      
+        <content type="html"><![CDATA[<p>让某些厂看看什么是真正的虚幻引擎<br>今天刚好看见又上架了下着玩了一手，虽然说是21年底的demo，用XSX插值4k下Nanite[虚拟几何系统（virtual geometry system）]一复杂或者计算实时车损，一瞬间能跌到20帧难蚌（优化雀食有点问题，毕竟是demo，ps5也十多二十帧）虚幻五主要新开发是全局光线追踪、Lumen技术和Nanite技术</p><p><img src="/images/uploaded/1790523491920-yin1/psc-1.jpg"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 硬件 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 硬件 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>停火</title>
       <link href="//2026/09/27/p20260927233651/"/>
       <url>//2026/09/27/p20260927233651/</url>
@@ -327,33 +352,6 @@
         <tags>
             
             <tag> 时政 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>开站啦 🌅</title>
-      <link href="/2024/05/02/%E5%BC%80%E7%AB%99%E5%95%A6/"/>
-      <url>/2024/05/02/%E5%BC%80%E7%AB%99%E5%95%A6/</url>
-      
-        <content type="html"><![CDATA[<p>欢迎来到 <strong>Entropy · 溯洄</strong> 🎉</p><p>这里是我的个人小站：</p><ul><li>🖼 <strong>相册</strong> —— 我拍下的摄影作品，会不定期更新</li><li>✍️ <strong>博客</strong> —— 记录拍摄手记、旅途与偶尔的代码</li></ul><p>点击顶部导航的「<strong>相册</strong>」即可浏览作品。如果你也喜欢拍照，欢迎在 GitHub 上找我交流。</p><blockquote><p>愿每一次按下的快门，都留住了当时的光。</p></blockquote>]]></content>
-      
-      
-      <categories>
-          
-          <category> 网站日志 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> 摄影 </tag>
-            
-            <tag> 随笔 </tag>
             
         </tags>
       
@@ -387,23 +385,25 @@
     
     
     <entry>
-      <title>黑客帝国Demo</title>
-      <link href="//2026/09/27/p20260927233811/"/>
-      <url>//2026/09/27/p20260927233811/</url>
+      <title>开站啦 🌅</title>
+      <link href="/2024/05/02/%E5%BC%80%E7%AB%99%E5%95%A6/"/>
+      <url>/2024/05/02/%E5%BC%80%E7%AB%99%E5%95%A6/</url>
       
-        <content type="html"><![CDATA[<p>让某些厂看看什么是真正的虚幻引擎<br>今天刚好看见又上架了下着玩了一手，虽然说是21年底的demo，用XSX插值4k下Nanite[虚拟几何系统（virtual geometry system）]一复杂或者计算实时车损，一瞬间能跌到20帧难蚌（优化雀食有点问题，毕竟是demo，ps5也十多二十帧）虚幻五主要新开发是全局光线追踪、Lumen技术和Nanite技术</p><p><img src="/images/uploaded/1790523491920-yin1/psc-1.jpg"></p>]]></content>
+        <content type="html"><![CDATA[<p>欢迎来到 <strong>Entropy · 溯洄</strong> 🎉</p><p>这里是我的个人小站：</p><ul><li>🖼 <strong>相册</strong> —— 我拍下的摄影作品，会不定期更新</li><li>✍️ <strong>博客</strong> —— 记录拍摄手记、旅途与偶尔的代码</li></ul><p>点击顶部导航的「<strong>相册</strong>」即可浏览作品。如果你也喜欢拍照，欢迎在 GitHub 上找我交流。</p><blockquote><p>愿每一次按下的快门，都留住了当时的光。</p></blockquote>]]></content>
       
       
       <categories>
           
-          <category> 硬件 </category>
+          <category> 网站日志 </category>
           
       </categories>
       
       
         <tags>
             
-            <tag> 硬件 </tag>
+            <tag> 摄影 </tag>
+            
+            <tag> 随笔 </tag>
             
         </tags>
       
