@@ -749,6 +749,20 @@
 </div>
 
 
+    
+    <header class="category-header">
+      <h1 class="category-title">📁 随笔</h1>
+      <p class="category-description"><span class="category-desc-none">（这个文件夹还没有介绍）</span></p>
+      <p class="category-meta">3 篇文章</p>
+    </header>
+    <style>
+      .category-header { margin: 0 0 1.2rem; }
+      .category-title { margin: 0 0 .4rem; font-size: 1.55rem; font-weight: 700; line-height: 1.3; }
+      .category-description { margin: 0 0 .35rem; opacity: .78; line-height: 1.65; font-size: .95rem; word-break: break-word; }
+      .category-desc-none { opacity: .35; font-style: italic; }
+      .category-meta { margin: 0; opacity: .45; font-size: .82rem; }
+    </style>
+
     <div class="post-list" data-mode="list">
       
         
@@ -1637,7 +1651,7 @@
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/27 14:18:58</div>
+          <div class="site-info-card-value">2026/9/27 14:25:32</div>
         </div>
 
         <!-- System Info -->
@@ -1999,7 +2013,7 @@ if (!window._siteInfoToggleBound) {
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/27 14:18:58</div>
+          <div class="site-info-card-value">2026/9/27 14:25:32</div>
         </div>
 
         <!-- System Info -->
@@ -3965,6 +3979,10 @@ if (!window._siteInfoToggleBound) {
   .pm-hint { font-size: .74rem; opacity: .55; margin-top: 8px; line-height: 1.5; }
   .pm-mb { margin-bottom: 10px; }
   .pm-empty { opacity: .5; font-size: .82rem; padding: 6px 2px; }
+  .pm-item-col { flex-direction: column; align-items: stretch; gap: 5px; }
+  .pm-item-main { display: flex; align-items: center; gap: 8px; }
+  .pm-desc { font-size: .78rem; opacity: .72; line-height: 1.5; word-break: break-word; padding-left: 2px; }
+  .pm-desc-none { opacity: .32; font-style: italic; }
 </style>
 <script>
 (function () {
@@ -4066,12 +4084,18 @@ if (!window._siteInfoToggleBound) {
       if (!state.categories.length) { box.innerHTML = '<div class="pm-empty">还没有分类</div>'; }
       else {
         box.innerHTML = state.categories.map(function (c) {
-          var cls = 'pm-item' + (c.depth === 1 ? ' pm-depth1' : c.depth === 2 ? ' pm-depth2' : c.depth > 2 ? ' pm-depth3' : '');
+          var cls = 'pm-item pm-item-col' + (c.depth === 1 ? ' pm-depth1' : c.depth === 2 ? ' pm-depth2' : c.depth > 2 ? ' pm-depth3' : '');
           return '<div class="' + cls + '">'
+            + '<div class="pm-item-main">'
             + '<span class="pm-name">📁 ' + esc(c.path) + '</span>'
             + '<span class="pm-meta">' + (c.count ? c.count + ' 篇' : '未使用') + '</span>'
+            + '<button class="pm-mini" data-desc="' + esc(c.path) + '">' + (c.description ? '改介绍' : '加介绍') + '</button>'
             + '<button class="pm-mini" data-rename="' + esc(c.path) + '">重命名</button>'
             + '<button class="pm-mini pm-mini-danger" data-del="' + esc(c.path) + '">删除</button>'
+            + '</div>'
+            + (c.description
+                ? '<div class="pm-desc">' + esc(c.description) + '</div>'
+                : '<div class="pm-desc pm-desc-none">（还没有介绍 —— 点「加介绍」写一段，访客点进这个文件夹就能看到）</div>')
             + '</div>';
         }).join('');
       }
@@ -4087,7 +4111,17 @@ if (!window._siteInfoToggleBound) {
     document.getElementById('pm-catlist').addEventListener('click', function (e) {
       var b = e.target.closest ? e.target.closest('button') : null;
       if (!b) return;
-      if (b.dataset.rename) {
+      if (b.dataset.desc) {
+        var dpath = b.dataset.desc;
+        var curCat = state.categories.filter(function (x) { return x.path === dpath; })[0] || {};
+        var v = prompt('给文件夹「' + dpath + '」写一段介绍\n\n（访客点进这个文件夹时就会看到；留空则清除）', curCat.description || '');
+        if (v == null) return;
+        st('正在保存介绍…', true);
+        api('setCategoryDescription', { path: dpath, description: v.trim() }).then(function (o) {
+          st((o && o.ok ? '✅ ' : '❌ ') + ((o && o.note) || (o && o.error) || ''), !!(o && o.ok));
+          if (o && o.ok) load();
+        });
+      } else if (b.dataset.rename) {
         var from = b.dataset.rename;
         var to = prompt('把分类「' + from + '」重命名为：（斜杠表示子文件夹）', from);
         if (to == null) return;
@@ -4123,7 +4157,7 @@ if (!window._siteInfoToggleBound) {
       for (var i = 1; i <= seg.length; i++) {
         var p = seg.slice(0, i).join('/');
         if (!state.categories.some(function (c) { return c.path === p; })) {
-          state.categories.push({ path: p, count: 0, depth: i - 1, empty: true });
+          state.categories.push({ path: p, count: 0, depth: i - 1, empty: true, description: '' });
         }
       }
       state.categories.sort(function (a, b) { return a.path < b.path ? -1 : a.path > b.path ? 1 : 0; });
@@ -4148,7 +4182,9 @@ if (!window._siteInfoToggleBound) {
     // 把当前分类全集写回仓库（含暂时没有文章的空分类）
     function persistCategories() {
       return api('saveCategories', {
-        categories: state.categories.map(function (c) { return c.path; })
+        categories: state.categories.map(function (c) {
+          return { path: c.path, description: c.description || '' };
+        })
       });
     }
 
