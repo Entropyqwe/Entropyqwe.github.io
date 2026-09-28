@@ -855,7 +855,7 @@ html.dark #navbar.mobile-nav .navbar-links.open {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  margin-left: 0.7rem;
+  margin-left: 0.1rem;  /* 品牌区本身有 0.5rem gap，这里只补一点点 */
   padding: 0.18rem 0.6rem;
   border-radius: var(--md-shape-corner-full, 9999px);
   background: var(--md-sys-color-primary-container);
