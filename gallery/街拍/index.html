@@ -238,6 +238,12 @@
     </div>
 
     <!-- Center: Menu Links -->
+    <!-- 网站累计运行天数 -->
+    <span class="navbar-uptime" id="navbar-uptime" title="网站累计运行天数（北京时间每天 0 点 +1）">
+      <span class="material-symbols-outlined">schedule</span>
+      <span>已累计运行<b id="navbar-uptime-days">879</b>天</span>
+    </span>
+
     <div class="navbar-menu" id="navbar-menu" role="menubar">
       <ul class="navbar-links">
         <!-- Home (LinkPreset.Home) -->
@@ -417,6 +423,30 @@
     <a id="ff-mc-entry" href="/wushuang/" title="应张大公子需求加的鸣潮入口">应张大公子需求加的鸣潮入口 ↗</a>
 
 </nav>
+
+<script>
+(function () {
+  var el = document.getElementById('navbar-uptime-days');
+  if (!el) return;
+  var p = '2024-05-02'.split('-');
+  var startIdx = Math.floor(Date.UTC(+p[0], +p[1] - 1, +p[2]) / 86400000);
+  // 取当前「北京日期」的序号（与访客本地时区无关）
+  function bjTodayIdx() {
+    var bj = new Date(Date.now() + 8 * 3600 * 1000);
+    return Math.floor(Date.UTC(bj.getUTCFullYear(), bj.getUTCMonth(), bj.getUTCDate()) / 86400000);
+  }
+  function render() { el.textContent = Math.max(1, bjTodayIdx() - startIdx); }
+  // 到下一个「北京 0 点」刷新，并把定时器续到再下一个 0 点
+  function scheduleBeijingMidnight() {
+    var bj = new Date(Date.now() + 8 * 3600 * 1000);
+    var nextUtc = Date.UTC(bj.getUTCFullYear(), bj.getUTCMonth(), bj.getUTCDate() + 1) - 8 * 3600 * 1000;
+    var ms = nextUtc - Date.now() + 1000; // +1s 保险
+    setTimeout(function () { render(); scheduleBeijingMidnight(); }, Math.max(1000, ms));
+  }
+  render();
+  scheduleBeijingMidnight();
+})();
+</script>
 
     </div>
   </div>
