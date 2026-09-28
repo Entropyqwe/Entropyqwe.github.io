@@ -310,6 +310,19 @@
         </li>
         
 
+        <!-- Open Source（开源分享栏目） -->
+        
+        <li class="navbar-link-item" role="none">
+          <a href="/opensource" class="navbar-link" role="menuitem">
+            <span class="navbar-link-content">
+              <span class="material-symbols-outlined">code</span>
+              <span>开源</span>
+            </span>
+            <span class="material-symbols-outlined dropdown-arrow mobile-arrow">chevron_right</span>
+          </a>
+        </li>
+        
+
         <!-- About -->
         
         
@@ -1624,7 +1637,7 @@
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/28 09:20:28</div>
+          <div class="site-info-card-value">2026/9/28 10:28:01</div>
         </div>
 
         <!-- System Info -->
@@ -1990,7 +2003,7 @@ if (!window._siteInfoToggleBound) {
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/28 09:20:28</div>
+          <div class="site-info-card-value">2026/9/28 10:28:01</div>
         </div>
 
         <!-- System Info -->
@@ -3678,6 +3691,7 @@ if (!window._siteInfoToggleBound) {
     <div class="pb-seg">
       <button type="button" data-kind="dynamic">💬 动态</button>
       <button type="button" data-kind="post" class="on">📝 文章</button>
+      <button type="button" data-kind="opensource">📦 开源</button>
     </div>
 
     <label class="pb-field">发布口令
@@ -3689,6 +3703,20 @@ if (!window._siteInfoToggleBound) {
     <label class="pb-field" id="pb-tags-wrap">标签（可选，逗号分隔）
       <input id="pb-tags" maxlength="80" placeholder="如：摄影, 生活">
     </label>
+    <div id="pb-os-wrap" style="display:none">
+      <label class="pb-field">文件夹（栏目专属分类，可新建）
+        <input id="pb-os-folder" list="pb-os-folders" maxlength="30" placeholder="如：效率软件">
+        <datalist id="pb-os-folders">
+          <option value="效率软件"></option><option value="开发工具"></option><option value="自建服务"></option>
+        </datalist>
+      </label>
+      <label class="pb-field">项目地址（GitHub / 官网）
+        <input id="pb-os-repo" maxlength="400" placeholder="https://github.com/owner/repo">
+      </label>
+      <label class="pb-field">语言 / 协议（可选）
+        <input id="pb-os-lang" maxlength="24" placeholder="如：Swift、GPL-3.0">
+      </label>
+    </div>
     <label class="pb-field">正文（支持 Markdown）
       <textarea id="pb-text" rows="4" maxlength="4000" placeholder="写点什么…"></textarea>
     </label>
@@ -3698,7 +3726,7 @@ if (!window._siteInfoToggleBound) {
     <div id="pb-preview"></div>
     <div id="pb-status"></div>
     <button id="pb-submit">发布</button>
-    <div class="pb-hint">发布后 1~3 分钟内自动上线：动态出现在「动态」，文章出现在首页/归档。图片会自动压缩。</div>
+    <div class="pb-hint">发布后 1~3 分钟内自动上线：动态出现在「动态」，文章出现在首页/归档，开源分享只出现在「开源」栏目内（不会出现在首页）。图片会自动压缩。</div>
   </div>
 </div>
 <style>
@@ -3754,9 +3782,12 @@ if (!window._siteInfoToggleBound) {
     function setKind(k) {
       kind = k;
       box.querySelectorAll('.pb-seg button').forEach(function (b) { b.classList.toggle('on', b.dataset.kind === k); });
-      document.getElementById('pb-tags-wrap').style.display = k === 'post' ? '' : 'none';
-      document.getElementById('pb-title-wrap').style.display = k === 'post' ? '' : 'none';
+      var isPost = k === 'post' || k === 'opensource';
+      document.getElementById('pb-tags-wrap').style.display = isPost ? '' : 'none';
+      document.getElementById('pb-title-wrap').style.display = isPost ? '' : 'none';
+      document.getElementById('pb-os-wrap').style.display = k === 'opensource' ? '' : 'none';
       if (k === 'dynamic') document.getElementById('pb-title').placeholder = '一句话标题（可选）';
+      if (k === 'opensource') document.getElementById('pb-title').placeholder = '项目名，如：Rime 鼠须管';
     }
     box.querySelectorAll('.pb-seg button').forEach(function (b) { b.addEventListener('click', function () { setKind(b.dataset.kind); }); });
 
@@ -3801,6 +3832,13 @@ if (!window._siteInfoToggleBound) {
       setKind(kind);
       setTimeout(function () { keyEl.focus(); }, 60);
     });
+
+    // 供其它页面调用：window.pbOpen('opensource')
+    window.pbOpen = function (k) {
+      modal.hidden = false;
+      if (k) setKind(k);
+      setTimeout(function () { keyEl.focus(); }, 60);
+    };
     document.getElementById('pb-close').addEventListener('click', function () { modal.hidden = true; });
     modal.addEventListener('click', function (e) { if (e.target === modal) modal.hidden = true; });
 
@@ -3824,7 +3862,11 @@ if (!window._siteInfoToggleBound) {
         var resp = await fetch(EP + '/publish', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ key: key, kind: kind, title: title, text: text,
-            tags: kind === 'post' ? tagsEl.value : '', images: imgs })
+            tags: kind === 'post' || kind === 'opensource' ? tagsEl.value : '',
+            category: kind === 'opensource' ? (document.getElementById('pb-os-folder').value || '') : undefined,
+            repo: kind === 'opensource' ? (document.getElementById('pb-os-repo').value || '') : undefined,
+            language: kind === 'opensource' ? (document.getElementById('pb-os-lang').value || '') : undefined,
+            images: imgs })
         });
         var out = await resp.json().catch(function () { return { ok: false, error: 'HTTP ' + resp.status }; });
         if (out && out.ok) {
