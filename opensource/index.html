@@ -706,13 +706,13 @@
       
       <a href="/tags/AI/" class="tag-item">AI</a>
       
-      <a href="/tags/%E9%BA%92%E9%BA%9F/" class="tag-item">麒麟</a>
-      
-      <a href="/tags/%E8%8A%AF%E7%89%87/" class="tag-item">芯片</a>
-      
-      <a href="/tags/%E6%B5%B7%E6%80%9D/" class="tag-item">海思</a>
-      
       <a href="/tags/%E6%B5%8B%E8%AF%95/" class="tag-item">测试</a>
+      
+      <a href="/tags/%E4%BB%A3%E7%A0%81/" class="tag-item">代码</a>
+      
+      <a href="/tags/%E9%97%AE%E4%B8%96/" class="tag-item">问世</a>
+      
+      <a href="/tags/%E7%A4%BE%E7%A7%91/" class="tag-item">社科</a>
       
       
     </div>
@@ -776,24 +776,32 @@
 </div>
 
 
-    <!-- ===== 栏目头部 ===== -->
-    <header class="card-base os-header-card">
-      <div class="os-header-top">
+    <!-- ══════════ Hero ══════════ -->
+    <header class="card-base os-hero">
+      <div class="os-hero-glow" aria-hidden="true"></div>
+      <div class="os-hero-inner">
         <div class="os-brand">
-          <div class="os-header-icon"><span class="material-symbols-outlined">code</span></div>
+          <div class="os-hero-icon"><span class="material-symbols-outlined">code</span></div>
           <div class="os-brand-text">
             <h1 class="os-title">开源</h1>
             <p class="os-subtitle">一些我觉得好用、值得推荐的开源项目。</p>
           </div>
         </div>
-        <div class="os-header-badge">
-          <span class="material-symbols-outlined">inventory_2</span>
-          <span>1 个项目</span>
+        <div class="os-stats">
+          <div class="os-stat">
+            <span class="os-stat-num">1</span>
+            <span class="os-stat-label">个项目</span>
+          </div>
+          <span class="os-stat-sep"></span>
+          <div class="os-stat">
+            <span class="os-stat-num">3</span>
+            <span class="os-stat-label">个文件夹</span>
+          </div>
         </div>
       </div>
 
       
-      <div class="os-intro"><p>这里收集我在日常里<strong>真正用得上、也愿意推荐给别人</strong>的开源项目。</p>
+      <div class="os-intro markdown-body"><p>这里收集我在日常里<strong>真正用得上、也愿意推荐给别人</strong>的开源项目。</p>
 <p>每条都会尽量写清楚三件事：</p>
 <ol>
 <li><strong>它解决什么问题</strong> —— 什么场景下值得用</li>
@@ -804,91 +812,105 @@
 </div>
       
 
-      <div class="os-header-actions">
-        <a class="os-btn" href="/opensource/">
-          <span class="material-symbols-outlined md-18">apps</span><span>全部项目</span>
-        </a>
+      <div class="os-hero-actions">
+        
         <button type="button" class="os-btn os-btn-primary" id="os-publish">
           <span class="material-symbols-outlined md-18">edit_note</span><span>发布到本栏目</span>
         </button>
       </div>
     </header>
 
-    <!-- ===== 文件夹（只在栏目内可见，不进主站分类） ===== -->
+    <!-- ══════════ 文件夹 ══════════ -->
     
-    <section class="card-base os-block">
-      <div class="os-block-head">
-        <span class="material-symbols-outlined">folder</span>
+    <section class="os-block">
+      <div class="os-section-head">
+        <span class="os-section-icon material-symbols-outlined">folder</span>
         <h2>文件夹</h2>
-        <span class="os-block-hint">栏目专属分类，不会出现在网站「分类」页</span>
+        <span class="os-section-hint">栏目专属分类，不会出现在网站「分类」页</span>
       </div>
       <div class="os-folder-grid">
         
         <a class="os-folder" href="/opensource/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">
-          <div class="os-folder-row">
-            <span class="material-symbols-outlined os-folder-icon">folder</span>
+          <span class="os-folder-icon material-symbols-outlined">folder</span>
+          <span class="os-folder-body">
             <span class="os-folder-name">开发工具</span>
-            <span class="os-folder-count">0</span>
-          </div>
-          <p class="os-folder-desc">编辑器、终端、调试与构建相关</p>
+            <span class="os-folder-desc">编辑器、终端、调试与构建相关</span>
+          </span>
+          <span class="os-folder-count">0</span>
         </a>
         
         <a class="os-folder" href="/opensource/%E6%95%88%E7%8E%87%E8%BD%AF%E4%BB%B6/">
-          <div class="os-folder-row">
-            <span class="material-symbols-outlined os-folder-icon">folder</span>
+          <span class="os-folder-icon material-symbols-outlined">folder</span>
+          <span class="os-folder-body">
             <span class="os-folder-name">效率软件</span>
-            <span class="os-folder-count">1</span>
-          </div>
-          <p class="os-folder-desc">让日常更省事的开源应用</p>
+            <span class="os-folder-desc">让日常更省事的开源应用</span>
+          </span>
+          <span class="os-folder-count">1</span>
         </a>
         
         <a class="os-folder" href="/opensource/%E8%87%AA%E5%BB%BA%E6%9C%8D%E5%8A%A1/">
-          <div class="os-folder-row">
-            <span class="material-symbols-outlined os-folder-icon">folder</span>
+          <span class="os-folder-icon material-symbols-outlined">folder</span>
+          <span class="os-folder-body">
             <span class="os-folder-name">自建服务</span>
-            <span class="os-folder-count">0</span>
-          </div>
-          <p class="os-folder-desc">可以自己部署、数据握在自己手里的服务</p>
+            <span class="os-folder-desc">可以自己部署、数据握在自己手里的服务</span>
+          </span>
+          <span class="os-folder-count">0</span>
         </a>
         
       </div>
     </section>
     
 
-    <!-- ===== 文章列表 ===== -->
-    <section class="os-list">
+    <!-- ══════════ 项目列表 ══════════ -->
+    <div class="os-section-head os-section-head--list">
+      <span class="os-section-icon material-symbols-outlined">deployed_code</span>
+      <h2>全部项目</h2>
+      <span class="os-section-hint">其中 1 个附有项目地址</span>
+    </div>
+
+    <section class="os-grid">
       
       
-      <article class="card-base os-item">
-        <div class="os-item-main">
-          <h3 class="os-item-title">
+      <article class="card-base os-card">
+        <a class="os-card-cover os-card-cover--ph" href="/opensource/rime-squirrel/" aria-hidden="true" tabindex="-1">
+          
+          <span class="os-ph-letter">R</span>
+          
+        </a>
+
+        <div class="os-card-body">
+          <h3 class="os-card-title">
             <a href="/opensource/rime-squirrel/">Rime 鼠须管 · 万象拼音</a>
           </h3>
-          <div class="os-item-meta">
-            <span class="material-symbols-outlined md-18">calendar_today</span>
-            <span>2026-09-28</span>
+
+          
+          <p class="os-card-summary">把 macOS 自带输入法换成 Rime，配上万象拼音词库，中文输入体验会有质的提升。</p>
+          
+
+          <div class="os-card-meta">
+            
+            <span class="os-lang"><i class="os-dot" style="background:#F05138"></i>Swift</span>
+            
+            <span class="os-meta-item"><span class="material-symbols-outlined md-18">balance</span>GPL-3.0</span>
+            <span class="os-meta-item"><span class="material-symbols-outlined md-18">event</span>2026-09-28</span>
+          </div>
+
+          <div class="os-card-chips">
             
             <a class="os-chip" href="/opensource/%E6%95%88%E7%8E%87%E8%BD%AF%E4%BB%B6/">
               <span class="material-symbols-outlined md-18">folder</span>效率软件
             </a>
             
-            <span class="os-chip os-chip-plain">Swift</span>
-            <span class="os-chip os-chip-plain">GPL-3.0</span>
-          </div>
-          <p class="os-item-summary">把 macOS 自带输入法换成 Rime，配上万象拼音词库，中文输入体验会有质的提升。</p>
-          
-          <div class="os-item-tags">
             <span class="os-tag">#输入法</span><span class="os-tag">#macOS</span><span class="os-tag">#中文</span>
           </div>
-          
         </div>
-        
-        <div class="os-item-foot">
+
+        <div class="os-card-foot">
           <a class="os-btn os-btn-primary" href="/opensource/rime-squirrel/">
             <span class="material-symbols-outlined md-18">menu_book</span><span>阅读</span>
           </a>
           
-          <a class="os-btn" href="https://github.com/rime/squirrel" target="_blank" rel="noopener noreferrer">
+          <a class="os-btn" href="https://github.com/rime/squirrel" target="_blank" rel="noopener noreferrer" title="https://github.com/rime/squirrel">
             <span class="material-symbols-outlined md-18">open_in_new</span><span>rime/squirrel</span>
           </a>
           
@@ -1559,7 +1581,7 @@
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/28 10:31:09</div>
+          <div class="site-info-card-value">2026/9/28 10:47:42</div>
         </div>
 
         <!-- System Info -->
@@ -1812,13 +1834,13 @@ if (!window._siteInfoToggleBound) {
       
       <a href="/tags/AI/" class="tag-item">AI</a>
       
-      <a href="/tags/%E9%BA%92%E9%BA%9F/" class="tag-item">麒麟</a>
-      
-      <a href="/tags/%E8%8A%AF%E7%89%87/" class="tag-item">芯片</a>
-      
-      <a href="/tags/%E6%B5%B7%E6%80%9D/" class="tag-item">海思</a>
-      
       <a href="/tags/%E6%B5%8B%E8%AF%95/" class="tag-item">测试</a>
+      
+      <a href="/tags/%E4%BB%A3%E7%A0%81/" class="tag-item">代码</a>
+      
+      <a href="/tags/%E9%97%AE%E4%B8%96/" class="tag-item">问世</a>
+      
+      <a href="/tags/%E7%A4%BE%E7%A7%91/" class="tag-item">社科</a>
       
       
     </div>
@@ -1924,7 +1946,7 @@ if (!window._siteInfoToggleBound) {
             <span class="material-symbols-outlined">schedule</span>
           </div>
           <div class="site-info-card-label">构建时间</div>
-          <div class="site-info-card-value">2026/9/28 10:31:09</div>
+          <div class="site-info-card-value">2026/9/28 10:47:42</div>
         </div>
 
         <!-- System Info -->
@@ -2029,71 +2051,115 @@ if (!window._siteInfoToggleBound) {
 </div>
 
 <style>
-  .os-header-card { padding: 1.15rem 1.25rem; margin-bottom: 1rem; }
-  .os-header-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
-  .os-brand { display: flex; align-items: center; gap: .85rem; min-width: 0; }
-  .os-header-icon { width: 46px; height: 46px; flex: 0 0 46px; border-radius: 13px; display: flex; align-items: center; justify-content: center;
-    background: oklch(0.62 0.16 var(--hue) / .16); color: oklch(0.62 0.16 var(--hue)); }
+  /* ══════════════ Hero ══════════════ */
+  .os-hero { position: relative; padding: 1.5rem; margin-bottom: 1.25rem; overflow: hidden; }
+  .os-hero-glow { position: absolute; inset: -40% -10% auto -10%; height: 220px; pointer-events: none;
+    background: radial-gradient(60% 100% at 20% 0%, oklch(0.70 0.16 var(--hue) / .22), transparent 70%),
+                radial-gradient(50% 100% at 85% 10%, oklch(0.72 0.14 calc(var(--hue) + 60) / .16), transparent 70%); }
+  .os-hero-inner { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .os-brand { display: flex; align-items: center; gap: 1rem; min-width: 0; }
+  .os-hero-icon { width: 3rem; height: 3rem; flex: 0 0 3rem; border-radius: 1rem; display: flex; align-items: center; justify-content: center;
+    background: var(--md-sys-color-primary-container); color: var(--primary); }
+  .os-hero-icon .material-symbols-outlined { font-size: 1.75rem; }
   .os-brand-text { min-width: 0; }
-  .os-title { margin: 0; font-size: 1.4rem; font-weight: 700; line-height: 1.3; }
-  .os-subtitle { margin: .15rem 0 0; font-size: .86rem; opacity: .68; }
-  .os-header-badge { display: flex; align-items: center; gap: .4rem; font-size: .84rem; opacity: .8;
-    background: var(--btn-regular-bg); padding: .4rem .75rem; border-radius: 999px; white-space: nowrap; }
-  .os-intro { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--line-color); font-size: .92rem; line-height: 1.75; opacity: .9; }
+  .os-title { margin: 0; font-size: 1.5rem; font-weight: 700; color: var(--text-primary); line-height: 1.25; }
+  .os-subtitle { margin: .15rem 0 0; font-size: .8125rem; color: var(--text-tertiary); }
+  .os-stats { display: flex; align-items: center; gap: .9rem; padding: .5rem .9rem; border-radius: var(--md-shape-corner-full, 9999px);
+    background: var(--md-sys-color-primary-container); color: var(--primary); }
+  .os-stat { display: flex; align-items: baseline; gap: .25rem; }
+  .os-stat-num { font-size: 1.05rem; font-weight: 700; }
+  .os-stat-label { font-size: .72rem; opacity: .8; }
+  .os-stat-sep { width: 1px; height: 14px; background: currentColor; opacity: .25; }
+  .os-intro { position: relative; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--line-divider);
+    font-size: .9rem; line-height: 1.8; color: var(--text-secondary); }
   .os-intro :first-child { margin-top: 0; } .os-intro :last-child { margin-bottom: 0; }
-  .os-header-actions { display: flex; gap: .6rem; margin-top: 1rem; flex-wrap: wrap; }
-  .os-btn { display: inline-flex; align-items: center; gap: .35rem; padding: .45rem .85rem; border-radius: 10px;
-    border: 1px solid var(--line-color); background: var(--btn-regular-bg); color: inherit; font-size: .84rem;
-    text-decoration: none; cursor: pointer; transition: opacity .2s, transform .2s; }
-  .os-btn:hover { transform: translateY(-1px); opacity: .92; }
-  .os-btn-primary { border: 0; color: #fff; background: linear-gradient(135deg, #6a7cff, #5b6cf0); }
-  .os-block { padding: 1.1rem 1.25rem; margin-bottom: 1rem; }
-  .os-block-head { display: flex; align-items: center; gap: .5rem; margin-bottom: .9rem; flex-wrap: wrap; }
-  .os-block-head h2 { margin: 0; font-size: 1.02rem; font-weight: 650; }
-  .os-block-hint { font-size: .74rem; opacity: .45; }
-  .os-folder-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: .7rem; }
-  .os-folder { display: block; padding: .7rem .85rem; border-radius: 12px; border: 1px solid var(--line-color);
-    background: var(--btn-regular-bg); text-decoration: none; color: inherit; transition: border-color .2s, transform .2s; }
-  .os-folder:hover { transform: translateY(-2px); border-color: oklch(0.65 0.18 var(--hue) / .5); }
-  .os-folder.active { border-color: oklch(0.65 0.18 var(--hue) / .8); background: oklch(0.65 0.18 var(--hue) / .1); }
-  .os-folder-row { display: flex; align-items: center; gap: .45rem; }
-  .os-folder-icon { font-size: 20px; opacity: .8; }
-  .os-folder-name { flex: 1; font-weight: 600; font-size: .92rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .os-folder-count { font-size: .76rem; opacity: .55; background: rgba(127,127,127,.18); padding: .05rem .45rem; border-radius: 999px; }
-  .os-folder-desc { margin: .4rem 0 0; font-size: .78rem; opacity: .6; line-height: 1.55; }
-  .os-list { display: flex; flex-direction: column; gap: .85rem; }
-  .os-item { padding: 1.1rem 1.25rem; display: grid; grid-template-columns: 1fr auto; gap: .5rem 1rem; align-items: start; }
-  .os-item-main { grid-column: 1; min-width: 0; }
-  .os-item-title { margin: 0 0 .4rem; font-size: 1.08rem; font-weight: 650; }
-  .os-item-title a { text-decoration: none; color: inherit; }
-  .os-item-title a:hover { color: oklch(0.62 0.16 var(--hue)); }
-  .os-item-meta { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; font-size: .78rem; opacity: .68; }
-  .os-chip { display: inline-flex; align-items: center; gap: .2rem; padding: .12rem .5rem; border-radius: 999px;
-    background: oklch(0.62 0.16 var(--hue) / .14); color: oklch(0.62 0.16 var(--hue)); text-decoration: none; font-size: .76rem; }
-  .os-chip-plain { background: rgba(127,127,127,.16); color: inherit; opacity: .85; }
-  .os-item-summary { margin: .55rem 0 0; font-size: .88rem; line-height: 1.7; opacity: .78; }
-  .os-item-tags { margin-top: .5rem; display: flex; gap: .45rem; flex-wrap: wrap; }
-  .os-tag { font-size: .74rem; opacity: .5; }
-  .os-item-cover { grid-column: 2; grid-row: 1 / span 2; width: 200px; aspect-ratio: 16/9; border-radius: 12px;
-    overflow: hidden; display: block; background: var(--btn-regular-bg); }
-  .os-item-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .os-item-foot { grid-column: 1 / -1; display: flex; gap: .55rem; margin-top: .8rem; flex-wrap: wrap; }
-  .os-empty { padding: 2.2rem 1.25rem; text-align: center; opacity: .6; }
-  .os-empty .material-symbols-outlined { font-size: 34px; opacity: .5; }
-  .os-empty p { margin: .5rem 0 0; font-size: .88rem; }
-  @media (max-width: 720px) {
-    .os-item { grid-template-columns: 1fr; }
-    .os-item-cover { grid-column: 1; grid-row: auto; width: 100%; }
+  .os-intro code { background: var(--btn-regular-bg); padding: .1rem .35rem; border-radius: 5px; font-family: var(--font-mono); font-size: .85em; }
+  .os-hero-actions { position: relative; display: flex; gap: .6rem; margin-top: 1.25rem; flex-wrap: wrap; }
+
+  /* ══════════════ 通用按钮 / 分区标题 ══════════════ */
+  .os-btn { display: inline-flex; align-items: center; gap: .4rem; padding: .5rem .9rem; border-radius: var(--md-shape-corner-full, 9999px);
+    border: 1px solid var(--line-divider); background: transparent; color: var(--text-secondary); font-size: .82rem; font-weight: 500;
+    text-decoration: none; cursor: pointer; transition: background-color var(--duration-fast), color var(--duration-fast), border-color var(--duration-fast), transform var(--duration-fast); }
+  .os-btn:hover { background: var(--btn-regular-bg-hover); color: var(--text-primary); border-color: transparent; transform: translateY(-1px); }
+  .os-btn .material-symbols-outlined { font-size: 1.05rem; }
+  .os-btn-primary { border: 0; color: #fff; background: var(--primary); }
+  .os-btn-primary:hover { color: #fff; background: var(--primary-hover); }
+  .os-section-head { display: flex; align-items: center; gap: .5rem; margin: 0 0 .85rem; flex-wrap: wrap; }
+  .os-section-head--list { margin-top: 1.6rem; }
+  .os-section-icon { font-size: 1.15rem; color: var(--primary); }
+  .os-section-head h2 { margin: 0; font-size: 1.05rem; font-weight: 650; color: var(--text-primary); }
+  .os-section-hint { font-size: .72rem; color: var(--text-tertiary); }
+
+  /* ══════════════ 文件夹 ══════════════ */
+  .os-folder-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: .7rem; }
+  .os-folder { display: flex; align-items: center; gap: .7rem; padding: .8rem .9rem; border-radius: var(--radius-large);
+    border: 1px solid var(--line-divider); background: var(--card-bg); text-decoration: none; color: inherit;
+    transition: transform var(--duration-fast), border-color var(--duration-fast), background-color var(--duration-fast); }
+  .os-folder:hover { transform: translateY(-2px); border-color: var(--primary); background: var(--btn-regular-bg-hover); }
+  .os-folder.active { border-color: var(--primary); background: var(--md-sys-color-primary-container); }
+  .os-folder-icon { font-size: 1.35rem; color: var(--primary); flex: 0 0 auto; }
+  .os-folder-body { display: flex; flex-direction: column; gap: .1rem; min-width: 0; flex: 1; }
+  .os-folder-name { font-size: .92rem; font-weight: 600; color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .os-folder-desc { font-size: .74rem; color: var(--text-tertiary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .os-folder-count { flex: 0 0 auto; min-width: 1.6rem; text-align: center; font-size: .74rem; font-weight: 600; padding: .1rem .45rem;
+    border-radius: var(--md-shape-corner-full, 9999px); background: var(--btn-regular-bg); color: var(--text-tertiary); }
+
+  /* ══════════════ 项目卡片网格 ══════════════ */
+  .os-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 1rem; align-items: start; }
+  .os-card { display: flex; flex-direction: column; border: 1px solid var(--line-divider);
+    transition: transform var(--duration-medium), border-color var(--duration-medium), box-shadow var(--duration-medium); }
+  .os-card:hover { transform: translateY(-3px); border-color: oklch(0.65 0.18 var(--hue) / .45);
+    box-shadow: 0 10px 26px oklch(0.65 0.18 var(--hue) / .12); }
+  .os-card-cover { display: block; aspect-ratio: 16 / 9; overflow: hidden; background: var(--btn-regular-bg); text-decoration: none; }
+  .os-card-cover img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s ease; }
+  .os-card:hover .os-card-cover img { transform: scale(1.045); }
+  .os-card-cover--ph { display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, oklch(0.70 0.15 var(--hue) / .9), oklch(0.66 0.16 calc(var(--hue) + 55) / .9)); }
+  .os-ph-letter { font-size: 2.6rem; font-weight: 800; color: #fff; opacity: .9; letter-spacing: .04em;
+    text-shadow: 0 2px 12px rgba(0,0,0,.18); }
+  .os-card-body { padding: 1rem 1.05rem .2rem; flex: 1; min-width: 0; }
+  .os-card-title { margin: 0 0 .45rem; font-size: 1.02rem; font-weight: 650; line-height: 1.45; }
+  .os-card-title a { color: var(--text-primary); text-decoration: none; }
+  .os-card-title a:hover { color: var(--primary); }
+  .os-card-summary { margin: 0; font-size: .84rem; line-height: 1.68; color: var(--text-secondary);
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .os-card-meta { display: flex; align-items: center; gap: .7rem; flex-wrap: wrap; margin-top: .7rem;
+    font-size: .74rem; color: var(--text-tertiary); }
+  .os-lang, .os-meta-item { display: inline-flex; align-items: center; gap: .25rem; }
+  .os-meta-item .material-symbols-outlined { font-size: .95rem; opacity: .7; }
+  .os-dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; box-shadow: 0 0 0 1px rgba(127,127,127,.25); }
+  .os-card-chips { display: flex; align-items: center; gap: .45rem; flex-wrap: wrap; margin-top: .7rem; }
+  .os-chip { display: inline-flex; align-items: center; gap: .2rem; padding: .14rem .55rem; border-radius: var(--md-shape-corner-full, 9999px);
+    background: var(--md-sys-color-primary-container); color: var(--primary); text-decoration: none; font-size: .73rem; font-weight: 500;
+    transition: background-color var(--duration-fast); }
+  .os-chip:hover { background: oklch(0.65 0.18 var(--hue) / .22); }
+  .os-chip .material-symbols-outlined { font-size: .9rem; }
+  .os-tag { font-size: .73rem; color: var(--text-tertiary); }
+  .os-card-foot { display: flex; gap: .5rem; padding: .9rem 1.05rem 1.05rem; flex-wrap: wrap; }
+
+  /* ══════════════ 空状态 ══════════════ */
+  .os-empty { grid-column: 1 / -1; padding: 2.6rem 1.25rem; text-align: center; color: var(--text-tertiary); }
+  .os-empty .material-symbols-outlined { font-size: 2.4rem; opacity: .45; }
+  .os-empty p { margin: .6rem 0 1rem; font-size: .88rem; }
+
+  @media (max-width: 900px) { .os-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) {
+    .os-hero { padding: 1.15rem; }
+    .os-hero-inner { align-items: flex-start; }
+    .os-stats { padding: .45rem .75rem; }
   }
 </style>
 <script>
 (function () {
-  var btn = document.getElementById('os-publish');
-  if (!btn) return;
-  btn.addEventListener('click', function () {
-    if (window.pbOpen) { window.pbOpen('opensource'); }
-    else { alert('发布面板未启用：请在主题配置里开启 upload.enabled 与 upload.endpoint'); }
-  });
+  function bind(id) {
+    var b = document.getElementById(id);
+    if (!b) return;
+    b.addEventListener('click', function () {
+      if (window.pbOpen) { window.pbOpen('opensource'); }
+      else { alert('发布面板未启用：请在主题配置里开启 upload.enabled 与 upload.endpoint'); }
+    });
+  }
+  bind('os-publish'); bind('os-publish-empty');
 })();
 </script>
 
