@@ -846,3 +846,42 @@ html.dark #navbar.mobile-nav .navbar-links.open {
   }
 }
 
+
+/* --------------------------------------------------------------------------
+   Uptime badge —— 网站累计运行天数
+   （与导航栏同一行、占位很小；颜色走主题 Material 3 令牌，自动适配深浅色）
+   -------------------------------------------------------------------------- */
+.navbar-uptime {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-left: 0.7rem;
+  padding: 0.18rem 0.6rem;
+  border-radius: var(--md-shape-corner-full, 9999px);
+  background: var(--md-sys-color-primary-container);
+  color: var(--primary);
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  flex-shrink: 0;
+  user-select: none;
+  cursor: default;
+}
+
+.navbar-uptime .material-symbols-outlined {
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+.navbar-uptime b {
+  font-weight: 700;
+  margin: 0 0.09rem;
+  font-variant-numeric: tabular-nums;  /* 数字等宽，进位时宽度不跳动 */
+}
+
+/* 窄屏（导航已收成汉堡菜单）不再挤占空间 */
+@media (max-width: 900px) {
+  .navbar-uptime { display: none; }
+}
