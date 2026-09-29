@@ -2622,6 +2622,7 @@
   
 
 <button id="gb-fab" title="留言板" aria-label="留言板">💬</button>
+<div id="gb-hint" aria-hidden="true">留言栏，快来留言吧🤓</div>
 <div id="gb-panel" hidden>
   <div class="gb-head">
     <span class="gb-title">💬 留言板</span>
@@ -2667,6 +2668,23 @@
     background: linear-gradient(135deg, #6a7cff, #5b6cf0);
     box-shadow: 0 6px 18px rgba(90,110,240,.45); transition: transform .2s; }
   #gb-fab:hover { transform: scale(1.08); }
+
+  /* 留言栏标注（跟随 fixed 按钮，永远悬在它正上方） */
+  #gb-hint { position: fixed; left: 16px; bottom: 72px; z-index: 619;
+    padding: 4px 10px; border-radius: 999px; white-space: nowrap;
+    font-size: 12px; font-weight: 700; letter-spacing: .02em; line-height: 1.5;
+    color: #fff; pointer-events: none;
+    background: linear-gradient(135deg, #ff8a3d, #ff4d8d 55%, #b14dff);
+    box-shadow: 0 4px 14px rgba(255,77,141,.5), inset 0 0 0 1px rgba(255,255,255,.22);
+    animation: gb-hint-float 2.4s ease-in-out infinite; }
+  #gb-hint::after { content: ""; position: absolute; left: 18px; bottom: -4px; width: 9px; height: 9px;
+    transform: rotate(45deg); border-radius: 2px; background: #ff8a3d; }
+  #gb-hint.gb-hint-off { display: none; }
+  @keyframes gb-hint-float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-3px); }
+  }
+  @media (prefers-reduced-motion: reduce) { #gb-hint { animation: none; } }
   #gb-panel { position: fixed; left: 16px; bottom: 74px; z-index: 620; width: min(340px, calc(100vw - 24px));
     border-radius: 16px; overflow: hidden; color: #f2f3f7;
     background: rgba(22,24,32,.68); backdrop-filter: blur(18px) saturate(1.2); -webkit-backdrop-filter: blur(18px) saturate(1.2);
@@ -2715,13 +2733,15 @@
   .gb-confirm-btns button { flex: 1; border: 0; border-radius: 10px; padding: 10px; cursor: pointer; font-size: .92rem; color: #fff; }
   #gb-confirm-no { background: rgba(255,255,255,.12); }
   #gb-confirm-yes { background: linear-gradient(135deg, #e05a5a, #c84444); }
-  @media (max-width:640px){ #gb-panel { left: 10px; bottom: 72px; } }
+  @media (max-width:640px){ #gb-panel { left: 10px; bottom: 72px; }
+    #gb-hint { left: 10px; bottom: 70px; font-size: 11px; padding: 3px 8px; } }
 </style>
 <script>
 (function () {
   try {
     var EP = 'https:\/\/entropy-upload.pages.dev';
     var fab = document.getElementById('gb-fab');
+    var hint = document.getElementById('gb-hint');
     var panel = document.getElementById('gb-panel');
     var listEl = document.getElementById('gb-list');
     var nameEl = document.getElementById('gb-name');
@@ -2850,8 +2870,9 @@
         }).catch(function (err) { st('❌ 网络错误：' + err.message, false); });
     });
 
-    fab.addEventListener('click', function (e) { e.stopPropagation(); panel.hidden = !panel.hidden; if (!panel.hidden) load(); });
-    closeBtn.addEventListener('click', function () { panel.hidden = true; });
+    function syncHint() { if (hint) hint.classList.toggle('gb-hint-off', !panel.hidden); }
+    fab.addEventListener('click', function (e) { e.stopPropagation(); panel.hidden = !panel.hidden; syncHint(); if (!panel.hidden) load(); });
+    closeBtn.addEventListener('click', function () { panel.hidden = true; syncHint(); });
 
     sendBtn.addEventListener('click', function () {
       var text = textEl.value.trim();
